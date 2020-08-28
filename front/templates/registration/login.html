@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block page_stylesheets %}
+    <link rel="stylesheet" href="{% static 'commun/css/style.css' %}" type="text/css" media="all">
+	<link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Mukta:200,300,400,500,600,700,800" rel="stylesheet">
+{% endblock page_stylesheets %}
+
+{% block bodypage %}
+<section class="main">
+	<div class="layer">
+		<div class="bottom-grid">
+			<div class="logo">
+				<h1>Meurgorf - Kerofis</h1>
+			</div>
+		</div>
+		<div class="content-w3ls">
+			<div class="text-center icon">
+				<span class="fa fa-html5"></span>
+			</div>
+			<!---728x90--->
+			<div class="content-bottom">
+				<form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <div class="field-group">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="username" id="login" type="text" value="" placeholder="Username" required>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="password" id="password" type="Password" placeholder="Ger-tremen">
+                        </div>
+                    </div>
+                    <div class="wthree-field">
+                        <button type="submit" class="btn">Kevreañ</button>
+                    </div>
+                </form>
+			</div>
+		</div>
+    </div>
+</section>
+{% endblock bodypage %}

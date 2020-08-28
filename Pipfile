@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Django = "~=3.0"
+djangorestframework = "*"
+django-environ = "*"
+django-extensions = "*"
+"psycopg2" = "*"
+requests = "*"
+gevent = "*"
+gunicorn = "*"
+bleach = "*"
+unidecode = "*"
+simplejson = "*"
+django-filter = "*"
+mysql-connector-python = "*"
+
+[dev-packages]
+Werkzeug = "*"
+"flake8" = "*"
+coverage = "*"
+factory_boy = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-sugar = "*"
+pytest-django = "*"
+django-test-plus = "*"
+
+[requires]
+python_version = "3.7"
