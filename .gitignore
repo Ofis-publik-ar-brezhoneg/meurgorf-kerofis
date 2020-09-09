@@ -37,7 +37,7 @@ htmlcov
 
 # Webpack
 webpack-stats.json
-dist/
+static/dist/
 
 # Pycharm
 .idea/*
