@@ -1,5 +1,5 @@
 module.exports = {
-    outputDir: './static/',
+    outputDir: './static/dist/',
     publicPath: 'http://localhost:3000/staticfiles/dist/',
     lintOnSave: false,
 
@@ -21,8 +21,8 @@ module.exports = {
     configureWebpack: config => {
       if (process.env.NODE_ENV === 'production') {
         config.optimization.delete('splitChunks')
+        config.output.filename = 'bundle.js'
       } else {
-        // mutate for development...
         config.output.filename = 'bundle.js'
       }
     },

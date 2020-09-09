@@ -17,6 +17,7 @@ unidecode = "*"
 simplejson = "*"
 django-filter = "*"
 mysql-connector-python = "*"
+uwsgi = "*"
 
 [dev-packages]
 Werkzeug = "*"
