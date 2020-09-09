@@ -1,4 +1,6 @@
 from django.db.models import Prefetch
+from django.core.paginator import Paginator
+from django.views.generic import TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import GenericViewSet
@@ -7,6 +9,7 @@ from rest_framework.response import Response
 from commun.pagination import StandardPagination
 from commun.pagination import AutoCompletePagination
 from commun.views import ExportView
+from commun.models import Book
 
 from .models import DerivedForm
 from .models import GrammaticalCategory
@@ -21,6 +24,14 @@ from .serializers import HistoricalOccurrenceSerializer
 from .serializers import TermSerializer
 from .serializers import VariantSerializer
 from .filters import TermFilter
+
+
+OPERATIONS = {
+    "pm": "icontains",
+    "me": "iexact",
+    "dm": "istartswith",
+    "fm": "iendwith"
+}
 
 
 class GrammaticalCategoryView(ModelViewSet):
@@ -100,3 +111,39 @@ class StatView(GenericViewSet):
 class MeurgorfExportView(ExportView):
     model = Term
     queryset = Term.objects.all()
+
+
+class TermSearch(TemplateView):
+    template_name = 'semantic/meurgorf/index.html'
+
+    def get_context_data(self, term_id=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = GrammaticalCategory.objects.all()
+        context['books'] = Book.objects.filter(is_meurgorf=True)
+        context['data'] = self.request.POST
+        context['page'] = self.request.POST.get('page') or 1
+
+        queryset = None
+        if term_id:
+            queryset = Term.objects.filter(pk=term_id)
+        elif context['data'].get('term'):
+            data = context['data']
+            filters = {
+                f"canonic_form__{OPERATIONS.get(data.get('search_type'))}": data['term']
+            }
+            if data.get('category'):
+                filters['grammatical_category'] = data['category']
+            if data.get('book'):
+                filters['historical_occurrences__book'] = data['book']
+            queryset = Term.objects.filter(**filters)
+
+        if queryset:
+            paginator = Paginator(queryset, 5)
+            context['paginator'] = paginator
+            context['terms'] = paginator.get_page(context['page'])
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)

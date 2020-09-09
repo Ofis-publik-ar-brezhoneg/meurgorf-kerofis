@@ -1,0 +1,149 @@
+{% extends "semantic/meurgorf/base.html" %}
+{% load static %}
+
+{% block content-size %}eight{% endblock content-size %}
+
+{% block content %}
+    <h1 class="ui header"><i class="history icon"></i>
+        <div class="content">MeurGorf
+            <div class="sub header">dictionnaire historique du breton</div>
+        </div>
+    </h1>
+    <form method="POST" action="{% url 'term' %}" class="ui form" id="formulaire">
+        <div class="ui fluid action input{% if data.term == '' %} error{% endif %}">
+            {% csrf_token %}
+            <input id="page" type="hidden" name="page" value="{{ page }}" />
+            <input name="term" type="text" placeholder="Rechercher..." value="{{ data.term }}">
+            <select name="search_type" class="ui selection dropdown">
+                <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
+                <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
+                <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
+                <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
+            </select>
+            <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();">
+                <i class="search icon"></i>
+            </a>
+        </div>
+        <div class="ui accordion field">
+            <div class="title{% if data.category or data.book %} active{% endif %}">
+                <i class="icon dropdown"></i>
+                Plus d'options
+            </div>
+            <div class="content{% if data.category or data.abrev %} active{% endif %}">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Catégorie grammaticale</label>
+                        <div class="ui fluid selection dropdown" id="select_category">
+                            <input type="hidden" name="category" value="{{ data.category }}">
+                            <i class="dropdown icon"></i>
+                            <div class="default text"></div>
+                            <div class="menu">
+                            {% for category in categories %}
+                                <div class="item" data-value="{{ category.id }}">{{ category.title_fra }}</div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Source</label>
+                        <div class="ui fluid selection dropdown" id="select_book">
+                            <input type="hidden" name="book" value="{{ data.book }}">
+                            <i class="dropdown icon"></i>
+                            <div class="default text"></div>
+                            <div class="menu">
+                            {% for book in books %}
+                                <div class="item" data-value="{{ book.id }}">{{ book.abbrevation }}</div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block second_content %}
+{% if paginator.count > 5 %}
+<div class="ui segment">
+    <h2 class="ui header">La recherche a renvoyé<span class="ui horizontal big label">{{ paginator.count }}</span>résultats</h2>
+    <table class="ui selectable celled striped table">
+      <thead>
+        <tr><th>Entrée</th>
+        <th>Catégorie grammaticale</th>
+      </tr></thead>
+      <tbody>
+      {% for term in terms %}
+        <tr>
+          <td class="selectable" data-label="Entrée">
+            <a href="{% url 'term' term.id %}">{{ term.canonic_form }}</a>
+            </td>
+          <td data-label="Catégorie grammaticale">{{ term.grammatical_category.title_fra }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr><th colspan="5">
+          <div class="ui right floated pagination menu">
+        {% if paginator.has_previous %}
+            <a class="icon item">
+              <i class="left chevron icon"></i>
+            </a>
+        {% endif %}
+        {% with ''|center:paginator.num_pages as range %}
+            {% for i in range %}
+            <a data-value="{{ forloop.counter }}" class="item paginator{% if forloop.counter == terms.number %} active{% endif %}">{{ forloop.counter }}</a>
+            {% endfor %}
+        {% endwith %}
+        {% if paginator.has_next %}
+            <a class="icon item">
+              <i class="right chevron icon"></i>
+            </a>
+        {% endif %}
+          </div>
+            </th>
+        </tr></tfoot>
+    </table>
+</div>
+{% elif paginator.count %}
+<div class="ui twelve wide column">
+    <div class="ui segment">
+      <div class="ui top attached tabular menu">
+        {% for term in terms %}
+            <a class="item{% if forloop.counter == 1 %} active{% endif %}" data-tab="{{ term.id }}">
+                {{ term.canonic_form }}<br />{{ term.grammatical_category.title_fra }}
+            </a>
+        {% endfor %}
+      </div>
+        {% for term in terms %}
+            {% include 'semantic/meurgorf/partial/result_table.html' with term=term number_tab=forloop.counter %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock second_content %}
+
+{% block extra %}
+    <div class="ui four wide column">
+        <div class="ui segment">
+            <h2 class="ui header">Historique</h2>
+            <div class="ui link list">
+                <a href="#" class="item">kador</a>
+                <a href="#" class="item">taol</a>
+                <a href="#" class="item">taolenn</a>
+                <a href="#" class="item">maskl</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_styles_scripts %}
+    <script>
+        $('#select_category').dropdown({ clearable: true });
+        $('#select_book').dropdown({ clearable: true });
+        $('.paginator').on('click', function () {
+            $('#page').val(this.dataset.value);
+            $('#formulaire').submit();
+        });
+    </script>
+{% endblock page_styles_scripts %}

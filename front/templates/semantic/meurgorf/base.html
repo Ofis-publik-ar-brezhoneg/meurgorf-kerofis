@@ -1,0 +1,195 @@
+{% extends "semantic/base.html" %}
+{% load static %}
+
+{% block page %}
+<!-- header -->
+<div class="ui inverted stackable sticky borderless menu topbar">
+    <div class="ui container">
+        <a class="item" href="/">
+            <h1 class="ui inverted header"><img src="{% static 'commun/images/LogoOPLB.svg' %}">
+                <div class="content">Portail numérique pour la langue bretonne
+                    <div class="ui sub header">Office public de la langue bretonne</div>
+                </div>
+            </h1>
+        </a>
+        <div class="right menu">
+            <div class="ui item">
+                <div class="ui dropdown inverted button">
+                    <i class="globe icon"></i>
+                    français
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="disabled item">brezhoneg</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui doubling stackable grid container" style="min-height: 900px;">
+    <div class="four wide column">
+
+        <!-- side menu -->
+
+        <div class="ui fluid vertical secondary big menu">
+
+            <div class="item">
+                <div class="ui icon input">
+                    <input type="text" placeholder="Rechercher sur le site...">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+
+            <div class="header item">
+                <div class="ui sub header">Outils numériques</div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="atlas icon"></i>
+                Ressources
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Bases de données</div>
+                    <a class="item" href="kerofis.html"><i class="map marked alternate icon"></i>KerOfis</a>
+                    <a class="item" href="http://www.fr.brezhoneg.bzh/36-termofis.htm"><i class="search icon"></i>TermOfis</a>
+                    <div class="header">Dictionnaires</div>
+                    <a class="active item" href="/meurgorf/"><i class="history icon"></i>MeurGorf</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="globe europe icon"></i>Traduction
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Traduction automatique à base de règles</div>
+                    <a class="item" href="http://www.fr.brezhoneg.bzh/42-traducteur-automatique.htm"><i
+                            class="language icon"></i>Apertium</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="microphone icon"></i>
+                Parole
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Synthèse vocale</div>
+                    <a class="item" href="#"><i class="comment icon"></i>Sintezenn ar vouezh</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="desktop icon"></i>Applications
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" href="#"><i class="spell check icon"></i>Correcteurs orthographiques</div>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="database icon"></i>Données
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Corpus</div>
+                    <a href="#" class="item"><i class="file alternate icon"></i>Corpus textuel</a>
+                    <a href="#" class="item"><i class="file audio icon"></i>Corpus audio</a>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="header item">
+                <div class="ui sub header">Les technologies de la langue</div>
+            </div>
+            <a class="item">
+                <i class="newspaper icon"></i>Actualités
+            </a>
+            <a class="item">
+                <i class="question icon"></i>A propos
+            </a>
+            <a class="item">
+                <i class="external alternate icon"></i>Liens utiles
+            </a>
+            <div class="ui divider"></div>
+            <div class="item">
+                <button class="ui fluid labeled icon button"><i class="envelope icon"></i>Nous contacter</button>
+            </div>
+            <div class="item">
+                <div class="ui compact icon buttons">
+                    <button class="ui facebook button"><i class="facebook icon"></i></button>
+                    <button class="ui twitter button"><i class="twitter icon"></i></button>
+                </div>
+            </div>
+
+        </div>
+        <!-- end side menu -->
+    </div>
+
+
+    <div class="{% block content-size %}twelve{% endblock content-size %} wide column">
+        <div class="ui breadcrumb">
+            <a class="section" href="/">Accueil</a>
+            <i class="right angle icon divider"></i>
+            <div class="section">Ressources</div>
+            <i class="right angle icon divider"></i>
+            <div class="active section">Meurgorf</div>
+        </div>
+        <div class="ui four item pointing menu">
+            <a class="item{% if request.path == '/meurgorf/' %} active{% endif %}" href="/meurgorf/">
+                Rechercher
+            </a>
+            <a class="item{% if request.path == '/meurgorf/presentation' %} active{% endif %}" href="/meurgorf/presentation">
+                Présentation
+            </a>
+            <a class="item{% if request.path == '/meurgorf/sources' %} active{% endif %}" href="/meurgorf/sources">
+                Sources
+            </a>
+            <a class="ui item{% if request.path == '/meurgorf/abrev' %} active{% endif %}" href="/meurgorf/abrev">
+                Abréviations
+            </a>
+        </div>
+        <div class="ui segment">
+            {% block content %}{% endblock content %}
+        </div>
+
+        {% block second_content %}{% endblock second_content %}
+
+    </div>
+    {% block extra %}{% endblock extra %}
+</div>
+<div class="footer">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="ui four wide column">
+                <h4 class="ui header">Office public de la langue bretonne</h4>
+                <div class="ui link list">
+                    <a href="#" class="item">A propos</a>
+                    <a href="#" class="item">Site internet</a>
+                    <a href="#" class="item">Nous contacter</a>
+                </div>
+            </div>
+            <div class="ui four wide column">
+
+            </div>
+            <div class="ui four wide column">
+
+            </div>
+            <div class="ui four wide column">
+                © 2020 Office public de la langue bretonne - Ofis publik ar brezhoneg
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% block page_styles_scripts %}{% endblock page_styles_scripts %}
+<script>
+$('.ui.accordion').accordion();
+$('.ui.dropdown').dropdown();
+$('.tabular .item').tab();
+$('.label').popup();
+$('.rating').popup();
+$('.ui.sticky').sticky();
+$('.ui.rating').rating();
+</script>
+<style>
+    pre {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
+{% endblock %}

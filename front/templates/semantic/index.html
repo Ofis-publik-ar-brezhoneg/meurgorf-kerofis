@@ -1,0 +1,111 @@
+{% load static %}<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Porched niverel ar brezhoneg</title>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/dist/semantic.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/mystyle.css' %}">
+  <script src="{% static 'commun/semantic/dist/semantic.min.js' %}"></script>
+</head>
+<body>
+
+
+<!-- side menu -->
+
+<div class="ui fluid inverted secondary stackable sticky menu" id="top-intro">
+<div class="ui container">
+  <div class="ui top pointing dropdown item">
+    <i class="atlas icon"></i>
+    Ressources
+    <i class="ui dropdown icon"></i>
+    <div class="menu">
+      <div class="header">Bases de données</div>
+      <a class="item" href="#"><i class="map marked alternate icon"></i>KerOfis</a>
+      <a class="item" href="http://www.fr.brezhoneg.bzh/36-termofis.htm"><i class="search icon"></i>TermOfis</a>
+      <div class="header">Dictionnaires</div>
+      <a class="item" href="/meurgorf/"><i class="history icon"></i>MeurGorf</a>
+
+    </div>
+  </div>
+  <div class="ui dropdown item">
+    <i class="globe europe icon"></i>Traduction
+    <i class="ui dropdown icon"></i>
+    <div class="menu">
+      <div class="header">Traduction automatique à base de règles</div>
+        <a class="item" href="http://www.fr.brezhoneg.bzh/42-traducteur-automatique.htm"><i class="language icon"></i>Apertium</a>
+    </div>
+  </div>
+  <div class="ui dropdown item">
+    <i class="microphone icon"></i>
+    Parole
+    <i class="ui dropdown icon"></i>
+    <div class="menu">
+      <div class="header">Synthèse vocale</div>
+      <a class="item" href="#"><i class="comment icon"></i>Sintezenn ar vouezh</a>
+    </div>
+  </div>
+  <div class="ui dropdown item">
+    <i class="desktop icon"></i>Applications
+    <i class="ui dropdown icon"></i>
+    <div class="menu">
+      <div class="item" href="#"><i class="spell check icon"></i>Correcteurs orthographiques</div>
+    </div>
+  </div>
+  <div class="ui dropdown item">
+    <i class="database icon"></i>Données
+    <i class="ui dropdown icon"></i>
+    <div class="menu">
+      <div class="header">Corpus</div>
+      <a href="#" class="item"><i class="file alternate icon"></i>Corpus textuel</a>
+      <a href="#" class="item"><i class="file audio icon"></i>Corpus audio</a>
+    </div>
+  </div>
+  
+
+  <div class="right menu">
+    <a class="item">
+      <i class="newspaper icon"></i>Actualités
+    </a>
+    <a class="item">
+      <i class="question icon"></i>A propos
+    </a>
+    <a class="item">
+      <i class="external alternate icon"></i>Liens utiles
+    </a>
+  </div>
+</div>
+</div>
+<!-- end side menu -->
+
+<video autoplay loop id="bgvid">
+<source src="{% static 'commun/images/SourceCode.mp4' %}" type="video/mp4">
+</video>
+
+  <div class="ui container" id="intro">
+    <div class="introduction">
+      <h1 class="ui massive inverted icon header">
+        <img src="{% static 'commun/images/LogoOPLB.svg' %}">
+        <span class="content">
+          Porched niverel ar brezhoneg
+        </span>
+        <span class="ui sub header">
+          Portail numérique pour la langue bretonne
+        </span>
+      </h1>
+      <div class="ui hidden divider"></div>
+      <a href="#" class="ui disabled inverted button">
+        Mont war al lec'hienn brezhonek
+      </a>
+      <a href="#" class="ui inverted button">Accéder au site en français</a>
+    </div>
+
+  </div>
+  <script>
+  $('.ui.dropdown')
+  .dropdown()
+  ;
+  </script>
+
+</body>
+</html>
