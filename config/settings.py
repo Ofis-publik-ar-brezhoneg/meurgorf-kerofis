@@ -22,7 +22,9 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 
     # Admin
-    'django.contrib.admin'
+    'django.contrib.admin',
+    
+    'django.contrib.postgres',
 ]
 
 THIRD_PARTY_APPS = [

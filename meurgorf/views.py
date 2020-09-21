@@ -30,7 +30,7 @@ OPERATIONS = {
     "pm": "icontains",
     "me": "iexact",
     "dm": "istartswith",
-    "fm": "iendwith"
+    "fm": "iendswith"
 }
 
 
@@ -116,20 +116,20 @@ class MeurgorfExportView(ExportView):
 class TermSearch(TemplateView):
     template_name = 'semantic/meurgorf/index.html'
 
-    def get_context_data(self, term_id=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = GrammaticalCategory.objects.all()
+        context['categories'] = GrammaticalCategory.objects.all().order_by('title_fra')
         context['books'] = Book.objects.filter(is_meurgorf=True)
         context['data'] = self.request.POST
         context['page'] = self.request.POST.get('page') or 1
 
         queryset = None
-        if term_id:
-            queryset = Term.objects.filter(pk=term_id)
+        if self.kwargs.get('term_id'):
+            queryset = Term.objects.filter(pk=self.kwargs['term_id'])
         elif context['data'].get('term'):
             data = context['data']
             filters = {
-                f"canonic_form__{OPERATIONS.get(data.get('search_type'))}": data['term']
+                f"canonic_form__unaccent__{OPERATIONS.get(data.get('search_type'))}": data['term']
             }
             if data.get('category'):
                 filters['grammatical_category'] = data['category']
@@ -138,7 +138,7 @@ class TermSearch(TemplateView):
             queryset = Term.objects.filter(**filters)
 
         if queryset:
-            paginator = Paginator(queryset, 5)
+            paginator = Paginator(queryset.order_by('canonic_form'), 20)
             context['paginator'] = paginator
             context['terms'] = paginator.get_page(context['page'])
 

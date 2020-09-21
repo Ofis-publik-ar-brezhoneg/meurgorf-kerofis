@@ -1,51 +1,109 @@
 <div class="ui bottom attached tab segment{% if number_tab == 1 %} active{% endif %}" data-tab="{{ term.id }}">
     <div class="ui list">
-            <a class="item">
-              <i class="play circle outline icon"></i>
-              <div class="content">/dalx/</div>
-            </a>
-          </div>
-          <h4 class="ui header">
-            Emploi :
-          <div class="ui pink disabled rating" data-rating="4" data-icon="comment" data-content="très courant"></div>
-        </h4>
+        <a class="item">
+            <i class="play circle outline icon"></i>
+            <div class="content">/dalx/</div>
+        </a>
+    </div>
+    <h4 class="ui header">
+        Emploi :
+        <div class="ui pink disabled rating" data-rating="4" data-icon="comment" data-content="très courant"></div>
+    </h4>
     <div class="ui button label" data-content="{{ term.historical_occurrences.first.book.title }}">
-      <i class="book icon"></i> {{ term.historical_occurrences.first.book.abbrevation }}
+        <i class="book icon"></i> {{ term.historical_occurrences.first.book.abbrevation }}
     </div>
     <div class="ui accordion">
-      <div class="title"><i class="icon dropdown"></i>Formes fléchies</div>
-      <div class="content"><div class="ui segment">
-          {% for derived_form in term.derived_forms.all %}
-            {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            Aucune
-          {% endfor %}
-      </div></div>
-    </div>
-    <div class="ui accordion">
-      <div class="title"><i class="icon dropdown"></i>Variantes historiques ou dialectales attestées</div>
-      <div class="content"><div class="ui segment">
-          {% for variant in term.variants.all %}
-            {{ variant.variant }}{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            Aucune
-          {% endfor %}
-      </div></div>
+        <div class="title"><i class="icon dropdown"></i>Variantes historiques ou dialectales attestées
+            {% if term.variants.count %} ({{ term.variants.count }}){% endif %}
+        </div>
+        <div class="content">
+            <div class="ui segment">
+                <div class="content">
+                    <span id="variantes">
+                    {% for variant in term.variants.all %}
+                    {{ variant.variant }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                    Aucune
+                    {% endfor %}
+                    </span>
+                    {% if term.variants.count %}
+                    <p>
+                        <button class="ui button" onclick="javascript:download('variantes')">
+                            Télécharger les variantes
+                        </button>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="ui fluid segment">
-      <div class="ui top attached label">Définition</div>
-      <p>
-          <pre>{{ term.definition }}</pre>
-      </p>
+        <div class="ui top attached label">Définition</div>
+        <p>
+        <pre>{{ term.definition }}</pre>
+        </p>
     </div>
     <h3 class="ui header">Exemples historiques</h3>
+    <span  id="historiques">
     {% for historical_occurrence in term.historical_occurrences.all %}
     <div class="ui compact fluid segment">
-      <div class="floating ui yellow label">
-        {{ historical_occurrence.year }}
-      </div>
-      <p>{{ historical_occurrence.reference }}</p>
-      <p>Référence : {{ historical_occurrence.book.title }}</p>
+        <div class="floating ui yellow label">
+            {{ historical_occurrence.year }}
+        </div>
+        <p>
+            {{ historical_occurrence.occurence }}
+            {% if historical_occurrence.occurence_normalized %} ({{ historical_occurrence.occurence_normalized }}){% endif %}
+        </p>
+        <p>{{ historical_occurrence.reference }}</p>
+        <p>Référence : {{ historical_occurrence.book.title }}</p>
     </div>
     {% endfor %}
-  </div>
+    </span>
+    {% if term.historical_occurrences.count %}
+    <p>
+        <button class="ui button" onclick="javascript:download('historiques', false)">
+            Télécharger les exemples
+        </button>
+    </p>
+    {% endif %}
+    <div class="ui accordion">
+        <div class="title"><i class="icon dropdown"></i>Formes fléchies
+            {% if term.derived_forms.count %} ({{ term.derived_forms.count }}){% endif %}
+        </div>
+        <div class="content">
+            <div class="ui segment">
+                <span id="formes_flechies">
+                {% for derived_form in term.derived_forms.all %}
+                {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                Aucune
+                {% endfor %}
+                </span>
+                {% if term.derived_forms.count %}
+                <p>
+                    <button class="ui button" onclick="javascript:download('formes_flechies')">
+                        Télécharger les formes fléchies
+                    </button>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="ui accordion">
+        <div class="title"><i class="icon dropdown"></i>Mots parents
+            {% if term.parents.count %} ({{ term.parents.count }}){% endif %}
+        </div>
+        <div class="content">
+            <div class="ui segment">
+                <span id="parents">
+                {% for parent in term.parents.all %}
+                    <a href="{% url 'term' parent.id %}">{{ parent.canonic_form }}</a>
+                    {% if not forloop.last %}<br />{% endif %}
+                {% empty %}
+                Aucun
+                {% endfor %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

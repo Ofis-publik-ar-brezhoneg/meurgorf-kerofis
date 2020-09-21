@@ -60,7 +60,6 @@ class ExportView(GenericViewSet):
 
     @action(methods=['post'], detail=False)
     def export(self, request, pk=None):
-        print(request.data)
         fields = request.data['fields']['fields']
         operations = request.data['operations']
         orders = request.data['orders']
