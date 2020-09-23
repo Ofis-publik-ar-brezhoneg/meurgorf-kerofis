@@ -49,3 +49,14 @@ video#bgvid {
 .ui.pagination.menu .active.item {
     font-weight: bold;
 }
+
+.small-margin {
+    margin: 2px;
+}
+
+a.ui.label.active {
+    background-color: #d0d0d0 !important;
+    border-color: #d0d0d0 !important;
+    background-image: none;
+    color: rgba(0,0,0,.95) !important;
+}

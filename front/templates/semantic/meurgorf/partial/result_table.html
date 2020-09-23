@@ -36,10 +36,10 @@
     {% if term.parents.count %}
     <div class="ui pink basic labels">
         {% for parent in term.parents.all %}
-        <a class="ui label">
-            {{ parent.canonic_form }}
-            <div class="detail">{{ parent.grammatical_category.title_fra }}</div>
-        </a>
+            <a class="ui label" href="{% url 'term' parent.id %}">
+                {{ parent.canonic_form }}
+                <div class="detail">{{ parent.grammatical_category.title_fra }}</div>
+            </a>
         {% endfor %}
     </div>
     {% else %}

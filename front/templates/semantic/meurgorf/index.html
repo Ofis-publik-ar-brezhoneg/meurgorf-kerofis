@@ -69,21 +69,23 @@
     <div class="ui segment">
         <h3 class="ui header">Historique de recherche</h3>
         <div class="ui horizontal list">
-            <a class="item">lenn</a>
-            <a class="item">daol</a>
-            <a class="item">kador</a>
-            <a class="item">debriñ</a>
+    {% for search_query in search_queries %}
+            <a class="item" href="{% url 'term' %}?search={{ search_query.query }}">{{ search_query.query }}</a>
+    {% endfor %}
         </div>
     </div>
-    {% if paginator %}
+    {% if related_terms %}
     <div class="ui segment">
         <h3 class="ui header">Voir aussi</h3>
         <div class="ui pink labels">
-            <a class="ui label">kemennet<div class="detail">adjectif</div></a>
-            <a class="ui label">kemenngader<div class="detail">nom commun masculin</div></a>
-            <div class="ui active label">kement<div class="detail">adverbe</div></div>
-            <a class="ui label">kement-ha-kement<div class="detail">adverbe</div></a>
-            <a class="ui label">kement-mañ<div class="detail">préposition</div></a>
+        {% for related_term in related_terms %}
+            <div class="small-margin">
+                <a class="ui label{% if related_term in terms%} active{% endif %}" href="{% url 'term' related_term.id %}">
+                    {{ related_term.canonic_form }}
+                    <div class="detail">adjectif</div>
+                </a>
+            </div>
+        {% endfor %}
         </div>
     </div>
     {% endif %}

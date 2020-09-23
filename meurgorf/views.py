@@ -16,6 +16,7 @@ from .models import GrammaticalCategory
 from .models import HistoricalOccurrence
 from .models import PhoneticForm
 from .models import Term
+from .models import TermSearchQuery
 from .models import Variant
 from .serializers import DerivedFormSerializer
 from .serializers import GrammaticalCategorySerializer
@@ -24,6 +25,7 @@ from .serializers import HistoricalOccurrenceSerializer
 from .serializers import TermSerializer
 from .serializers import VariantSerializer
 from .filters import TermFilter
+from .utils import save_search_query
 
 
 OPERATIONS = {
@@ -32,6 +34,14 @@ OPERATIONS = {
     "dm": "istartswith",
     "fm": "iendswith"
 }
+
+
+def get_related(canonic_form):
+    return list(reversed(
+        Term.objects.filter(canonic_form__lt=canonic_form).order_by('-canonic_form').distinct('canonic_form')[:2]
+    )) + list(
+        Term.objects.filter(canonic_form__gte=canonic_form).order_by('canonic_form').distinct('canonic_form')[:3]
+    )
 
 
 class GrammaticalCategoryView(ModelViewSet):
@@ -119,7 +129,10 @@ class TermSearch(TemplateView):
         context['categories'] = GrammaticalCategory.objects.all().order_by('title_fra')
         context['books'] = Book.objects.filter(is_meurgorf=True)
         context['terms_count'] = Term.objects.count()
-        context['data'] = self.request.POST
+        if self.request.POST:
+            context['data'] = self.request.POST
+        else:
+            context['data'] = {'term': self.request.GET.get('search', ""), 'search_type': 'pm'}
         context['page'] = self.request.POST.get('page') or 1
 
         queryset = None
@@ -135,11 +148,15 @@ class TermSearch(TemplateView):
             if data.get('book'):
                 filters['historical_occurrences__book'] = data['book']
             queryset = Term.objects.filter(**filters)
+            save_search_query(data['term'], queryset)
 
-        if queryset:
+        context['search_queries'] = TermSearchQuery.objects.order_by('-date')[:5]
+
+        if queryset is not None:
             paginator = Paginator(queryset.order_by('canonic_form'), 20)
             context['paginator'] = paginator
             context['terms'] = paginator.get_page(context['page'])
+            context['related_terms'] = get_related(queryset.first().canonic_form) if queryset else None
 
         return context
 

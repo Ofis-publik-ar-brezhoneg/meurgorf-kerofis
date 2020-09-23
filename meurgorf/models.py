@@ -112,3 +112,13 @@ class PhoneticForm(models.Model):
                              db_column='md_niv')
     phonetic_form = models.TextField(null=True, db_column='md_distagadur')
     phonetic_url = models.CharField(max_length=30, null=True, db_column='md_distagadur_enrolladenn')
+
+
+class TermSearchQuery(models.Model):
+    class Meta:
+        db_table = 'meurgorf_enklaskou'
+
+    query = models.CharField(max_length=200, null=None, db_column='me_reket', unique=True)
+    date = models.DateTimeField()
+    counter = models.IntegerField(null=None, db_column='me_konter_goulenn')
+    results_number = models.IntegerField(null=None, db_column='me_konter_disoch')
