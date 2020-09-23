@@ -1,108 +1,148 @@
 <div class="ui bottom attached tab segment{% if number_tab == 1 %} active{% endif %}" data-tab="{{ term.id }}">
-    <div class="ui list">
-        <a class="item">
-            <i class="play circle outline icon"></i>
-            <div class="content">/dalx/</div>
-        </a>
-    </div>
-    <h4 class="ui header">
-        Emploi :
-        <div class="ui pink disabled rating" data-rating="4" data-icon="comment" data-content="très courant"></div>
-    </h4>
-    <div class="ui button label" data-content="{{ term.historical_occurrences.first.book.title }}">
-        <i class="book icon"></i> {{ term.historical_occurrences.first.book.abbrevation }}
-    </div>
-    <div class="ui accordion">
-        <div class="title"><i class="icon dropdown"></i>Variantes historiques ou dialectales attestées
-            {% if term.variants.count %} ({{ term.variants.count }}){% endif %}
-        </div>
-        <div class="content">
-            <div class="ui segment">
-                <div class="content">
-                    <span id="variantes">
-                    {% for variant in term.variants.all %}
-                    {{ variant.variant }}{% if not forloop.last %}, {% endif %}
-                    {% empty %}
-                    Aucune
-                    {% endfor %}
-                    </span>
-                    {% if term.variants.count %}
-                    <p>
-                        <button class="ui button" onclick="javascript:download('variantes')">
-                            Télécharger les variantes
-                        </button>
-                    </p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ui fluid segment">
-        <div class="ui top attached label">Définition</div>
-        <p>
-        <pre>{{ term.definition }}</pre>
-        </p>
-    </div>
-    <h3 class="ui header">Exemples historiques</h3>
-    <span  id="historiques">
-    {% for historical_occurrence in term.historical_occurrences.all %}
-    <div class="ui compact fluid segment">
-        <div class="floating ui yellow label">
-            {{ historical_occurrence.year }}
-        </div>
-        <p>
-            {{ historical_occurrence.occurence }}
-            {% if historical_occurrence.occurence_normalized %} ({{ historical_occurrence.occurence_normalized }}){% endif %}
-        </p>
-        <p>{{ historical_occurrence.reference }}</p>
-        <p>Référence : {{ historical_occurrence.book.title }}</p>
+    {% if term.phonetic_forms.count %}
+    <h4 class="ui header">Prononciation</h4>
+    {% for phonetic in term.phonetic_forms.all %}
+    <div class="ui labels">
+      <a class="ui label" data-content="écouter" href="{{ phonetic.phonetic_url }}">
+        <i class="play circle outline icon"></i>
+          {{ phonetic.phonetic_form }}
+      </a>
+      <a href="#" class="ui icon label" data-content="copier dans le presse-papier">
+        <i class="ui copy icon"></i>
+      </a>
     </div>
     {% endfor %}
-    </span>
-    {% if term.historical_occurrences.count %}
-    <p>
-        <button class="ui button" onclick="javascript:download('historiques', false)">
-            Télécharger les exemples
-        </button>
-    </p>
     {% endif %}
+    <h4 class="ui header">
+        Fréquence d'emploi:
+        <div class="ui pink disabled rating" data-rating="{{ term.usage }}" data-max-rating="3" data-icon="comment" data-content="{{ term.usage_label_fra }}"></div>
+    </h4>
+    {% if term.on_ndbf or term.on_gbahe %}
+    <h4 class="ui header">Présent dans</h4>
+    <div class="ui labels">
+        {% if term.on_ndbf %}
+        <div class="ui button label" data-content="Nouveau dictionnaire breton-français Roparz Hemon">
+            <i class="book icon"></i> NDBF
+        </div>
+        {% endif %}
+        {% if term.on_gbahe %}
+        <div class="ui button label" data-content="Geriadur brezhoneg An Here">
+            <i class="book icon"></i> GBAHE
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <h4 class="ui header">Mots parents</h4>
+    {% if term.parents.count %}
+    <div class="ui pink basic labels">
+        {% for parent in term.parents.all %}
+        <a class="ui label">
+            {{ parent.canonic_form }}
+            <div class="detail">{{ parent.grammatical_category.title_fra }}</div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="ui labels">
+      <div class="ui label">
+          Aucun
+      </div>
+    </div>
+    {% endif %}
+    <p></p>
+
     <div class="ui accordion">
-        <div class="title"><i class="icon dropdown"></i>Formes fléchies
-            {% if term.derived_forms.count %} ({{ term.derived_forms.count }}){% endif %}
+        <div class="title">
+            <i class="icon dropdown"></i>
+            Variantes historiques ou dialectales attestées
+            <div class="ui label">{{ term.variants.count }}</div>
         </div>
         <div class="content">
             <div class="ui segment">
-                <span id="formes_flechies">
-                {% for derived_form in term.derived_forms.all %}
-                {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
+                <span id="variantes">
+                {% for variant in term.variants.all %}
+                {{ variant.variant }}{% if not forloop.last %}, {% endif %}
                 {% empty %}
                 Aucune
                 {% endfor %}
                 </span>
-                {% if term.derived_forms.count %}
+                {% if term.variants.count %}
                 <p>
-                    <button class="ui button" onclick="javascript:download('formes_flechies')">
-                        Télécharger les formes fléchies
+                    <button class="ui button" onclick="javascript:download('variantes')">
+                        Télécharger les variantes
                     </button>
                 </p>
                 {% endif %}
             </div>
         </div>
-    </div>
-    <div class="ui accordion">
-        <div class="title"><i class="icon dropdown"></i>Mots parents
-            {% if term.parents.count %} ({{ term.parents.count }}){% endif %}
+        <div class="active title">
+            <i class="icon dropdown"></i>Définition
+        </div>
+        <div class="active content">
+            <div class="ui text container">
+                <div class="ui segment">
+                    <p>
+                        <pre>{{ term.definition }}</pre>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="title">
+            <i class="icon dropdown"></i>Formes fléchies
+            <div class="ui label">{{ term.derived_forms.count }}</div>
         </div>
         <div class="content">
+            {% if term.derived_forms.count %}
+            <a class="ui labeled icon basic button">
+                <i class="download icon"></i>
+                Télécharger les formes fléchies
+            </a>
             <div class="ui segment">
-                <span id="parents">
-                {% for parent in term.parents.all %}
-                    <a href="{% url 'term' parent.id %}">{{ parent.canonic_form }}</a>
-                    {% if not forloop.last %}<br />{% endif %}
-                {% empty %}
-                Aucun
-                {% endfor %}
-                </span>
+                <div class="ui list">
+                    {% for derived_form in term.derived_forms.all %}
+                    <div class="item">{{ derived_form.form }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+                <div class="ui segment">
+                    Aucune
+                </div>
+            {% endif %}
+        </div>
+        <div class="title">
+            <i class="icon dropdown"></i>
+            Exemples historiques
+            <div class="ui label">{{ term.historical_occurrences.count }}</div>
+        </div>
+        <div class="content">
+            <div class="ui text container">
+                <a class="ui labeled icon basic button">
+                    <i class="download icon"></i>
+                    Télécharger tous les exemples
+                </a>
+    {% for historical_occurrence in term.historical_occurrences.all %}
+                <div class="ui segment">
+                    <div class="ui top left attached yellow label">
+                        {{ historical_occurrence.year }}
+                    </div>
+                    <p>{{ historical_occurrence.occurence_normalized }}</p>
+                    <div class="accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Afficher le texte dans son orthographe originelle
+                        </div>
+                        <div class="content">
+                            <p>{{ historical_occurrence.occurence }}</p>
+                        </div>
+                    </div>
+                    <p></p>
+                    <p>Référence :
+                        <span class="ui button horizontal label" data-content="{{ historical_occurrence.book.title }}">
+                        <i class="book icon"></i> {{ historical_occurrence.book.abbrevation }}.
+                      </span>, {{ historical_occurrence.reference }}</p>
+                </div>
+    {% endfor %}
             </div>
         </div>
     </div>

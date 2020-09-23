@@ -99,10 +99,8 @@ class StatView(GenericViewSet):
             "definitions": Term.objects.exclude(definition__isnull=True).exclude(definition__exact='').count(),
             "etymologies": Term.objects.exclude(etymology__isnull=True).exclude(etymology__exact='').count(),
             "study_notes": Term.objects.exclude(study_notes__isnull=True).exclude(study_notes__exact='').count(),
-            "phonetic_forms": PhoneticForm.objects.exclude(phonetic_form__isnull=True).
-                exclude(phonetic_form__exact='').count(),
-            "phonetic_links": PhoneticForm.objects.exclude(url__isnull=True).
-                exclude(url__exact='').count(),
+            "phonetic_forms": PhoneticForm.objects.exclude(phonetic_form__isnull=True).count(),
+            "phonetic_links": PhoneticForm.objects.exclude(url__isnull=True).count(),
             "searchs": 0,
             "grammatical_categories": serializer.data
         })
@@ -120,6 +118,7 @@ class TermSearch(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = GrammaticalCategory.objects.all().order_by('title_fra')
         context['books'] = Book.objects.filter(is_meurgorf=True)
+        context['terms_count'] = Term.objects.count()
         context['data'] = self.request.POST
         context['page'] = self.request.POST.get('page') or 1
 

@@ -2,72 +2,102 @@
 {% load static %}
 {% load commun_tags %}
 
-{% block content-size %}eight{% endblock content-size %}
-
 {% block content %}
-    <h1 class="ui header"><i class="history icon"></i>
-        <div class="content">MeurGorf
-            <div class="sub header">dictionnaire historique du breton</div>
-        </div>
-    </h1>
-    <form method="POST" action="{% url 'term' %}" class="ui form" id="formulaire">
-        <div class="ui fluid action input{% if data.term == '' %} error{% endif %}">
-            {% csrf_token %}
-            <input id="page" type="hidden" name="page" value="{{ page }}" />
-            <input name="term" type="text" placeholder="Rechercher..." value="{{ data.term }}" onchange="reset_page()">
-            <select name="search_type" class="ui selection dropdown" onchange="reset_page()">
-                <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
-                <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
-                <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
-                <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
-            </select>
-            <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();">
-                <i class="search icon"></i>
-            </a>
-        </div>
-        <div class="ui accordion field">
-            <div class="title{% if data.category or data.book %} active{% endif %}">
-                <i class="icon dropdown"></i>
-                Plus d'options
+<div class="ui ten wide column">
+    <div class="ui yellow segment">
+        <h1 class="ui header">
+            <i class="history icon"></i>
+            <div class="content">MeurGorf
+                <div class="sub header">dictionnaire historique du breton</div>
             </div>
-            <div class="content{% if data.category or data.abrev %} active{% endif %}">
-                <div class="two fields">
-                    <div class="field">
-                        <label>Catégorie grammaticale</label>
-                        <div class="ui fluid selection dropdown" id="select_category">
-                            <input type="hidden" name="category" value="{{ data.category }}">
-                            <i class="dropdown icon"></i>
-                            <div class="default text"></div>
-                            <div class="menu">
-                            {% for category in categories %}
-                                <div class="item" data-value="{{ category.id }}">{{ category.title_fra }}</div>
-                            {% endfor %}
+        </h1>
+        <form method="POST" action="{% url 'term' %}" class="ui fluid form" id="formulaire">
+            <div class="ui fluid action input{% if data.term == '' %} error{% endif %}">
+                {% csrf_token %}
+                <input id="page" type="hidden" name="page" value="{{ page }}" />
+                <input name="term" type="text" placeholder="Rechercher..." value="{{ data.term }}" onchange="reset_page()">
+                <select name="search_type" class="ui selection dropdown" onchange="reset_page()">
+                    <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
+                    <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
+                    <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
+                    <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
+                </select>
+                <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();">
+                    <i class="search icon"></i>
+                </a>
+            </div>
+            <div class="ui accordion field">
+                <div class="title{% if data.category or data.book %} active{% endif %}">
+                    <i class="icon dropdown"></i>
+                    Plus d'options
+                </div>
+                <div class="content{% if data.category or data.abrev %} active{% endif %}">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Catégorie grammaticale</label>
+                            <div class="ui fluid selection dropdown" id="select_category">
+                                <input type="hidden" name="category" value="{{ data.category }}">
+                                <i class="dropdown icon"></i>
+                                <div class="default text"></div>
+                                <div class="menu">
+                                {% for category in categories %}
+                                    <div class="item" data-value="{{ category.id }}">{{ category.title_fra }}</div>
+                                {% endfor %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>Source</label>
-                        <div class="ui fluid selection dropdown" id="select_book">
-                            <input type="hidden" name="book" value="{{ data.book }}">
-                            <i class="dropdown icon"></i>
-                            <div class="default text"></div>
-                            <div class="menu">
-                            {% for book in books %}
-                                <div class="item" data-value="{{ book.id }}">{{ book.abbrevation }}</div>
-                            {% endfor %}
+                        <div class="field">
+                            <label>Source</label>
+                            <div class="ui fluid selection dropdown" id="select_book">
+                                <input type="hidden" name="book" value="{{ data.book }}">
+                                <i class="dropdown icon"></i>
+                                <div class="default text"></div>
+                                <div class="menu">
+                                {% for book in books %}
+                                    <div class="item" data-value="{{ book.id }}">{{ book.abbrevation }}</div>
+                                {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </form>
+    </div>
+</div>
+<div class="ui six wide column">
+    <div class="ui segment">
+        <h3 class="ui header">Historique de recherche</h3>
+        <div class="ui horizontal list">
+            <a class="item">lenn</a>
+            <a class="item">daol</a>
+            <a class="item">kador</a>
+            <a class="item">debriñ</a>
         </div>
-    </form>
+    </div>
+    {% if paginator %}
+    <div class="ui segment">
+        <h3 class="ui header">Voir aussi</h3>
+        <div class="ui pink labels">
+            <a class="ui label">kemennet<div class="detail">adjectif</div></a>
+            <a class="ui label">kemenngader<div class="detail">nom commun masculin</div></a>
+            <div class="ui active label">kement<div class="detail">adverbe</div></div>
+            <a class="ui label">kement-ha-kement<div class="detail">adverbe</div></a>
+            <a class="ui label">kement-mañ<div class="detail">préposition</div></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block second_content %}
 {% if paginator.count > 5 %}
 <div class="ui segment">
-    <h2 class="ui header">La recherche a renvoyé<span class="ui horizontal big label">{{ paginator.count }}</span>résultats</h2>
+    <h2 class="ui header">
+        La recherche a renvoyé
+        <span class="ui horizontal big label">{{ paginator.count }}</span>
+        résultats
+    </h2>
     <table class="ui selectable celled striped table">
       <thead>
         <tr><th>Entrée</th>
@@ -108,12 +138,16 @@
     </table>
 </div>
 {% elif paginator.count %}
-<div class="ui twelve wide column">
-    <div class="ui segment">
-      <div class="ui top attached tabular menu">
+<div class="row">
+    <div class="ui sixteen wide column">
+        <div class="ui top attached tabular menu">
         {% for term in terms %}
             <a class="item{% if forloop.counter == 1 %} active{% endif %}" data-tab="{{ term.id }}">
-                {{ term.canonic_form }}<br />{{ term.grammatical_category.title_fra }}
+                <h4 class="ui header">{{ term.canonic_form }}
+                  <div class="sub header">
+                    {{ term.grammatical_category.title_fra }}
+                  </div>
+                </h4>
             </a>
         {% endfor %}
       </div>
@@ -122,30 +156,36 @@
         {% endfor %}
     </div>
 </div>
+{% elif paginator.count == 0 %}
+<div class="row">
+    <div class="ui sixteen wide column">
+        <div class="ui segment">
+            <p>Mot absent du dictionnaire, vérifiez l'orthographe.</p>
+            <p>Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce que son rajout soit étudié.</p>
+            <a href="#">Nous contacter</a>
+        </div>
+    </div>
+</div>
 {% else %}
-<div class="ui twelve wide column">
-    <div class="ui segment">
-        <p>Mot absent du dictionnaire, vérifiez l'orthographe.</p>
-        <p>Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce que son rajout soit étudié.</p>
-        <a href="#">Nous contacter</a>
+<div class="row">
+    <div class="ui column">
+        <div class="ui compact segment">
+            <div class="ui statistic">
+                <div class="label">
+                    le dictionnaire contient
+                </div>
+                <div class="value">
+                    {{ terms_count }}
+                </div>
+                <div class="label">
+                    entrées
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endif %}
 {% endblock second_content %}
-
-{% block extra %}
-    <div class="ui four wide column">
-        <div class="ui segment">
-            <h2 class="ui header">Historique</h2>
-            <div class="ui link list">
-                <a href="#" class="item">kador</a>
-                <a href="#" class="item">taol</a>
-                <a href="#" class="item">taolenn</a>
-                <a href="#" class="item">maskl</a>
-            </div>
-        </div>
-    </div>
-{% endblock %}
 
 {% block page_styles_scripts %}
     <script>

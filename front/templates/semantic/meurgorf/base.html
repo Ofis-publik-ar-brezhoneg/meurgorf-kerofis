@@ -3,10 +3,11 @@
 
 {% block page %}
 <!-- header -->
-<div class="ui inverted stackable sticky borderless menu topbar">
+<div class="ui inverted stackable borderless menu topbar">
     <div class="ui container">
         <a class="item" href="/">
-            <h1 class="ui inverted header"><img src="{% static 'commun/images/LogoOPLB.svg' %}">
+            <h1 class="ui inverted header">
+                <img src="{% static 'commun/images/LogoOPLB.svg' %}" />
                 <div class="content">Portail numérique pour la langue bretonne
                     <div class="ui sub header">Office public de la langue bretonne</div>
                 </div>
@@ -26,20 +27,16 @@
         </div>
     </div>
 </div>
-<div class="ui doubling stackable grid container" style="min-height: 900px;">
+<div class="ui doubling stackable grid container main">
     <div class="four wide column">
-
         <!-- side menu -->
-
         <div class="ui fluid vertical secondary big menu">
-
             <div class="item">
                 <div class="ui icon input">
                     <input type="text" placeholder="Rechercher sur le site...">
                     <i class="search icon"></i>
                 </div>
             </div>
-
             <div class="header item">
                 <div class="ui sub header">Outils numériques</div>
             </div>
@@ -116,62 +113,85 @@
         </div>
         <!-- end side menu -->
     </div>
-
-
-    <div class="{% block content-size %}twelve{% endblock content-size %} wide column">
-        <div class="ui breadcrumb">
-            <a class="section" href="/">Accueil</a>
-            <i class="right angle icon divider"></i>
-            <div class="section">Ressources</div>
-            <i class="right angle icon divider"></i>
-            <div class="active section">Meurgorf</div>
+    <div class="twelve wide column">
+        <div class="ui compact grid">
+            <div class="row">
+                <div class="ui sixteen wide column">
+                    <div class="ui breadcrumb">
+                        <a class="section" href="/">Accueil</a>
+                        <i class="right angle icon divider"></i>
+                        <div class="section">Ressources</div>
+                        <i class="right angle icon divider"></i>
+                        <div class="active section">Meurgorf</div>
+                    </div>
+                    <div class="ui four item pointing menu">
+                        <a class="item{% if request.path == '/meurgorf/' %} active{% endif %}" href="/meurgorf/">
+                            Rechercher
+                        </a>
+                        <a class="item{% if request.path == '/meurgorf/presentation' %} active{% endif %}" href="/meurgorf/presentation">
+                            Présentation
+                        </a>
+                        <a class="item{% if request.path == '/meurgorf/sources' %} active{% endif %}" href="/meurgorf/sources">
+                            Sources
+                        </a>
+                        <a class="ui item{% if request.path == '/meurgorf/abrev' %} active{% endif %}" href="/meurgorf/abrev">
+                            Abréviations
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% block content %}{% endblock content %}
+            </div>
+            {% block second_content %}{% endblock second_content %}
         </div>
-        <div class="ui four item pointing menu">
-            <a class="item{% if request.path == '/meurgorf/' %} active{% endif %}" href="/meurgorf/">
-                Rechercher
-            </a>
-            <a class="item{% if request.path == '/meurgorf/presentation' %} active{% endif %}" href="/meurgorf/presentation">
-                Présentation
-            </a>
-            <a class="item{% if request.path == '/meurgorf/sources' %} active{% endif %}" href="/meurgorf/sources">
-                Sources
-            </a>
-            <a class="ui item{% if request.path == '/meurgorf/abrev' %} active{% endif %}" href="/meurgorf/abrev">
-                Abréviations
-            </a>
-        </div>
-        <div class="ui segment">
-            {% block content %}{% endblock content %}
-        </div>
-
-        {% block second_content %}{% endblock second_content %}
-
     </div>
-    {% block extra %}{% endblock extra %}
+</div>
+<div class="ui basic segment">
+    <p></p>
 </div>
 <div class="footer">
     <div class="ui container">
         <div class="ui grid">
             <div class="ui four wide column">
-                <h4 class="ui header">Office public de la langue bretonne</h4>
-                <div class="ui link list">
+                <h4 class="ui inverted header">Office public de la langue bretonne</h4>
+                <div class="ui inverted link list">
                     <a href="#" class="item">A propos</a>
                     <a href="#" class="item">Site internet</a>
                     <a href="#" class="item">Nous contacter</a>
                 </div>
             </div>
-            <div class="ui four wide column">
-
+            <div class="eight wide column">
+                <p></p>
+                <h4 class="ui inverted header">
+                    L'Office public de la langue bretonne
+                </h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">
+                        <i class="external alternate icon"></i>
+                        <div class="content">Site internet</div>
+                    </a>
+                    <a class="item">
+                        <i class="envelope icon"></i>
+                        <div class="content">Contact</div>
+                    </a>
+                </div>
             </div>
-            <div class="ui four wide column">
-
-            </div>
-            <div class="ui four wide column">
-                © 2020 Office public de la langue bretonne - Ofis publik ar brezhoneg
+            <div class="ui four wide inverted column">
+                <p></p>
+                <h4></h4>
+                <div class="ui inverted link list">
+                    <a class="item">
+                        Mentions légales
+                    </a>
+                    <a href="#" class="item">
+                        Crédit
+                    </a>
+                </div>
+                <div class="ui inverted basic segment">Copyright 2020</div>
             </div>
         </div>
     </div>
-</div>
 </div>
 {% block page_styles_scripts %}{% endblock page_styles_scripts %}
 <script>

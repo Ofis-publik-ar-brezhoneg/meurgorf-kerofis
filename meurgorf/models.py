@@ -3,9 +3,9 @@ from django.utils.timezone import now
 
 
 class Usage:
-    VERY_USUAL = 'VER'
-    USUAL = 'USU'
-    UNCOMMON = 'UNC'
+    VERY_USUAL = '3'
+    USUAL = '2'
+    UNCOMMON = '1'
 
 
 class GrammaticalCategory(models.Model):
@@ -37,12 +37,28 @@ class Term(models.Model):
                                    db_column='mp_aozer')
     updated_at = models.DateTimeField(null=True)
     updated_by = models.ForeignKey('auth.User', null=True, related_name='+', on_delete=models.SET_NULL)
-    usage = models.CharField(max_length=3, default=Usage.USUAL, choices=[
+    usage = models.SmallIntegerField(default=Usage.USUAL, choices=[
         (Usage.VERY_USUAL, 'Very Usual'),
         (Usage.USUAL, 'Usual'),
         (Usage.UNCOMMON, 'uncommon')
     ], db_column='mp_implij')
     old_id = models.IntegerField(null=True)
+
+    @property
+    def usage_label_fra(self):
+        return {
+            1: 'Peu courant',
+            2: 'Courant',
+            3: 'Très courant'
+        }[self.usage]
+
+    @property
+    def usage_label_bre(self):
+        return {
+            1: 'Rouez',
+            2: 'Stank',
+            3: 'Pemdez'
+        }[self.usage]
 
 
 class Variant(models.Model):
@@ -94,5 +110,5 @@ class PhoneticForm(models.Model):
 
     term = models.ForeignKey(Term, related_name='phonetic_forms', null=True, on_delete=models.SET_NULL,
                              db_column='md_niv')
-    phonetic_form = models.TextField(null=True, blank=True, db_column='md_distagadur')
-    url = models.CharField(max_length=30, null=True, blank=True, db_column='md_distagadur_enrolladenn')
+    phonetic_form = models.TextField(null=True, db_column='md_distagadur')
+    phonetic_url = models.CharField(max_length=30, null=True, db_column='md_distagadur_enrolladenn')
