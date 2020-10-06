@@ -78,14 +78,32 @@
     <div class="ui segment">
         <h3 class="ui header">Voir aussi</h3>
         <div class="ui pink labels">
-        {% for related_term in related_terms %}
-            <div class="small-margin">
-                <a class="ui label{% if related_term in terms%} active{% endif %}" href="{% url 'term' related_term.id %}">
-                    {{ related_term.canonic_form }}
-                    <div class="detail">adjectif</div>
-                </a>
-            </div>
+            Mots Précédents :
+        {% for related_term in related_terms.0 %}
+            <a class="ui label" href="{% url 'term' related_term.id %}">
+                {{ related_term.canonic_form }}
+            </a>
         {% endfor %}
+            Mots suivants :
+        {% for related_term in related_terms.1 %}
+            <a class="ui label" href="{% url 'term' related_term.id %}">
+                {{ related_term.canonic_form }}
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="ui compact segment">
+        <div class="ui statistic">
+            <div class="label">
+                le dictionnaire contient
+            </div>
+            <div class="value">
+                {{ terms_count }}
+            </div>
+            <div class="label">
+                entrées
+            </div>
         </div>
     </div>
     {% endif %}
@@ -94,50 +112,81 @@
 
 {% block second_content %}
 {% if paginator.count > 5 %}
-<div class="ui segment">
-    <h2 class="ui header">
-        La recherche a renvoyé
-        <span class="ui horizontal big label">{{ paginator.count }}</span>
-        résultats
-    </h2>
-    <table class="ui selectable celled striped table">
-      <thead>
-        <tr><th>Entrée</th>
-        <th>Catégorie grammaticale</th>
-      </tr></thead>
-      <tbody>
-      {% for term in terms %}
-        <tr>
-          <td class="selectable" data-label="Entrée">
-            <a href="{% url 'term' term.id %}">{{ term.canonic_form|bold:data.term }}</a>
-            </td>
-          <td data-label="Catégorie grammaticale">{{ term.grammatical_category.title_fra }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-            <th colspan="2">
-                <div class="ui left floated">
-                    Résultats {{ terms.start_index }} à {{ terms.end_index }} sur {{ paginator.count }}
-                </div>
-                <div class="ui right floated pagination menu">
-        {% if terms.has_previous %}
-                    <a data-value="{{ terms.previous_page_number }}" class="icon item paginator">
-                      <i class="left chevron icon"></i>
-                    </a>
-        {% endif %}
-                    <a data-value="{{ terms.number }}" class="item paginator active">{{ terms.number }}</a>
-        {% if terms.has_next %}
-                    <a data-value="{{ terms.next_page_number }}" class="icon item paginator">
-                      <i class="right chevron icon"></i>
-                    </a>
-        {% endif %}
-                </div>
-            </th>
-        </tr>
-      </tfoot>
-    </table>
+<div class="row">
+    <div class="ui sixteen wide column">
+        <div class="ui segment">
+        <h2 class="ui header">
+            La recherche a renvoyé
+            <span class="ui horizontal big label">{{ paginator.count }}</span>
+            résultats
+        </h2>
+        <table class="ui selectable celled striped table">
+            <thead>
+                <tr><th>Entrée</th>
+                <th>Catégorie grammaticale</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for term in terms %}
+                <tr>
+                    <td class="selectable" data-label="Entrée">
+                        <a href="{% url 'term' term.id %}">{{ term.canonic_form|bold:data.term }}</a>
+                    </td>
+                    <td data-label="Catégorie grammaticale">{{ term.grammatical_category.title_fra }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">
+                        <div class="ui left floated">
+                            Résultats {{ terms.start_index }} à {{ terms.end_index }} sur {{ paginator.count }}
+                        </div>
+                        <div class="ui right floated pagination menu">
+            {% if terms.has_previous %}
+                            <a data-value="1" class="icon item paginator">
+                              <i class="angle double left icon"></i>
+                            </a>
+                            <a data-value="{{ terms.previous_page_number }}" class="icon item paginator">
+                              <i class="left chevron icon"></i>
+                            </a>
+                            <div class="ui floating dropdown icon button">
+                                <span class="text">...</span>
+                                <div class="menu">
+                    {% for page_number in paginator.page_range %}
+                        {% if page_number < terms.number %}
+                                    <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
+                        {% endif %}
+                    {% endfor %}
+                                </div>
+                            </div>
+            {% endif %}
+                            <a data-value="{{ terms.number }}" class="item paginator active">{{ terms.number }}</a>
+            {% if terms.has_next %}
+                            <div class="ui floating dropdown icon button">
+                                <span class="text">...</span>
+                                <div class="menu">
+                {% for page_number in paginator.page_range %}
+                    {% if page_number > terms.number %}
+                                    <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
+                    {% endif %}
+                {% endfor %}
+                                </div>
+                            </div>
+                            <a data-value="{{ terms.next_page_number }}" class="icon item paginator">
+                              <i class="right chevron icon"></i>
+                            </a>
+                            <a data-value="{{ paginator.num_pages }}" class="icon item paginator">
+                              <i class="angle double right icon"></i>
+                            </a>
+            {% endif %}
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+    </div>
 </div>
 {% elif paginator.count %}
 <div class="row">
@@ -168,28 +217,10 @@
         </div>
     </div>
 </div>
-{% else %}
-<div class="row">
-    <div class="ui column">
-        <div class="ui compact segment">
-            <div class="ui statistic">
-                <div class="label">
-                    le dictionnaire contient
-                </div>
-                <div class="value">
-                    {{ terms_count }}
-                </div>
-                <div class="label">
-                    entrées
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endif %}
 {% endblock second_content %}
 
-{% block page_styles_scripts %}
+{% block page_styles_scripts_extra %}
     <script>
         $('#select_category').dropdown({ clearable: true });
         $('#select_book').dropdown({ clearable: true });
@@ -214,4 +245,4 @@
             link.click();
         }
     </script>
-{% endblock page_styles_scripts %}
+{% endblock page_styles_scripts_extra %}

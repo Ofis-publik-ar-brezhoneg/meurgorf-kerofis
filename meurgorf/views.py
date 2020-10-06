@@ -1,4 +1,5 @@
 from django.db.models import Prefetch
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
@@ -37,11 +38,9 @@ OPERATIONS = {
 
 
 def get_related(canonic_form):
-    return list(reversed(
+    return reversed(
         Term.objects.filter(canonic_form__lt=canonic_form).order_by('-canonic_form').distinct('canonic_form')[:2]
-    )) + list(
-        Term.objects.filter(canonic_form__gte=canonic_form).order_by('canonic_form').distinct('canonic_form')[:3]
-    )
+    ), Term.objects.filter(canonic_form__gte=canonic_form).order_by('canonic_form').distinct('canonic_form')[:3]
 
 
 class GrammaticalCategoryView(ModelViewSet):
@@ -132,7 +131,7 @@ class TermSearch(TemplateView):
         if self.request.POST:
             context['data'] = self.request.POST
         else:
-            context['data'] = {'term': self.request.GET.get('search', ""), 'search_type': 'pm'}
+            context['data'] = {'term': self.request.GET.get('search', ""), 'search_type': 'me'}
         context['page'] = self.request.POST.get('page') or 1
 
         queryset = None
@@ -140,20 +139,28 @@ class TermSearch(TemplateView):
             queryset = Term.objects.filter(pk=self.kwargs['term_id'])
         elif context['data'].get('term'):
             data = context['data']
-            filters = {
-                f"canonic_form__unaccent__{OPERATIONS.get(data.get('search_type'))}": data['term']
-            }
+            filters = {}
+            operation = OPERATIONS.get(data.get('search_type'))
+            term_filter = Q(**{f"canonic_form__unaccent__{operation}": data['term']})
+            term_filter |= Q(**{f"variants__variant__unaccent__{operation}": data['term']})
             if data.get('category'):
                 filters['grammatical_category'] = data['category']
             if data.get('book'):
                 filters['historical_occurrences__book'] = data['book']
-            queryset = Term.objects.filter(**filters)
+            queryset = Term.objects.filter(term_filter, **filters)
             save_search_query(data['term'], queryset)
+        elif context['data'].get('category') and context['data'].get('book'):
+            data = context['data']
+            filters = {
+                'grammatical_category': data['category'],
+                'historical_occurrences__book': data['book']
+            }
+            queryset = Term.objects.filter(**filters)
 
         context['search_queries'] = TermSearchQuery.objects.order_by('-date')[:5]
 
         if queryset is not None:
-            paginator = Paginator(queryset.order_by('canonic_form'), 20)
+            paginator = Paginator(queryset.order_by('canonic_form', 'pk').distinct('canonic_form', 'pk'), 20)
             context['paginator'] = paginator
             context['terms'] = paginator.get_page(context['page'])
             context['related_terms'] = get_related(queryset.first().canonic_form) if queryset else None

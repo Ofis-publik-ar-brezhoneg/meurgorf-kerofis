@@ -100,7 +100,7 @@
             <div class="ui segment">
                 <div class="ui list">
                     {% for derived_form in term.derived_forms.all %}
-                    <div class="item">{{ derived_form.form }}</div>
+                        {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -123,7 +123,7 @@
                 </a>
     {% for historical_occurrence in term.historical_occurrences.all %}
                 <div class="ui segment">
-                    <div class="ui top left attached yellow label">
+                    <div class="ui top right attached yellow label">
                         {{ historical_occurrence.year }}
                     </div>
                     <p>{{ historical_occurrence.occurence_normalized }}</p>
@@ -140,7 +140,7 @@
                     <p>Référence :
                         <span class="ui button horizontal label" data-content="{{ historical_occurrence.book.title }}">
                         <i class="book icon"></i> {{ historical_occurrence.book.abbrevation }}.
-                      </span>, {{ historical_occurrence.reference }}</p>
+                      </span><br /> {{ historical_occurrence.reference }}</p>
                 </div>
     {% endfor %}
             </div>

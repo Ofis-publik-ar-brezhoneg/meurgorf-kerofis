@@ -7,8 +7,173 @@
   <script src="{% static 'commun/semantic/dist/semantic.min.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/mystyle.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/dist/semantic.min.css' %}">
+  {% block page_head %}{% endblock page_head %}
+
 </head>
 <body>
-{% block page %}{% endblock page %}
+<!-- header -->
+<div class="ui inverted stackable borderless menu topbar">
+    <div class="ui container">
+        <a class="item" href="/">
+            <h1 class="ui inverted header">
+                <img src="{% static 'commun/images/LogoOPLB.svg' %}" />
+                <div class="content">Portail numérique pour la langue bretonne
+                    <div class="ui sub header">Office public de la langue bretonne</div>
+                </div>
+            </h1>
+        </a>
+        <div class="right menu">
+            <div class="ui item">
+                <div class="ui dropdown inverted button">
+                    <i class="globe icon"></i>
+                    français
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="disabled item">brezhoneg</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui doubling stackable grid container main">
+    <div class="four wide column">
+        <!-- side menu -->
+        <div class="ui fluid vertical secondary big menu">
+            <div class="item">
+                <div class="ui icon input">
+                    <input type="text" placeholder="Rechercher sur le site...">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <div class="header item">
+                <div class="ui sub header">Outils numériques</div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="atlas icon"></i>
+                Ressources
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Bases de données</div>
+                    <a class="item" href="{% url 'kerofis' %}"><i class="map marked alternate icon"></i>KerOfis</a>
+                    <a class="item" href="http://www.fr.brezhoneg.bzh/36-termofis.htm"><i class="search icon"></i>TermOfis</a>
+                    <div class="header">Dictionnaires</div>
+                    <a class="active item" href="{% url 'term' %}"><i class="history icon"></i>MeurGorf</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="globe europe icon"></i>Traduction
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Traduction automatique à base de règles</div>
+                    <a class="item" href="http://www.fr.brezhoneg.bzh/42-traducteur-automatique.htm"><i
+                            class="language icon"></i>Apertium</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="microphone icon"></i>
+                Parole
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Synthèse vocale</div>
+                    <a class="item" href="#"><i class="comment icon"></i>Sintezenn ar vouezh</a>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="desktop icon"></i>Applications
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" href="#"><i class="spell check icon"></i>Correcteurs orthographiques</div>
+                </div>
+            </div>
+            <div class="ui left pointing dropdown item">
+                <i class="database icon"></i>Données
+                <i class="ui dropdown icon"></i>
+                <div class="menu">
+                    <div class="header">Corpus</div>
+                    <a href="#" class="item"><i class="file alternate icon"></i>Corpus textuel</a>
+                    <a href="#" class="item"><i class="file audio icon"></i>Corpus audio</a>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="header item">
+                <div class="ui sub header">Les technologies de la langue</div>
+            </div>
+            <a class="item">
+                <i class="newspaper icon"></i>Actualités
+            </a>
+            <a class="item">
+                <i class="question icon"></i>A propos
+            </a>
+            <a class="item">
+                <i class="external alternate icon"></i>Liens utiles
+            </a>
+            <div class="ui divider"></div>
+            <div class="item">
+                <button class="ui fluid labeled icon button"><i class="envelope icon"></i>Nous contacter</button>
+            </div>
+            <div class="item">
+                <div class="ui compact icon buttons">
+                    <button class="ui facebook button"><i class="facebook icon"></i></button>
+                    <button class="ui twitter button"><i class="twitter icon"></i></button>
+                </div>
+            </div>
+
+        </div>
+        <!-- end side menu -->
+    </div>
+    <div class="twelve wide column">
+        <div class="ui compact grid">
+        {% block page %}{% endblock page %}
+        </div>
+    </div>
+</div>
+<div class="ui basic segment">
+    <p></p>
+</div>
+<div class="footer">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="ui four wide column">
+                <h4 class="ui inverted header">Office public de la langue bretonne</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">A propos</a>
+                    <a href="#" class="item">Site internet</a>
+                    <a href="#" class="item">Nous contacter</a>
+                </div>
+            </div>
+            <div class="eight wide column">
+                <p></p>
+                <h4 class="ui inverted header">
+                    L'Office public de la langue bretonne
+                </h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">
+                        <i class="external alternate icon"></i>
+                        <div class="content">Site internet</div>
+                    </a>
+                    <a class="item">
+                        <i class="envelope icon"></i>
+                        <div class="content">Contact</div>
+                    </a>
+                </div>
+            </div>
+            <div class="ui four wide inverted column">
+                <p></p>
+                <h4></h4>
+                <div class="ui inverted link list">
+                    <a class="item">
+                        Mentions légales
+                    </a>
+                    <a href="#" class="item">
+                        Crédit
+                    </a>
+                </div>
+                <div class="ui inverted basic segment">Copyright 2020</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block page_styles_scripts %}{% endblock page_styles_scripts %}
 </body>
 </html>
