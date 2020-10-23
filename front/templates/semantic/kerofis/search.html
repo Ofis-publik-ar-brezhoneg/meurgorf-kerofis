@@ -1,0 +1,147 @@
+{% extends "semantic/kerofis/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="ui segment">
+    <h1 class="ui header"><i class="map marked alternate icon"></i>
+        <div class="content">KerOfis
+            <div class="sub header">Base de données toponymiques</div>
+        </div>
+    </h1>
+    {% include 'semantic/kerofis/partial/location_form.html' %}
+</div>
+
+<div class="ui segment">
+
+    <h2 class="ui header">
+        La recherche a renvoyé
+        <span class="ui horizontal big label">{{ paginator.count }}</span>
+        résultats
+    </h2>
+
+    <div id="map"></div>
+
+    <div class="ui divider"></div>
+    <p>Cliquez sur le signe <i class="plus circle icon"></i>pour accéder à plus d'information sur le nom.</p>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>Générique</th>
+            <th>Spécifique</th>
+            <th>Forme bretonne correcte</th>
+            <th>Commune</th>
+            <th>Catégorie</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+{% for location in locations %}
+        <tr>
+            <td>{{ location.generic_name }}</td>
+            <td>{{ location.name }}</td>
+            <td>{{ location.standardized_form.first.standardized_form }}</td>
+            <td>{{ location.city.name_fra }}</td>
+            <td>{{ location.category.name_fra }}</td>
+            <td>
+                <a href="{% url 'kerofis' location.id %}" class="ui fluid primary icon button" data-content="Voir la notice">
+                    <i class="plus circle icon"></i>
+                </a>
+            </td>
+        </tr>
+{% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="6">
+                <div class="ui right floated pagination menu">
+    {% if locations.has_previous %}
+                    <a data-value="1" class="icon item paginator">
+                      <i class="angle double left icon"></i>
+                    </a>
+                    <a data-value="{{ locations.previous_page_number }}" class="icon item paginator">
+                      <i class="left chevron icon"></i>
+                    </a>
+                    <div class="ui floating dropdown icon button">
+                        <span class="text">...</span>
+                        <div class="menu">
+            {% for page_number in paginator.page_range %}
+                {% if page_number < locations.number %}
+                            <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
+                {% endif %}
+            {% endfor %}
+                        </div>
+                    </div>
+    {% endif %}
+                    <a data-value="{{ locations.number }}" class="item paginator active">{{ locations.number }}</a>
+    {% if terms.has_next %}
+                    <div class="ui floating dropdown icon button">
+                        <span class="text">...</span>
+                        <div class="menu">
+        {% for page_number in paginator.page_range %}
+            {% if page_number > locations.number %}
+                            <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
+            {% endif %}
+        {% endfor %}
+                        </div>
+                    </div>
+                    <a data-value="{{ locations.next_page_number }}" class="icon item paginator">
+                      <i class="right chevron icon"></i>
+                    </a>
+                    <a data-value="{{ paginator.num_pages }}" class="icon item paginator">
+                      <i class="angle double right icon"></i>
+                    </a>
+    {% endif %}
+                </div>
+            </th>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock content %}
+
+{% block page_styles_scripts %}
+<script type="text/javascript">
+        // On initialise la latitude et la longitude de Paris (centre de la carte)
+        var lat = 47.8838756;
+        var lon = -2.9563372;
+        var macarte = null;
+
+        var villes = {
+{% for location in locations %}
+    {% if location.longitude %}
+            "{{ forloop.counter }}": { "lat": {{ location.latitude }}, "lon": {{ location.longitude }} },
+    {% endif %}
+{% endfor %}
+        }
+
+        // Fonction d'initialisation de la carte
+        function initMap() {
+            // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+            macarte = L.map('map').setView([lat, lon], 8);
+            // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+            L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
+                // Il est toujours bien de laisser le lien vers la source des données
+                attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                minZoom: 1,
+                maxZoom: 20
+            }).addTo(macarte);
+
+            for (ville in villes) {
+                var marker = L.marker([villes[ville].lat, villes[ville].lon]).addTo(macarte);
+            }
+
+        }
+        window.onload = function(){
+    // Fonction d'initialisation qui s'exécute lorsque le DOM est chargé
+    initMap();
+        };
+
+</script>
+<script>
+    $('.ui.accordion').accordion();
+    $('.ui.dropdown').dropdown();
+    $('.label').popup();
+    $('.ui.sticky').sticky();
+    $('.button').popup();
+</script>
+{% endblock page_styles_scripts %}

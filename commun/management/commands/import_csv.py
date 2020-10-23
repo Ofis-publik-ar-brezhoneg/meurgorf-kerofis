@@ -18,7 +18,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open(options['file']) as csvfile:
             reader = csv.reader(csvfile, delimiter=';')
-            for row in reader[1:]:
+
+            next(reader)  # skip the header
+            for row in reader:
                 if options['rummenn']:
                     obj = meurgorf_models.GrammaticalCategory()
                     obj.title_bre = row[0]

@@ -8,7 +8,21 @@
   <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/mystyle.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/dist/semantic.min.css' %}">
   {% block page_head %}{% endblock page_head %}
-
+  <script>
+    function download_items(name, trim=true) {
+        let content = "data:text/plain;charset=utf-8,";
+        let text = $('#' + name).text();
+        if (trim) {
+            text = text.replace(/\s\s+/g, ' ').trim();
+        }
+        const encodedUri = encodeURI(content + text);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", name + ".txt");
+        document.body.appendChild(link);
+        link.click();
+    }
+  </script>
 </head>
 <body>
 <!-- header -->

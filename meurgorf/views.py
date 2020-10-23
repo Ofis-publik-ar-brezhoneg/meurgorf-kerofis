@@ -39,8 +39,8 @@ OPERATIONS = {
 
 def get_related(canonic_form):
     return reversed(
-        Term.objects.filter(canonic_form__lt=canonic_form).order_by('-canonic_form').distinct('canonic_form')[:2]
-    ), Term.objects.filter(canonic_form__gte=canonic_form).order_by('canonic_form').distinct('canonic_form')[:3]
+        Term.objects.filter(canonic_form__lt=canonic_form).order_by('-canonic_form')[:2]
+    ), Term.objects.filter(canonic_form__gt=canonic_form).order_by('canonic_form')[:3]
 
 
 class GrammaticalCategoryView(ModelViewSet):
@@ -131,7 +131,9 @@ class TermSearch(TemplateView):
         if self.request.POST:
             context['data'] = self.request.POST
         else:
-            context['data'] = {'term': self.request.GET.get('search', ""), 'search_type': 'me'}
+            context['data'] = {
+                'term': self.request.GET.get('search', ""),
+                'search_type': self.request.GET.get("search_type", "me")}
         context['page'] = self.request.POST.get('page') or 1
 
         queryset = None
@@ -148,7 +150,7 @@ class TermSearch(TemplateView):
             if data.get('book'):
                 filters['historical_occurrences__book'] = data['book']
             queryset = Term.objects.filter(term_filter, **filters)
-            save_search_query(data['term'], queryset)
+            save_search_query(data['term'], data.get('search_type'), queryset)
         elif context['data'].get('category') and context['data'].get('book'):
             data = context['data']
             filters = {

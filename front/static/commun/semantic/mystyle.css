@@ -60,3 +60,7 @@ a.ui.label.active {
     background-image: none;
     color: rgba(0,0,0,.95) !important;
 }
+
+pre {
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
+}

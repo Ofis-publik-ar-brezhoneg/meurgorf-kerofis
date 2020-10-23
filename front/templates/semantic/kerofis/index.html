@@ -1,0 +1,71 @@
+{% extends "semantic/kerofis/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="ui sixteen wide column">
+    <div class="ui segment">
+        <h1 class="ui header">
+            <i class="map marked alternate icon"></i>
+            <div class="content">
+                KerOfis
+                <div class="sub header">
+                    Base de données toponymiques
+                </div>
+            </div>
+        </h1>
+        <a class="ui labeled icon basic button" href="https://kartenn.openstreetmap.bzh/#map=8/48.1/-2.3">
+            <i class="external link icon"></i>
+            Voir la carte sur OpenStreetMap.bzh
+        </a>
+        <p></p>
+        <div id="mapid"></div>
+    </div>
+
+    <div class="ui grid">
+        <div class="ten wide column">
+            <div class="ui pink segment">
+                {% include 'semantic/kerofis/partial/location_form.html' %}
+            </div>
+        </div>
+        <div class="ui six wide column">
+            <div class="ui card">
+                <div class="content">
+                    <h3 class="ui pink header">
+                        <i class="calendar check outline icon"></i>
+                        <div class="content">
+                            Nom de lieu du jour
+                        </div>
+                    </h3>
+                </div>
+                <div class="content">
+                    <h2 class="ui header">
+                        Sant-Nikolaz-an-Hent
+                        <div class="ui sub header">
+                            Saint-Nicolas-de-Redon
+                        </div>
+                    </h2>
+                </div>
+                <div class="ui bottom attached pink button">
+                    <i class="ui info icon"></i>
+                    En savoir plus
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="ui statistic">
+                    <div class="label">
+                        la base contient
+                    </div>
+                    <div class="value">
+                        <i class="map marker alternate icon"></i>
+                        {{ nb_location }}
+                    </div>
+                    <div class="label">
+                        noms de lieux
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

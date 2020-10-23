@@ -1,0 +1,142 @@
+{% extends "semantic/kerofis/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="ui column">
+    <div class="ui segment">
+        <h1 class="ui header"><i class="map marked alternate icon"></i>
+            <div class="content">KerOfis
+                <div class="sub header">Base de données toponymiques</div>
+            </div>
+        </h1>
+        {% include 'semantic/kerofis/partial/location_form.html' %}
+    </div>
+{% with location=locations.0 %}
+    <div class="ui segment">
+        <h1 class="ui header">
+            <div class="content">{{ location.standardized_form.first.standardized_form }}</div>
+            <div class="ui horizontal label">forme bretonne normalisée</div>
+        </h1>
+        <h2 class="ui header">{{ location.name }}</h2>
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="hollek">Informations générales</a>
+            <a class="item" data-tab="yezh">Informations linguistiques</a>
+        </div>
+        <div class="ui bottom attached tab segment active" data-tab="hollek">
+            <div class="ui grid">
+                <div class="eight wide column">
+        {% if location.phonetic_transcriptions.count %}
+                    <h4 class="ui header">Prononciation normalisée</h4>
+                    <div class="ui labels">
+            {% for phonetic_transcription in location.phonetic_transcriptions.all %}
+                        <a class="ui label">
+                            <i class="play circle outline icon"></i>
+                            {{ phonetic_transcription.phonetic_transcription }}
+                        </a>
+                        <a href="#" class="ui icon label" data-content="copier dans le presse-papier">
+                            <i class="ui copy icon"></i>
+                        </a>
+            {% endfor %}
+                    </div>
+        {% endif %}
+                    <h4 class="ui header">Autres formes actuelles</h4>
+                    <div class="ui list">
+        {% for other_form in location.other_forms.all %}
+                        <div class="item">{{ other_form.usage_form }}</div>
+        {% endfor %}
+                    </div>
+                    <h4 class="ui header">Catégorie</h4>
+                    <div class="ui label">{{ location.category.name_fra }}</div>
+        {% if location.city %}
+                    <h4 class="ui header">Commune</h4>
+                    <p>
+                        <a href="{% url 'kerofis-city' location.city.name_fra %}" class="ui pink label">{{ location.city.name_fra }}</a>
+                    </p>
+        {% endif %}
+                    <h4 class="ui header">Département</h4>
+                    <p>{{ location.department.name_fra }}</p>
+                    <div class="ui divider"></div>
+                    <button class="ui pink right labeled icon button">
+                        <i class="copy icon"></i>
+                        Copier le lien vers la fiche
+                    </button>
+                </div>
+                <div class="eight wide column">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="yezh">
+            <h4 class="ui header">
+                <div class="content">Formes anciennes</div>
+                <div class="ui label">{{ location.old_forms.count }}</div>
+            </h4>
+            <div class="ui list">
+        {% for old_form in location.old_forms.all|slice:":10" %}
+                <div class="item">
+                    <div class="ui horizontal basic label">{{ old_form.year }}</div>
+                    {{ old_form.old_form }}
+                </div>
+        {% endfor %}
+        {% if location.old_forms.count > 10 %}
+                <a href="#" class="item">Plus...</a>
+        {% endif %}
+            </div>
+            <h4 class="ui header">Formes bretonnes attestées
+                <div class="ui label">{{ location.attested_forms.count }}</div>
+            </h4>
+            <div class="ui list">
+        {% for attested_form in location.attested_forms.all %}
+                <div class="item">
+                    {{ attested_form.attested_form }} ({{ attested_form.litteral_year }})
+                </div>
+        {% endfor %}
+            </div>
+            <h4 class="ui header">Autres informations sur le toponyme</h4>
+            <p>
+                {{ location.etymological_note_fra }}
+            </p>
+        </div>
+    </div>
+{% endwith %}
+</div>
+{% endblock content %}
+
+{% block page_styles_scripts %}
+<style type="text/css">
+    #map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+        height:500px;
+    }
+</style>
+<script>
+    $('.ui.accordion').accordion();
+    $('.ui.dropdown').dropdown();
+    $('.tabular .item').tab();
+    $('.label').popup();
+    $('.ui.sticky').sticky();
+    $('.ui.checkbox').checkbox();
+</script>
+<script type="text/javascript">
+    // On initialise la latitude et la longitude de Paris (centre de la carte)
+    var macarte = null;
+    // Fonction d'initialisation de la carte
+    function initMap() {
+    // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+    macarte = L.map('map');
+{% if locations.0.longitude %}
+    macarte.setView([{{ locations.0.latitude }}, {{ locations.0.longitude }}], 13);
+{% endif %}
+    // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+    L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
+    // Il est toujours bien de laisser le lien vers la source des données
+    attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+    minZoom: 1,
+    maxZoom: 20
+    }).addTo(macarte);
+    }
+    window.onload = function(){
+        // Fonction d'initialisation qui s'exécute lorsque le DOM est chargé
+        initMap();
+    };
+</script>
+{% endblock page_styles_scripts %}

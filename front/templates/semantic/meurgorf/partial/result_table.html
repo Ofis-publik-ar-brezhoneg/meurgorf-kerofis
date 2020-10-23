@@ -68,12 +68,35 @@
                 </span>
                 {% if term.variants.count %}
                 <p>
-                    <button class="ui button" onclick="javascript:download('variantes')">
+                    <button class="ui button" onclick="javascript:download_items('variantes')">
                         Télécharger les variantes
                     </button>
                 </p>
                 {% endif %}
             </div>
+        </div>
+        <div class="title">
+            <i class="icon dropdown"></i>Formes fléchies
+            <div class="ui label">{{ term.derived_forms.count }}</div>
+        </div>
+        <div class="content">
+            {% if term.derived_forms.count %}
+            <a class="ui labeled icon basic button" onclick="javascript:download_items('formes_flechies')">
+                <i class="download icon"></i>
+                Télécharger les formes fléchies
+            </a>
+            <div class="ui segment">
+                <div class="ui list" id="formes_flechies">
+                    {% for derived_form in term.derived_forms.all %}
+                        {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+                <div class="ui segment">
+                    Aucune
+                </div>
+            {% endif %}
         </div>
         <div class="active title">
             <i class="icon dropdown"></i>Définition
@@ -88,39 +111,18 @@
             </div>
         </div>
         <div class="title">
-            <i class="icon dropdown"></i>Formes fléchies
-            <div class="ui label">{{ term.derived_forms.count }}</div>
-        </div>
-        <div class="content">
-            {% if term.derived_forms.count %}
-            <a class="ui labeled icon basic button">
-                <i class="download icon"></i>
-                Télécharger les formes fléchies
-            </a>
-            <div class="ui segment">
-                <div class="ui list">
-                    {% for derived_form in term.derived_forms.all %}
-                        {{ derived_form.form }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            {% else %}
-                <div class="ui segment">
-                    Aucune
-                </div>
-            {% endif %}
-        </div>
-        <div class="title">
             <i class="icon dropdown"></i>
             Exemples historiques
             <div class="ui label">{{ term.historical_occurrences.count }}</div>
         </div>
         <div class="content">
             <div class="ui text container">
-                <a class="ui labeled icon basic button">
+{% if term.historical_occurrences.count > 0 %}
+                <a class="ui labeled icon basic button" onclick="javascript:download_items('historiques', true)">
                     <i class="download icon"></i>
                     Télécharger tous les exemples
                 </a>
+            <span id="historiques">
     {% for historical_occurrence in term.historical_occurrences.all %}
                 <div class="ui segment">
                     <div class="ui top right attached yellow label">
@@ -143,6 +145,8 @@
                       </span><br /> {{ historical_occurrence.reference }}</p>
                 </div>
     {% endfor %}
+            </span>
+{% endif %}
             </div>
         </div>
     </div>

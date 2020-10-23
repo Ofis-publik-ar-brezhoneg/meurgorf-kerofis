@@ -119,6 +119,7 @@ class TermSearchQuery(models.Model):
         db_table = 'meurgorf_enklaskou'
 
     query = models.CharField(max_length=200, null=None, db_column='me_reket', unique=True)
-    date = models.DateTimeField()
+    query_type = models.CharField(max_length=2, null=None, db_column='me_oberataer')
+    date = models.DateTimeField(db_column='me_deiziad')
     counter = models.IntegerField(null=None, db_column='me_konter_goulenn')
     results_number = models.IntegerField(null=None, db_column='me_konter_disoch')

@@ -70,7 +70,7 @@
         <h3 class="ui header">Historique de recherche</h3>
         <div class="ui horizontal list">
     {% for search_query in search_queries %}
-            <a class="item" href="{% url 'term' %}?search={{ search_query.query }}">{{ search_query.query }}</a>
+            <a class="item" href="{% url 'term' %}?search={{ search_query.query }}&search_type={{ search_query.query_type }}">{{ search_query.query }}</a>
     {% endfor %}
         </div>
     </div>
@@ -80,13 +80,13 @@
         <div class="ui pink labels">
             Mots Précédents :
         {% for related_term in related_terms.0 %}
-            <a class="ui label" href="{% url 'term' related_term.id %}">
+            <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
             Mots suivants :
         {% for related_term in related_terms.1 %}
-            <a class="ui label" href="{% url 'term' related_term.id %}">
+            <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
@@ -194,11 +194,11 @@
         <div class="ui top attached tabular menu">
         {% for term in terms %}
             <a class="item{% if forloop.counter == 1 %} active{% endif %}" data-tab="{{ term.id }}">
-                <h4 class="ui header">{{ term.canonic_form }}
+                <h3 class="ui header">{{ term.canonic_form }}
                   <div class="sub header">
                     {{ term.grammatical_category.title_fra }}
                   </div>
-                </h4>
+                </h3>
             </a>
         {% endfor %}
       </div>
@@ -230,19 +230,6 @@
         });
         function reset_page() {
             $('#page').val(1)
-        }
-        function download(name, trim=true) {
-            let content = "data:text/plain;charset=utf-8,";
-            let text = $('#' + name).text();
-            if (trim) {
-                text = text.replace(/\s\s+/g, ' ').trim();
-            }
-            const encodedUri = encodeURI(content + text);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", name + ".txt");
-            document.body.appendChild(link);
-            link.click();
         }
     </script>
 {% endblock page_styles_scripts_extra %}
