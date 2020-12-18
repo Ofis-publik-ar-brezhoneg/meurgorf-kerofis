@@ -163,9 +163,9 @@
                   <v-col
                     cols="1"
                   >
-                    <span v-if="t.city">
+                    <span v-if="t.city && t.city.department">
                       <router-link
-                        v-text="t.city.department"
+                        v-text="t.city.department.name_bre"
                         tag="span"
                         :to="{ name: 'SkridaozerKerofisEtrefas', params: { id: t.id }}"
                       />
