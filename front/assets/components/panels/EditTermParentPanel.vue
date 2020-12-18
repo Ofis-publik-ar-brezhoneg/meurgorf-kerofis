@@ -37,7 +37,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="green"
+          color="teal lighten-3"
           dark
           v-bind="attrs"
           v-on="on"
@@ -60,7 +60,7 @@
             >
             </v-form-base>
             <v-btn
-              color="green"
+              color="teal lighten-3"
               @click="onSearch"
             >
               Klask
@@ -95,7 +95,7 @@
                   >
                     <v-btn
                       icon
-                      color="green"
+                      color="teal lighten-3"
                     >
                       <v-icon>
                         mdi-check

@@ -46,6 +46,7 @@
         >
           <v-card-text>
             <v-expansion-panels
+              v-model="panel"
               :inset="true"
             >
               <v-expansion-panel
@@ -155,7 +156,7 @@
                       v-for="(occurrence, n) in term.historical_occurrences"
                       :key="n"
                       icon="mdi-star"
-                      color="green"
+                      color="teal lighten-3"
                       small
                     >
                       <span slot="opposite">{{ occurrence.year }}</span>
@@ -262,6 +263,7 @@
     data () {
       return {
         current_page: 1,
+        panel: [],
         tabs: 0
       }
     },

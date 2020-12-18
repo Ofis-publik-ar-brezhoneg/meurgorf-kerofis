@@ -10,12 +10,7 @@
         justify="center"
       >
         <v-col cols="12">
-          <base-material-card>
-            <template v-slot:heading>
-              <div class="display-2 font-weight-light">
-                Mammennoù
-              </div>
-            </template>
+          <base-material-card title="Mammennoù">
             <v-card-text>
               <v-container
                 class="pa-0"
@@ -30,7 +25,7 @@
                 </v-form-base>
                 <v-btn
                   large
-                  color="green"
+                  color="teal lighten-3"
                   @click="Submit"
                   v-text="action"
                 />
@@ -41,7 +36,6 @@
         </v-col>
       </v-row>
       <base-material-card
-        icon="mdi-book"
         v-if="!$route.params.id"
       >
       <v-card-text>
@@ -114,16 +108,16 @@
           is_meurgorf: false
         },
         schema: {
-          is_active: { type: 'checkbox', label: 'Bev' },
-          abbrevation: { type: 'text', label: 'Berradur' },
-          title: { type: 'text', label: 'Levr' },
-          description: { type: 'text', label: 'Deskrivadur' },
-          author: { type: 'text', label: 'Aozer' },
+          is_active: { type: 'checkbox', label: 'Bev', filled: true },
+          abbrevation: { type: 'text', label: 'Berradur', filled: true },
+          title: { type: 'text', label: 'Levr', filled: true  },
+          description: { type: 'text', label: 'Deskrivadur', filled: true  },
+          author: { type: 'text', label: 'Aozer', filled: true  },
 
-          is_kerofis_old: { type: 'checkbox', label: 'Stummoù kozh' },
-          is_kerofis_other: { type: 'checkbox', label: 'Stummoù all' },
-          is_kerofis_attested: { type: 'checkbox', label: 'Stummoù testeniekaet' },
-          is_meurgorf: { type: 'checkbox', label: 'Meurgorf' },
+          is_kerofis_old: { type: 'checkbox', label: 'Stummoù kozh', filled: true  },
+          is_kerofis_other: { type: 'checkbox', label: 'Stummoù all', filled: true  },
+          is_kerofis_attested: { type: 'checkbox', label: 'Stummoù testeniekaet', filled: true  },
+          is_meurgorf: { type: 'checkbox', label: 'Meurgorf', filled: true  },
         },
         typography: {
           '': ['Paragraph', 'leader'],

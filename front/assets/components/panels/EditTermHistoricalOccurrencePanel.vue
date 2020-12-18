@@ -2,7 +2,7 @@
   <span>
     <v-simple-table>
       <template v-slot:default>
-        <tbody>
+        <tbody v-if="termsData">
           <tr
             v-for="item in termsData.historical_occurrences"
             :key="item.id"

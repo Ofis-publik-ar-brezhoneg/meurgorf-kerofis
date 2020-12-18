@@ -111,7 +111,7 @@ class PhoneticForm(models.Model):
     term = models.ForeignKey(Term, related_name='phonetic_forms', null=True, on_delete=models.SET_NULL,
                              db_column='md_niv')
     phonetic_form = models.TextField(null=True, db_column='md_distagadur')
-    phonetic_url = models.CharField(max_length=30, null=True, db_column='md_distagadur_enrolladenn')
+    phonetic_file = models.FileField(max_length=30, null=True, db_column='md_distagadur_enrolladenn')
 
 
 class TermSearchQuery(models.Model):

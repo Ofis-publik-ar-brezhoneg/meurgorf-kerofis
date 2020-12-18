@@ -25,6 +25,7 @@ from .serializers import GrammaticalCategoryStatSerializer
 from .serializers import HistoricalOccurrenceSerializer
 from .serializers import TermSerializer
 from .serializers import VariantSerializer
+from .serializers import PhoneticFormSerializer
 from .filters import TermFilter
 from .utils import save_search_query
 
@@ -109,7 +110,7 @@ class StatView(GenericViewSet):
             "etymologies": Term.objects.exclude(etymology__isnull=True).exclude(etymology__exact='').count(),
             "study_notes": Term.objects.exclude(study_notes__isnull=True).exclude(study_notes__exact='').count(),
             "phonetic_forms": PhoneticForm.objects.exclude(phonetic_form__isnull=True).count(),
-            "phonetic_links": PhoneticForm.objects.exclude(url__isnull=True).count(),
+            "phonetic_links": PhoneticForm.objects.exclude(phonetic_url__isnull=True).count(),
             "searchs": 0,
             "grammatical_categories": serializer.data
         })
@@ -172,3 +173,9 @@ class TermSearch(TemplateView):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
+
+
+class PhoneticFormView(ModelViewSet):
+    serializer_class = PhoneticFormSerializer
+    model = PhoneticForm
+    queryset = PhoneticForm.objects.all()

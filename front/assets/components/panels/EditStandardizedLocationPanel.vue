@@ -3,18 +3,21 @@
     <v-simple-table>
       <template v-slot:default>
         <tbody>
-          <draggable v-model="derived_forms">
+          <draggable v-model="standardized_forms">
             <tr
-              v-for="item in derived_forms"
+              v-for="item in standardized_forms"
               :key="item.id"
             >
               <td>
-                {{ item.form }}
+                {{ item.standardized_form }}
+              </td>
+              <td>
+                {{ formatDate(item.date) }}
               </td>
               <td>
                 <v-btn
                   icon
-                  @click="edit_derived_form(item)"
+                  @click="edit_standardized_form(item)"
                 >
                   <v-icon>
                     mdi-pencil
@@ -22,7 +25,7 @@
                 </v-btn>
                 <v-btn
                   icon
-                  @click="delete_derived_form(item)"
+                  @click="delete_standardized_form(item)"
                 >
                   <v-icon>
                     mdi-delete
@@ -35,10 +38,10 @@
       </template>
     </v-simple-table>
     <v-form-base
-      id="term"
+      id="location"
       :model="model"
       :schema="schema"
-      @change:term="log"
+      @change:location="log"
     >
     </v-form-base>
   </span>
@@ -55,16 +58,22 @@
     data () {
       return {
         model: {
-            form: '',
+            standardized_form: '',
+            date: ''
         },
         schema: {
           "id": {
             "type": "text",
             "hidden": true
           },
-          "form": {
+          "standardized_form": {
             "type": "text",
-            "label": "Stumm skouer",
+            "label": "Anv",
+          },
+          "date": {
+            "type": "text",
+            "ext": "date",
+            "label": "Deiziad degemer",
           },
           "add": {
             "type": "btn",
@@ -82,22 +91,28 @@
       }
     },
     computed: {
-      ...mapState('terms', { 'termsData': 'getInfoData' }),
-      derived_forms: {
+      ...mapState('locations', { 'locationsData': 'getInfoData' }),
+      standardized_forms: {
         get() {
-          return (this.termsData && this.termsData.derived_forms) ? this.termsData.derived_forms : []
+          return (this.locationsData && this.locationsData.standardized_forms) ? this.locationsData.standardized_forms : []
         },
         set(value) {
           let changed_forms = JSON.parse(JSON.stringify(value))
           changed_forms.forEach((item, index) => {
             item.order = index + 1
           })
-          const term_id = this.$route.params.id
-          this.$store.dispatch('terms/updateTerm', { term_id, data: { "derived_forms": changed_forms }})
+          const location_id = this.$route.params.id
+          this.$store.dispatch('locations/updateLocations', { location_id, data: { "standardized_forms": changed_forms }})
         }
       }
     },
     methods: {
+      formatDate (date) {
+        if (!date) return null
+
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}/${year}`
+      },
       log (val) {
         let { key } = val
         if (key == 'add') {
@@ -105,30 +120,35 @@
         }
         if (key == 'reset') {
           this.model.id = ''
-          this.model.form = ''
+          this.model.standardized_form = ''
+          this.model.date = ''
           this.schema.add.label = 'Kas'
           this.schema.reset.hidden = true
         }
       },
       save () {
-        let data = { "derived_forms": [this.model, ] }
-        const term_id = this.$route.params.id
-        this.$store.dispatch('terms/updateTerm', { term_id, data }).then(() => {
+        let data = { "standardized_forms": [this.model, ] }
+        const location_id = this.$route.params.id
+        this.$store.dispatch('locations/updateLocation', { location_id, data }).then(() => {
           this.model.id = ''
-          this.model.form = ''
+          this.model.standardized_form = ''
+          this.model.date = ''
           this.schema.add.label = 'Kas'
           this.schema.reset.hidden = true
         })
       },
-      edit_derived_form(derived_form) {
-        this.model.id = derived_form.id
-        this.model.form = derived_form.form
+      edit_standardized_form(standardized_form) {
+        this.model.id = standardized_form.id
+        this.model.standardized_form = standardized_form.standardized_form
+        this.model.date = standardized_form.date
         this.schema.add.label = 'Enrollañ'
         this.schema.reset.hidden = false
       },
-      delete_derived_form (derived_form) {
-        this.$store.dispatch('terms/deleteDerivedForm', { derived_form_id: derived_form.id }).then(() => {
-          this.$store.dispatch('terms/getTerm', this.$route.params.id)
+      delete_standardized_form (standardized_form) {
+        this.$store.dispatch(
+          'locations/deleteStandardizedForm', { standardized_form_id: standardized_form.id }
+        ).then(() => {
+          this.$store.dispatch('locations/getLocation', this.$route.params.id)
         })
       }
     },

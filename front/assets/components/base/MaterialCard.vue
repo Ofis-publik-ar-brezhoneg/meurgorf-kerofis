@@ -4,7 +4,7 @@
     :class="classes"
     class="v-card--material pa-3"
   >
-    <div class="d-flex grow flex-wrap">
+    <div class="d-flex grow flex-wrap" v-if="title || $slots.heading">
       <v-avatar
         v-if="avatar"
         size="128"
@@ -16,14 +16,11 @@
 
       <v-sheet
         v-else
-        :class="{
-          'pa-7': !$slots.image
-        }"
         :color="color"
         :max-height="icon ? 90 : undefined"
         :width="icon ? 'auto' : '100%'"
         elevation="6"
-        class="text-start v-card--material__heading mb-n6"
+        class="text-start v-card--material__heading mb-n6 pa-0"
         dark
       >
         <slot
@@ -38,7 +35,7 @@
 
         <div
           v-else-if="title && !icon"
-          class="display-1 font-weight-light"
+          class="display-2 font-weight-light px-3 py-1"
           v-text="title"
         />
 
@@ -97,7 +94,7 @@
       },
       color: {
         type: String,
-        default: 'success',
+        default: 'teal lighten-3',
       },
       icon: {
         type: String,

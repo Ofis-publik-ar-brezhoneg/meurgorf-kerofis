@@ -3,7 +3,7 @@ import Vue from 'vue'
 import doAsync from '../services/async-util'
 import * as types from '../mutation-types'
 
-const API_URL = '/api/terms/'
+const API_URL = '/api/locations/'
 
 const state = {
   isAutoComplete: true,
@@ -58,7 +58,7 @@ const mutations = {
 }
 
 const actions = {
-	searchTerms(store, { search, isAutoComplete=false, isForParent=false }) {
+	searchLocations(store, { search, isAutoComplete=false, isForParent=false }) {
 		return new Promise((resolve, reject) => {
       doAsync(store, {
         url: `${API_URL}?${search}`,
@@ -69,57 +69,65 @@ const actions = {
       })
     })
 	},
-	addNewTerm(store, data) {
-    return new Promise((resolve, reject) => {
-      doAsync(store, {
-        method: 'post',
-        url: API_URL,
-        data,
-        mutationTypes: types.POST_INFO_ASYNC
-      }, resolve)
-    })
-	},
-	getTerm(store, term_id) {
+	getLocation(store, location_id) {
 	  return new Promise((resolve, reject) => {
         doAsync(store, {
-	        url: `${API_URL}${term_id}/`,
+	        url: `${API_URL}${location_id}/`,
 	        mutationTypes: types.GET_INFO_ASYNC
 	      }, resolve)
     })
 	},
-	deleteTerm(store, term_id) {
-	  return new Promise((resolve, reject) => {
-        doAsync(store, {
-          method: 'delete',
-	        url: `${API_URL}${term_id}/`,
-	        mutationTypes: types.GET_INFO_ASYNC
-	      }, resolve)
-    })
-	},
-	updateTerm(store, { term_id, data }) {
+	updateLocation(store, { location_id, data }) {
 	  return new Promise((resolve, reject) => {
         doAsync(store, {
           method: 'patch',
           data,
-	        url: `${API_URL}${term_id}/`,
+	        url: `${API_URL}${location_id}/`,
 	        mutationTypes: types.GET_INFO_ASYNC
 	      }, resolve)
     })
 	},
-	deleteVariant(store, { variant_id }) {
+	deleteStandardizedForm(store, { standardized_form_id }) {
 	  return new Promise((resolve, reject) => {
         doAsync(store, {
           method: 'delete',
-	        url: `/api/variants/${variant_id}/`,
+	        url: `/api/standardized_forms/${standardized_form_id}/`,
 	        mutationTypes: types.FP_INFO_ASYNC
 	      }, resolve)
     })
 	},
-	deleteDerivedForm(store, { derived_form_id }) {
+	deletePhoneticTranscription(store, { phonetic_transcription_id }) {
 	  return new Promise((resolve, reject) => {
         doAsync(store, {
           method: 'delete',
-	        url: `/api/derived_forms/${derived_form_id}/`,
+	        url: `/api/phonetic_transcriptions/${phonetic_transcription_id}/`,
+	        mutationTypes: types.FP_INFO_ASYNC
+	      }, resolve)
+    })
+	},
+	deleteOldForm(store, { old_form_id }) {
+	  return new Promise((resolve, reject) => {
+        doAsync(store, {
+          method: 'delete',
+	        url: `/api/old_forms/${old_form_id}/`,
+	        mutationTypes: types.FP_INFO_ASYNC
+	      }, resolve)
+    })
+	},
+	deleteOtherForm(store, { other_form_id }) {
+	  return new Promise((resolve, reject) => {
+        doAsync(store, {
+          method: 'delete',
+	        url: `/api/other_forms/${other_form_id}/`,
+	        mutationTypes: types.FP_INFO_ASYNC
+	      }, resolve)
+    })
+	},
+	deleteAttestedForm(store, { attested_form_id }) {
+	  return new Promise((resolve, reject) => {
+        doAsync(store, {
+          method: 'delete',
+	        url: `/api/attested_forms/${attested_form_id}/`,
 	        mutationTypes: types.FP_INFO_ASYNC
 	      }, resolve)
     })
@@ -127,9 +135,6 @@ const actions = {
 	reset(store) {
 	  store.commit(types.GET_INFO_ASYNC.SUCCESS, {
 	    id:	-1,
-	    grammatical_category: {
-	      title: ''
-	    },
 	  })
 	},
 }

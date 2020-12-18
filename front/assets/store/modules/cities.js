@@ -3,7 +3,7 @@ import Vue from 'vue'
 import doAsync from '../services/async-util'
 import * as types from '../mutation-types'
 
-const API_URL = '/api/categories/'
+const API_URL = '/api/cities/'
 
 const state = {
 }
@@ -25,13 +25,13 @@ const mutations = {
 }
 
 const actions = {
-	getAllCategories(store, search) {
+	getAllCities(store, search) {
 		return new Promise((resolve, reject) => {
-        doAsync(store, {
-	        url: API_URL,
-	        mutationTypes: types.GET_INFO_ASYNC
-	      }, resolve)
-      }, 1000)
+      doAsync(store, {
+        url: API_URL,
+        mutationTypes: types.GET_INFO_ASYNC
+      }, resolve, reject)
+    })
 	}
 }
 

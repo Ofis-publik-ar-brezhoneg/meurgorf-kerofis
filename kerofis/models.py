@@ -41,9 +41,10 @@ class Location(models.Model):
     is_public = models.BooleanField(db_column='kk_aotre_embann')
     generic_name = models.CharField(max_length=255, db_column='kk_stagadenn')
     on_bf = models.BooleanField(db_column='kk_kartenn_bf')
-    city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL, db_column='kk_kumun')
+    city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL, related_name='locations', db_column='kk_kumun')
     department = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL, db_column='kk_departamant')
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, db_column='kk_rummad')
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, related_name='locations',
+                                 db_column='kk_rummad')
     reference = models.TextField(db_column='kk_daveenn')
     notes = models.TextField(db_column='kk_notenn_studi')
     formalized_proposal = models.CharField(max_length=120, blank=True, null=True, db_column='kk_kinnig_skoueriekaat')
@@ -60,6 +61,7 @@ class Location(models.Model):
                                    db_column='kk_aozer_ar_fichenn')
     updated_at = models.DateTimeField(null=True)
     updated_by = models.ForeignKey('auth.User', null=True, related_name='+', on_delete=models.SET_NULL)
+    is_name_of_day = models.BooleanField(default=False, db_column='kk_anv_deiz')
     old_id = models.IntegerField(null=True)
 
 
@@ -67,7 +69,7 @@ class StandardizedForm(models.Model):
     class Meta:
         db_table = 'kerofis_stumm_skouer'
 
-    location = models.ForeignKey(Location, null=True, related_name='standardized_form', on_delete=models.SET_NULL,
+    location = models.ForeignKey(Location, null=True, related_name='standardized_forms', on_delete=models.SET_NULL,
                                  db_column='kss_niv')
     standardized_form = models.CharField(max_length=100, db_column='kss_dibab')
     date = models.DateField(null=True, db_column='kss_deiziad_degemer')
@@ -107,9 +109,9 @@ class PhoneticTranscriptionLink(models.Model):
     class Meta:
         db_table = 'kerofis_distagadur_enrolladenn'
 
-    phonetic_transcription = models.ForeignKey(PhoneticTranscription, null=True, on_delete=models.SET_NULL,
-                                               db_column='kde_niv')
-    link = models.CharField(max_length=30, db_column='kde_distagadur_enrolladenn')
+    phonetic_transcription = models.ForeignKey(PhoneticTranscription, null=True, related_name='links',
+                                               on_delete=models.SET_NULL, db_column='kde_niv')
+    link = models.FileField(max_length=30, db_column='kde_distagadur_enrolladenn')
 
 
 class OldForm(models.Model):

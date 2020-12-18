@@ -149,7 +149,7 @@
     },
     mounted () {
       this.$store.dispatch('users/getCurrentUser')
-      this.$store.dispatch('exports/getExportFields', 'meurgorf')
+      this.$store.dispatch('exports/getExportFields', 'kerofis')
     },
     methods: {
       newOperationModel (index) {

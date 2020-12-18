@@ -8,7 +8,7 @@
     </v-form-base>
     <v-card-actions>
       <v-btn
-        color="green"
+        color="teal lighten-3"
         @click="save"
       >
         Enrollañ

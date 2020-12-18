@@ -145,8 +145,34 @@
               to: 'ezporzhiañ',
             },
             {
-              title: 'Etrefas',
+              title: 'Ouzhpennañ ur pennger',
               to: 'etrefas',
+            },
+          ],
+        },
+        {
+          title: 'Kerofis',
+          group: '/skridaozer/kerofis',
+          children: [
+            {
+              title: 'Klask',
+              to: 'klask',
+            },
+            {
+              title: 'Titourer',
+              to: 'titourer',
+            },
+            {
+              title: 'Stadegoù',
+              to: 'stadegoù',
+            },
+            {
+              title: 'Levrigoù',
+              to: 'levrigoù',
+            },
+            {
+              title: 'Ezporzhiañ',
+              to: 'ezporzhiañ',
             },
           ],
         },

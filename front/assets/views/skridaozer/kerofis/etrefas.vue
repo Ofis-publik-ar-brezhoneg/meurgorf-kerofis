@@ -10,9 +10,7 @@
         <v-col
           cols="12"
         >
-          <base-material-card
-            title="Ouzhpennañ ur pennger"
-          >
+          <base-material-card>
             <v-card-text>
               <v-row
                 align="center"
@@ -27,111 +25,92 @@
                     :value="panels"
                   >
                     <v-expansion-panel
-                      :readonly="true"
-                    >
-                      <v-expansion-panel-header
-                        expand-icon=""
-                      >
-                        Pennger
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <edit-term-panel :isNew="!$route.params.id" />
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                    <v-expansion-panel
                       v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Adpennger
+                        Stumm Kein
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-variants-panel />
+                        <edit-location-name-panel />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Termenadur
+                        Titouroù hollek
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-definition-panel />
+                        <edit-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Stummoù deveret
+                        Stumm skoueriekaet
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-derived-form-panel />
+                        <edit-standardized-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Stummoù istorel testeniekaet
+                        Distagadur
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-historical-occurrence-panel />
+                        <edit-phonetic-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Notennoù studiañ
+                        Stumm kozh
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-study-note-panel />
+                        <edit-old-form-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Gerdarzh
+                        Stumm all en implij
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-etymology-panel />
+                        <edit-other-form-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Penngerioù kar
+                        Stumm brezhoneg testeniekaet
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-term-parent-panel />
+                        <edit-attested-form-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel
-                      v-if="$route.params.id"
                     >
                       <v-expansion-panel-header
                         expand-icon=""
                       >
-                        Disgatur
+                        A bep seurt
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <edit-phonetic-term-panel />
+                        <edit-notes-location-panel :isNew="!$route.params.id" />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
@@ -156,23 +135,24 @@
       }
     },
     components: {
-      EditTermPanel: () => import('../../../components/panels/EditTermPanel.vue'),
-      EditTermVariantsPanel: () => import('../../../components/panels/EditTermVariantsPanel.vue'),
-      EditTermDefinitionPanel: () => import('../../../components/panels/EditTermDefinitionPanel.vue'),
-      EditTermDerivedFormPanel: () => import('../../../components/panels/EditTermDerivedFormPanel.vue'),
-      EditTermHistoricalOccurrencePanel: () => import('../../../components/panels/EditTermHistoricalOccurrencePanel.vue'),
-      EditTermStudyNotePanel: () => import('../../../components/panels/EditTermStudyNotePanel.vue'),
-      EditTermEtymologyPanel: () => import('../../../components/panels/EditTermEtymologyPanel.vue'),
-      EditTermParentPanel: () => import('../../../components/panels/EditTermParentPanel.vue'),
-      EditPhoneticTermPanel: () => import('../../../components/panels/EditPhoneticTermPanel.vue'),
+      EditLocationPanel: () => import('../../../components/panels/EditLocationPanel.vue'),
+      EditLocationNamePanel: () => import('../../../components/panels/EditLocationNamePanel.vue'),
+      EditStandardizedLocationPanel: () => import('../../../components/panels/EditStandardizedLocationPanel.vue'),
+      EditPhoneticLocationPanel: () => import('../../../components/panels/EditPhoneticLocationPanel.vue'),
+      EditOldFormLocationPanel: () => import('../../../components/panels/EditOldFormLocationPanel.vue'),
+      EditOtherFormLocationPanel: () => import('../../../components/panels/EditOtherFormLocationPanel.vue'),
+      EditAttestedFormLocationPanel: () => import('../../../components/panels/EditAttestedFormLocationPanel.vue'),
+      EditNotesLocationPanel: () => import('../../../components/panels/EditNotesLocationPanel.vue'),
     },
     computed: {
       ...mapState('terms', { 'newTermsData': 'postInfoData' }),
     },
     mounted () {
       this.$store.dispatch('users/getCurrentUser')
+      this.$store.dispatch('cities/getAllCities')
       this.$store.dispatch('books/getAllBooks')
-      this.$store.dispatch('categories/getAllCategories')
+      this.$store.dispatch('location_categories/getAllCategories')
+      this.$store.dispatch('informants/getAllInformants')
     },
     watch: {
       newTermsData (val) {
@@ -183,9 +163,9 @@
       '$route.params.id': {
         handler (val) {
           if (val) {
-            this.$store.dispatch('terms/getTerm', val)
+            this.$store.dispatch('locations/getLocation', val)
           } else {
-            this.$store.dispatch('terms/reset')
+            this.$store.dispatch('locations/reset')
           }
         },
         immediate: true
