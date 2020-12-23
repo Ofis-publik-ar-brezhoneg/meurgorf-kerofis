@@ -76,15 +76,15 @@
     </div>
     {% if related_terms %}
     <div class="ui segment">
-        <h3 class="ui header">Voir aussi</h3>
+        <h3 class="ui header">Ordre alphabétique</h3>
         <div class="ui pink labels">
-            Mots Précédents :
+            <p>Mots p récédents :</p>
         {% for related_term in related_terms.0 %}
             <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
-            Mots suivants :
+            <p>Mots suivants :</p>
         {% for related_term in related_terms.1 %}
             <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
