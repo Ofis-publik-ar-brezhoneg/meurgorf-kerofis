@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .api import api
 from meurgorf import urls as meurgorf_urls
 from kerofis import urls as kerofis_urls
+from commun import urls as skridaozer_urls
 
 
 urlpatterns = [
@@ -38,8 +39,9 @@ class LoggedMainView(LoginRequiredMixin, MainView):
 
 # App: Vue routing
 urlpatterns += [
-    url(r'^skridaozer', LoggedMainView.as_view(template_name='main.html')),
+    url(r'^skridaozer/', LoggedMainView.as_view(template_name='main.html')),
     url(r'^$', TemplateView.as_view(template_name='semantic/index.html')),
+    url(r'^skridaozer2/', include(skridaozer_urls, namespace='skridaozer')),
     url(r'^meurgorf/', include(meurgorf_urls)),
     url(r'^kerofis/', include(kerofis_urls))
 ]

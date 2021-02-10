@@ -121,6 +121,13 @@ class MeurgorfExportView(ExportView):
     queryset = Term.objects.all()
 
 
+class PhoneticFormView(ModelViewSet):
+    serializer_class = PhoneticFormSerializer
+    model = PhoneticForm
+    queryset = PhoneticForm.objects.all()
+
+####
+
 class TermSearch(TemplateView):
     template_name = 'semantic/meurgorf/index.html'
 
@@ -175,7 +182,14 @@ class TermSearch(TemplateView):
         return self.render_to_response(context)
 
 
-class PhoneticFormView(ModelViewSet):
-    serializer_class = PhoneticFormSerializer
-    model = PhoneticForm
-    queryset = PhoneticForm.objects.all()
+class SkridaozerTermView(TemplateView):
+    template_name = 'semantic/skridaozer/meurgorf/klask.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = GrammaticalCategory.objects.all().order_by('title_bre')
+        context['term'] = Term.objects.get(canonic_form='heñvel')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        pass

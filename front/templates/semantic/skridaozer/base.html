@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Skridaozer</title>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+  <script src="{% static 'commun/semantic/dist/semantic.min.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/mystyle.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'commun/semantic/dist/semantic.min.css' %}">
+  <style>
+    .ui.sidebar {
+      overflow: visible !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ui left vertical sidebar menu overlay visible">
+    <div class="item">
+      <img src="{% static 'commun/images/logo_new.png' %}" />
+    </div>
+    <a class="item" href="{% url 'skridaozer:mammennou' %}">
+      Mammennoù
+    </a>
+    <div class="ui dropdown item">
+      <i class="dropdown icon"></i>
+      Meurgorf
+      <div class="menu">
+        <a
+          class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
+          href="{% url 'skridaozer:meurgorf_klask' %}">Klask</a>
+        <a
+          class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
+          href="{% url 'skridaozer:meurgorf_stadegou' %}">Stadegoù</a>
+        <a
+          class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
+          href="{% url 'skridaozer:meurgorf_ezporzhian' %}">Ezporzhiañ</a>
+        <a
+          class="item{% if request.resolver_match.url_name == 'meurgorf_etrefas' %} active selected{% endif %}"
+          href="{% url 'skridaozer:meurgorf_etrefas' %}">Ouzhpennañ ur pennger</a>
+      </div>
+    </div>
+    <div class="ui dropdown item">
+      <i class="dropdown icon"></i>
+      Kerofis
+      <div class="menu">
+        <a
+           class="item{% if request.resolver_match.url_name == 'kerofis_klask' %} active selected{% endif %}"
+           href="{% url 'skridaozer:kerofis_klask' %}">Klask</a>
+        <a
+           class="item{% if request.resolver_match.url_name == 'kerofis_titourer' %} active selected{% endif %}"
+           href="{% url 'skridaozer:kerofis_titourer' %}">Titourer</a>
+        <a
+           class="item{% if request.resolver_match.url_name == 'kerofis_stadegou' %} active selected{% endif %}"
+           href="{% url 'skridaozer:kerofis_stadegou' %}">Stadegoù</a>
+        <a
+           class="item{% if request.resolver_match.url_name == 'kerofis_levrigou' %} active selected{% endif %}"
+           href="{% url 'skridaozer:kerofis_levrigou' %}">Levrigoù</a>
+        <a
+           class="item{% if request.resolver_match.url_name == 'kerofis_ezporzhian' %} active selected{% endif %}"
+           href="{% url 'skridaozer:kerofis_ezporzhian' %}">Ezporzhiañ</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui container" id="skridaozer">{% block content %}{% endblock content %}</div>
+
+  <script type="text/javascript">
+    $('.ui.left.sidebar').sidebar({
+        transition: 'overlay'
+    });
+    $('.ui.left.sidebar').sidebar('attach events', '.open.button');
+    $('.ui .dropdown').dropdown();
+  </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+ <p></p>
+ <div class="ui form" id="formulaire">
+   <div class="ui right close rail">
+     <div class="ui sticky" style="width: 272px !important; height: 262.683px !important; left: 164px;">
+       <p></p>
+        <div class="ui compact segment">
+            <button class="ui teal labeled icon button" name="button">
+              <i class="save icon"></i>Enrollañ
+            </button>
+
+            <p></p>
+            <button class="ui button" name="button">
+              Krouiñ ur fichenn nevez
+            </button>
+            <p></p>
+            <button class="ui negative labeled icon button" name="button">
+              <i class="delete icon"></i>Dilemel
+            </button>
+          </div>
+          <div class="ui vertical left menu">
+            <a class="item" href="#pennger">Pennger</a>
+            <a class="item" href="#adpennger">Adpenngerioù</a>
+            <a class="item" href="#kar">Penngerioù kar</a>
+            <a class="item" href="#distagadur">Distagadur</a>
+            <a class="item" href="#deveret">Stummoù deveret</a>
+            <a class="item" href="#termenadur">Termenadur</a>
+            <a class="item" href="#istorel">Stummoù istorel</a>
+            <a class="item" href="#gardarzh">Gerdarzh</a>
+            <a class="item" href="#notennou">Notennoù</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ui stackable grid">
+
+        <div class="eight wide column">
+          <div class="ui teal fluid inverted segment">
+
+            <div class="fields">
+              <div class="field">
+                <label>Pennger</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="" value="{{ term.canonic_form }}">
+                </div>
+              </div>
+              <div class="field">
+                <label>Rumenn-ger</label>
+                <select class="ui selection dropdown" name="">
+                  {% for category in categories %}
+                  <option>{{ category.title_bre }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Stankted</label>
+                <select class="ui selection dropdown" name="">
+                  <option value="peu courant">Distank</option>
+                  <option value="courant">Stank</option>
+                  <option value="très courant">Stank-tre</option>
+                </select>
+              </div>
+            </div>
+            <div class="inline fields">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden"
+                    {% if term.on_ndbf %}selected="selected"{% endif %}
+                  >
+                  <label>NBDF</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden"
+                    {% if term.on_gbahe %}selected="selected"{% endif %}
+                  >
+                  <label>GBAHE</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden">
+                  <label>Aotre da embann</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="eight wide column">
+          <div class="ui teal segment">
+            <h4 class="ui header">Adpenngerioù</h4>
+            <div class="ui fluid accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ un adpennger
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <input type="text" name="" value="" placeholder="Penneger">
+                  </div>
+                  <div class="field">
+                    <button class="ui teal icon button" name="button">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div style="max-height:300px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                  {% for variant in term.variants.all %}
+                  <tr>
+                    <td>{{ variant.variant }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" name="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" name="button">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="sixteen wide column">
+          <div class="ui three column stackable grid">
+
+            <div class="column">
+              <div class="ui top attached teal segment" id="deveret">
+                <h4 class="ui header">Stummoù deveret</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ ur stumm deveret
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <input type="text" name="" value="" placeholder="Stumm deveret">
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" name="button">
+                          <i class="add icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div style="max-height:150px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for derived_form in term.derived_forms.all %}
+                      <tr>
+                        <td>{{ derived_form.form }}</td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" name="button">
+                            <i class="edit icon"></i>
+                          </button>
+                          <button class="ui mini icon button" name="button">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="ui top attached teal segment" id="distagadur">
+                <h4 class="ui header">Distagadur</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ un distagadur
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <input type="text" name="" value="" placeholder="Distagadur fonetik">
+                      </div>
+                      <div class="field">
+                        <button class="ui icon button" name="button">
+                          <i class="upload icon"></i>
+                        </button>
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" name="button">
+                          <i class="add icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for phonetic_form in term.phonetic_forms.all %}
+                      <tr>
+                        <td>{{ phonetic_form.phonetic_form }}</td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" name="button">
+                            <i class="play icon"></i>
+                          </button>
+                          <button class="ui mini icon button" name="button">
+                            <i class="edit icon"></i>
+                          </button>
+                          <button class="ui mini icon button" name="button">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="ui teal segment" id="kar">
+                <h4 class="ui header">Penngerioù kar</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ ur pennger kar
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <input type="text" name="" value="" placeholder="Penneger">
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" name="button">
+                          <i class="search icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for parent in term.parents.all %}
+                      <tr>
+                        <td>
+                          <a href="#">{{ parent.canonical_form }}</a>
+                        </td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" name="button">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui teal segment" id="termenadur">
+            <h4 class="ui header">Termenadur</h4>
+            <textarea rows="20">
+{{ term.definition }}
+          </textarea>
+          </div>
+        </div>
+
+
+        <div class="sixteen wide column">
+          <div class="ui clearing top attached teal segment" id="istorel">
+            <h4 class="ui header">Stummoù istorel testeniekaet</h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm istorel
+              </div>
+              <div class="content">
+                <button class="ui labeled icon teal right floated button" name="button">
+                  <i class="add icon"></i>
+                  Ouzhpennañ
+                </button>
+                <div class="field">
+                  <label>Stumm</label>
+                  <textarea rows=2></textarea>
+                </div>
+                <div class="field">
+                  <label>Stumm peurunvan</label>
+                  <textarea rows=2></textarea>
+                </div>
+
+                <div class="fields">
+                  <div class="field">
+                    <label>Bloavezh niv.</label>
+                    <input type="text" name="" value="">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh lizh.</label>
+                    <input type="text" name="" value="">
+                  </div>
+
+                  <div class="field">
+                    <label>Berradur</label>
+                    <select class="ui selection dropdown" name="">
+                      <option value="a">ABC</option>
+                      <option value="b">EFG</option>
+                      <option value="c">AAB</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Daveen</label>
+                    <input type="text" name="" value="">
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+
+            <div style="max-height:350px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui striped celled table">
+                <thead>
+                  <tr>
+                    <th>Bloav.</th>
+                    <th>Stumm</th>
+                    <th>Berradur</th>
+                    <th>Daveen</th>
+                    <th></th>
+                  </tr>
+
+                </thead>
+                <tbody>
+                  {% for historical_occurrence in term.historical_occurrences.all %}
+                  <tr>
+                    <td>{{ historical_occurrence.year }}</td>
+                    <td>{{ historical_occurrence.occurence }}</td>
+                    <td>{{ historical_occurrence.book.abbrevation }}</td>
+                    <td>{{ historical_occurrence.reference }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" name="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <p></p>
+                      <button class="ui mini icon button" name="button">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="eight wide column">
+          <div class="ui teal segment" id="gerdarzh">
+            <h4 class="ui header">Gerdarzh</h4>
+            <textarea name="name" rows="8">{{ term.etymology }}</textarea>
+          </div>
+        </div>
+
+        <div class="eight wide column">
+          <div class="ui teal segment" id="notennou">
+            <h4 class="ui header">Notennoù studiañ</h4>
+            <textarea name="name" rows="8">{{ term.study_notes }}</textarea>
+          </div>
+        </div>
+        <div class="sixteen wide column">
+          <div class="ui secondary segment">
+            <p>Fichenn savet gant XXX</br>
+              <i class="calendar icon"></i>01/02/2019
+            </p>
+          </div>
+        </div>
+      </div>
+ </div>
+{% endblock %}

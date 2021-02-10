@@ -45,7 +45,7 @@ const opts = {
   },
   theme: {
     ...theme,
-    dark: true
+    dark: false
   }
 }
 

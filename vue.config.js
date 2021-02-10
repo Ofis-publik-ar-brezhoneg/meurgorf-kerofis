@@ -20,7 +20,7 @@ module.exports = {
 
     configureWebpack: config => {
       if (process.env.NODE_ENV === 'production') {
-        config.optimization.delete('splitChunks')
+        // config.optimization.delete('splitChunks')
         config.output.filename = 'bundle.js'
       } else {
         config.output.filename = 'bundle.js'
