@@ -226,7 +226,7 @@ class SkridaozerKerofisLocationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['location_id'] = kwargs.get('location_id')
+        context['location_id'] = kwargs.get('location_id', '0')
         context['cities'] = City.objects.all().order_by('name_bre')
         context['categories'] = Category.objects.all().order_by('name_bre')
         context['informants'] = Informant.objects.all().order_by('first_name', 'last_name')
@@ -234,6 +234,7 @@ class SkridaozerKerofisLocationView(TemplateView):
 
         if kwargs.get('location_id'):
             context['location'] = Location.objects.get(pk=kwargs['location_id'])
+
         return context
 
     def post(self, request, *args, **kwargs):

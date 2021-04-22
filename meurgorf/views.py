@@ -197,7 +197,7 @@ class SkridaozerMeurgorfTermView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = GrammaticalCategory.objects.all().order_by('title_bre')
         context['books'] = Book.objects.all().order_by('abbrevation')
-        context['term_id'] = kwargs.get('term_id')
+        context['term_id'] = kwargs.get('term_id', 0)
         if kwargs.get('term_id'):
             context['term'] = Term.objects.get(pk=kwargs['term_id'])
             context['related_terms'] = get_related(context['term'].canonic_form)
