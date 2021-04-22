@@ -1,0 +1,66 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+<p></p>
+<div class="ui stackable grid">
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for libelle, stat in stats_1.items %}
+        <tr>
+            <td>{{ stat.0 }}</td>
+            <td>{{ libelle }}</td>
+            <td>{{ stat.1 }}</td>
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for libelle, stat in stats_2.items %}
+        <tr>
+            <td>{{ libelle }}</td>
+            <td>{{ stat }}</td>
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for info_dep in dep %}
+        <tr>
+            <td>{{ info_dep.department__name_bre|default:"" }}</td>
+            <td>{{ info_dep.locations_count }}</td>
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>{{ category.locations_count }}</td>
+                <td>{{ category.percent }} %</td>
+            </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{% endblock %}

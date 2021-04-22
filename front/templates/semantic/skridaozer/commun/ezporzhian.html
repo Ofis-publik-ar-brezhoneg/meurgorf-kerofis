@@ -1,0 +1,237 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <form method="POST" class="ui form" id="formulaire">
+    {% csrf_token %}
+    <div class="ui right close rail">
+      <div class="ui sticky" style="width: 272px !important; height: 262.683px !important; left: 164px;">
+        <p></p>
+        <div class="ui compact segment">
+          <button class="ui labeled icon button" name="button">
+            <i class="search icon"></i>Kas
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="ui stackable grid">
+      <div class="sixteen wide column">
+        <div class="ui teal segment" id="tennan">
+          <h4 class="ui header">Tennañ</h4>
+          <select id="fields" name="fields" multiple="" class="ui fluid dropdown">
+  {% for field_name, field_value in fields.items %}
+            <option value="{{ field_value }}"{% if field_value in selected_fields %} selected="selected"{% endif %}>{{ field_name }}</option>
+  {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="sixteen wide column">
+        <div class="ui teal segment" id="lec'h ma">
+          <h4 class="ui header">Lec'h ma</h4>
+          <div class="ui grid" id="operation">
+  {% for name, value in operations.items %}
+            <input type="hidden" name="operation_{{ name }}" class="operations" value="{{ value }}" />
+  {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="sixteen wide column">
+        <div class="ui teal segment" id="urzhian dre">
+          <h4 class="ui header">Urzhiañ dre</h4>
+          <div class="ui grid" id="order">
+  {% for name, value in orders.items %}
+            <input type="hidden" name="order_{{ name }}" class="orders" value="{{ value }}" />
+  {% endfor %}
+          </div>
+        </div>
+      </div>
+  {% if data %}
+      <div class="sixteen wide column">
+        <div class="ui teal segment" id="result">
+          <h4 class="ui header">Resultat</h4>
+          <table class="ui very basic table">
+          <thead>
+    {% for field_name, field_value in fields.items %}
+      {% if field_value in selected_fields %}
+              <th>{{ field_name }}</th>
+      {% endif %}
+    {% endfor %}
+            </thead>
+            <tbody>
+    {% for row in data %}
+        <tr>
+      {% for value in row %}
+            <td>{{ value|default:"" }}</td>
+      {% endfor %}
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+        </div>
+      </div>
+  {% endif %}
+    </div>
+  </form>
+{% endblock %}
+
+{% block content-js %}{% verbatim %}
+  <script src="https://unpkg.com/mustache@latest"></script>
+  <script id="template_operation" type="x-tmpl-mustache">
+  {{#operations}}
+    <div class="ui row">
+      <div class="ui four wide column">
+        <select name="operation_field_{{ i }}" class="operations">
+    {{#fields}}
+          <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
+    {{/fields}}
+        </select>
+      </div>
+      <div class="ui four wide column">
+        <select name="operation_operator_{{ i }}" class="operations">
+    {{#operators}}
+          <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
+    {{/operators}}
+        </select>
+      </div>
+      <div class="ui four wide column">
+        <input type="text" name="operation_value_{{ i }}" class="operations" value="{{value}}" />
+      </div>
+      <div class="ui four wide column">
+        <button class="ui icon button" name="add_operation" type="button">
+          <i class="plus icon"></i>
+        </button>
+    {{^noRemove}}
+        <button class="ui icon button" name="remove_operation" type="button" data-i="{{i}}">
+          <i class="delete icon"></i>
+        </button>
+    {{/noRemove}}
+      </div>
+    </div>
+  {{/operations}}
+  </script>
+  <script id="template_order" type="x-tmpl-mustache">
+  {{#orders}}
+    <div class="ui row">
+      <div class="ui four wide column">
+        <select name="order_field_{{i}}" class="orders">
+    {{#fields}}
+          <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
+    {{/fields}}
+        </select>
+      </div>
+      <div class="ui four wide column">
+        <select name="order_order_{{i}}" class="orders">
+    {{#orders}}
+          <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
+    {{/orders}}
+        </select>
+      </div>
+      <div class="ui four wide column">
+        <button class="ui icon button" name="add_order" type="button">
+          <i class="plus icon"></i>
+        </button>
+    {{^noRemove}}
+        <button class="ui icon button" name="remove_order" type="button" data-i="{{i}}">
+          <i class="delete icon"></i>
+        </button>
+    {{/noRemove}}
+      </div>
+    </div>
+  {{/orders}}
+  </script>{% endverbatim %}
+  <script type="text/javascript">
+    var template_operation = $('#template_operation').html();
+    var template_order = $('#template_order').html();
+
+    function calc_info(class_name) {
+      var operators = [
+        {name: '=', value: '='},
+        {name: 'contient', value: 'icontains'},
+        {name: 'commence par', value: 'istartswith'},
+        {name: 'finit par', value: 'iendswith'},
+        {name: '>', value: 'gt'},
+        {name: '<', value: 'lt'}
+      ];
+      var orders = [
+        {name: 'Asc', value: 'asc'},
+        {name: 'Desc', value: 'desc'}
+      ];
+      var fields = [];
+      $('#fields option:selected').each(function () {
+        fields.push({name: $(this).text(), value: $(this).val()});
+      });
+      var data = {};
+      var ret = [];
+      $('.' + class_name).each(function () {
+        var name = $(this).attr('name');
+        var name_info = name.split('_');
+        var id = name_info[2];
+        if (!(id in data)) {
+          data[id] = {};
+        }
+        data[id][name_info[1]] = $(this).val();
+      });
+      if(Object.keys(data).length == 0) {
+        data[0] = {}
+      }
+      $.each(Object.values(data), function (index, value) {
+        value['i'] = index;
+        value['fields'] = [];
+        var field = 'field' in value ? value['field'] : '';
+        $.each(fields, function() {
+          value['fields'].push({name: this.name, value: this.value, selected: this.value == field});
+        });
+        value['operators'] = [];
+        var operator = 'operator' in value ? value['operator'] : '';
+        $.each(operators, function() {
+          value['operators'].push({name: this.name, value: this.value, selected: this.value == operator});
+        });
+        value['orders'] = [];
+        var order = 'order' in value ? value['order'] : '';
+        $.each(orders, function(index, val) {
+          value['orders'].push({name: this.name, value: this.value, selected: this.value == order});
+        });
+        ret.push(value);
+      });
+      if (ret.length == 1) {
+        ret[0]['noRemove'] = true;
+      }
+
+      return ret;
+    }
+
+    function display() {
+      var operations = calc_info('operations');
+      var orders = calc_info('orders');
+      $('#operation').html(Mustache.render(template_operation, { operations }));
+      $('#order').html(Mustache.render(template_order, { orders }));
+      $('button[name=add_operation]').on('click', function (event) {
+        $('#operation').append('<input type="hidden" class="operations" name="operation_value_99" value="" />')
+        display();
+      });
+      $('button[name=remove_operation]').on('click', function (event) {
+        $('.operations[name$="_' + $(this).data('i') + '"]').remove()
+        display();
+      });
+      $('button[name=add_order]').on('click', function (event) {
+        $('#operation').append('<input type="hidden" class="orders" name="order_order_99" value="" />');
+        display();
+      });
+      $('button[name=remove_order]').on('click', function (event) {
+        $('.orders[name$="_' + $(this).data('i') + '"]').remove()
+        display();
+      });
+    }
+
+    $('#fields').on('change', function() {
+      display();
+    });
+
+    $(document).ready(function(){
+      display();
+    });
+  </script>
+{% endblock content-js %}

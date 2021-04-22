@@ -1,11 +1,12 @@
 {% extends "semantic/kerofis/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="ui segment">
     <h1 class="ui header"><i class="map marked alternate icon"></i>
         <div class="content">KerOfis
-            <div class="sub header">Base de données toponymiques</div>
+            <div class="sub header">{% translate "Base de données toponymiques" %}</div>
         </div>
     </h1>
     {% include 'semantic/kerofis/partial/location_form.html' %}
@@ -14,23 +15,23 @@
 <div class="ui segment">
 
     <h2 class="ui header">
-        La recherche a renvoyé
+        {% translate "La recherche a renvoyé" %}
         <span class="ui horizontal big label">{{ paginator.count }}</span>
-        résultats
+        {% translate "résultats" %}
     </h2>
 
     <div id="map"></div>
 
     <div class="ui divider"></div>
-    <p>Cliquez sur le signe <i class="plus circle icon"></i>pour accéder à plus d'information sur le nom.</p>
+    <p>{% translate "Cliquez sur le signe" %} <i class="plus circle icon"></i>{% translate "pour accéder à plus d'information sur le nom." %}</p>
     <table class="ui celled table">
         <thead>
         <tr>
-            <th>Générique</th>
-            <th>Spécifique</th>
-            <th>Forme bretonne correcte</th>
-            <th>Commune</th>
-            <th>Catégorie</th>
+            <th>{% translate "Générique" %}</th>
+            <th>{% translate "Spécifique" %}</th>
+            <th>{% translate "Forme bretonne correcte" %}</th>
+            <th>{% translate "Commune" %}</th>
+            <th>{% translate "Catégorie" %}</th>
             <th></th>
         </tr>
         </thead>
@@ -43,7 +44,7 @@
             <td>{{ location.city.name_fra }}</td>
             <td>{{ location.category.name_fra }}</td>
             <td>
-                <a href="{% url 'kerofis' location.id %}" class="ui fluid primary icon button" data-content="Voir la notice">
+                <a href="{% url 'kerofis' location.id %}" class="ui fluid primary icon button" data-content="{% translate "Voir la notice" %}">
                     <i class="plus circle icon"></i>
                 </a>
             </td>

@@ -1,5 +1,6 @@
 {% extends "semantic/kerofis/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="ui sixteen wide column">
@@ -9,13 +10,13 @@
             <div class="content">
                 KerOfis
                 <div class="sub header">
-                    Base de données toponymiques
+                    {% translate "Base de données toponymiques" %}
                 </div>
             </div>
         </h1>
         <a class="ui labeled icon basic button" href="https://kartenn.openstreetmap.bzh/#map=8/48.1/-2.3">
             <i class="external link icon"></i>
-            Voir la carte sur OpenStreetMap.bzh
+            {% translate "Voir la carte sur OpenStreetMap.bzh" %}
         </a>
         <p></p>
         <div id="mapid"></div>
@@ -28,39 +29,41 @@
             </div>
         </div>
         <div class="ui six wide column">
+            {% if location_of_day %}
             <div class="ui card">
                 <div class="content">
                     <h3 class="ui pink header">
                         <i class="calendar check outline icon"></i>
                         <div class="content">
-                            Nom de lieu du jour
+                            {% translate "Nom de lieu du jour" %}
                         </div>
                     </h3>
                 </div>
                 <div class="content">
                     <h2 class="ui header">
-                        Sant-Nikolaz-an-Hent
+                        {{ location_of_day.city.name_bre }}
                         <div class="ui sub header">
-                            Saint-Nicolas-de-Redon
+                            {{ location_of_day.city.name_fra }}
                         </div>
                     </h2>
                 </div>
                 <div class="ui bottom attached pink button">
                     <i class="ui info icon"></i>
-                    En savoir plus
+                    {% translate "En savoir plus" %}
                 </div>
             </div>
+            {% endif %}
             <div class="ui segment">
                 <div class="ui statistic">
                     <div class="label">
-                        la base contient
+                        {% translate "la base contient" %}
                     </div>
                     <div class="value">
                         <i class="map marker alternate icon"></i>
                         {{ nb_location }}
                     </div>
                     <div class="label">
-                        noms de lieux
+                        {% translate "noms de lieux" %}
                     </div>
                 </div>
             </div>

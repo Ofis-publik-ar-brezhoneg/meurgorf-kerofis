@@ -1,0 +1,37 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+<p></p>
+<div class="ui stackable grid">
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for libelle, stat in stats.items %}
+        <tr>
+            <td>{{ libelle }}</td>
+            <td>{{ stat }}</td>
+        </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="ui teal segment">
+        <table class="ui very basic table">
+            <tbody>
+    {% for grammatical_category in grammatical_categories %}
+            <tr>
+                <td>{{ grammatical_category.title }}</td>
+                <td>{{ grammatical_category.terms_count }}</td>
+                <td>{{ grammatical_category.percent }} %</td>
+            </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{% endblock %}

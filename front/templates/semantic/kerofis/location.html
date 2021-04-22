@@ -1,12 +1,13 @@
 {% extends "semantic/kerofis/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="ui column">
     <div class="ui segment">
         <h1 class="ui header"><i class="map marked alternate icon"></i>
             <div class="content">KerOfis
-                <div class="sub header">Base de données toponymiques</div>
+                <div class="sub header">{% translate "Base de données toponymiques" %}</div>
             </div>
         </h1>
         {% include 'semantic/kerofis/partial/location_form.html' %}
@@ -15,50 +16,50 @@
     <div class="ui segment">
         <h1 class="ui header">
             <div class="content">{{ location.standardized_forms.first.standardized_form }}</div>
-            <div class="ui horizontal label">forme bretonne normalisée</div>
+            <div class="ui horizontal label">{% translate "forme bretonne normalisée" %}</div>
         </h1>
         <h2 class="ui header">{{ location.name }}</h2>
         <div class="ui top attached tabular menu">
-            <a class="item active" data-tab="hollek">Informations générales</a>
-            <a class="item" data-tab="yezh">Informations linguistiques</a>
+            <a class="item active" data-tab="hollek">{% translate "Informations générales" %}</a>
+            <a class="item" data-tab="yezh">{% translate "Informations linguistiques" %}</a>
         </div>
         <div class="ui bottom attached tab segment active" data-tab="hollek">
             <div class="ui grid">
                 <div class="eight wide column">
         {% if location.phonetic_transcriptions.count %}
-                    <h4 class="ui header">Prononciation normalisée</h4>
+                    <h4 class="ui header">{% translate "Prononciation normalisée" %}</h4>
                     <div class="ui labels">
             {% for phonetic_transcription in location.phonetic_transcriptions.all %}
                         <a class="ui label">
                             <i class="play circle outline icon"></i>
                             {{ phonetic_transcription.phonetic_transcription }}
                         </a>
-                        <a href="#" class="ui icon label" data-content="copier dans le presse-papier">
+                        <a href="#" class="ui icon label" data-content="{% translate "copier dans le presse-papier" %}">
                             <i class="ui copy icon"></i>
                         </a>
             {% endfor %}
                     </div>
         {% endif %}
-                    <h4 class="ui header">Autres formes actuelles</h4>
+                    <h4 class="ui header">{% translate "Autres formes actuelles" %}</h4>
                     <div class="ui list">
         {% for other_form in location.other_forms.all %}
                         <div class="item">{{ other_form.usage_form }}</div>
         {% endfor %}
                     </div>
-                    <h4 class="ui header">Catégorie</h4>
+                    <h4 class="ui header">{% translate "Catégorie" %}</h4>
                     <div class="ui label">{{ location.category.name_fra }}</div>
         {% if location.city %}
-                    <h4 class="ui header">Commune</h4>
+                    <h4 class="ui header">{% translate "Commune" %}</h4>
                     <p>
                         <a href="{% url 'kerofis-city' location.city.name_fra %}" class="ui pink label">{{ location.city.name_fra }}</a>
                     </p>
         {% endif %}
-                    <h4 class="ui header">Département</h4>
+                    <h4 class="ui header">{% translate "Département" %}</h4>
                     <p>{{ location.department.name_fra }}</p>
                     <div class="ui divider"></div>
                     <button class="ui pink right labeled icon button">
                         <i class="copy icon"></i>
-                        Copier le lien vers la fiche
+                        {% translate "Copier le lien vers la fiche" %}
                     </button>
                 </div>
                 <div class="eight wide column">
@@ -68,7 +69,7 @@
         </div>
         <div class="ui bottom attached tab segment" data-tab="yezh">
             <h4 class="ui header">
-                <div class="content">Formes anciennes</div>
+                <div class="content">{% translate "Formes anciennes" %}</div>
                 <div class="ui label">{{ location.old_forms.count }}</div>
             </h4>
             <div class="ui list">
@@ -79,10 +80,10 @@
                 </div>
         {% endfor %}
         {% if location.old_forms.count > 10 %}
-                <a href="#" class="item">Plus...</a>
+                <a href="#" class="item">{% translate "Plus..." %}</a>
         {% endif %}
             </div>
-            <h4 class="ui header">Formes bretonnes attestées
+            <h4 class="ui header">{% translate "Formes bretonnes attestées" %}
                 <div class="ui label">{{ location.attested_forms.count }}</div>
             </h4>
             <div class="ui list">
@@ -92,7 +93,7 @@
                 </div>
         {% endfor %}
             </div>
-            <h4 class="ui header">Autres informations sur le toponyme</h4>
+            <h4 class="ui header">{% translate "Autres informations sur le toponyme" %}</h4>
             <p>
                 {{ location.etymological_note_fra }}
             </p>

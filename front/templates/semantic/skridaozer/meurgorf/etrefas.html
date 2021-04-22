@@ -1,0 +1,545 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <form class="ui form" method="POST" id="formulaire">{% csrf_token %}
+    <div class="ui right close rail">
+      <div class="ui sticky" style="width: 272px !important; height: 262.683px !important; left: 164px;">
+        <p></p>
+        <div class="ui compact segment">
+            <button class="ui teal labeled icon button" name="button">
+              <i class="save icon"></i>Enrollañ
+            </button>
+            <p></p>
+  {% if term %}
+            <a class="ui button" name="button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+              Krouiñ ur fichenn nevez
+            </a>
+  {% else %}
+          <a class="ui negative labeled icon button" name="button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+              <i class="delete icon"></i>Dilemel
+          </a>
+  {% endif %}
+          </div>
+  {% if term %}
+          <div class="ui vertical left menu">
+        {% for related_term in related_terms.0 %}
+            <a class="ui item label" href="{% url 'skridaozer:meurgorf_etrefas' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
+                {{ related_term.canonic_form }}
+            </a>
+        {% endfor %}
+        {% for related_term in related_terms.1 %}
+            <a class="ui item label" href="{% url 'skridaozer:meurgorf_etrefas' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
+                {{ related_term.canonic_form }}
+            </a>
+        {% endfor %}
+          </div>
+  {% endif %}
+        </div>
+      </div>
+
+      <div class="ui stackable grid">
+
+        <div class="nine wide column">
+          <div class="ui teal fluid inverted segment">
+            <div class="fields">
+              <div class="field">
+                <label>Pennger</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="canonic_form" value="{{ term.canonic_form }}">
+                </div>
+              </div>
+              <div class="field">
+                <label>Rumenn-ger</label>
+                <select class="ui selection dropdown" name="grammatical_category">
+  {% for category in categories %}
+                  <option value="{{ category.id }}"{%if term.grammatical_category == category %}
+                          selected="selected"{% endif %}>
+                    {{ category.title_bre }}
+                  </option>
+  {% endfor %}
+                </select>
+              </div>
+  {% if term %}
+              <div class="field">
+                <label>Stankted</label>
+                <select class="ui selection dropdown" name="usage">
+                  <option value="1"{% if term.usage == '1' %} selected="selected"{% endif %}>Distank</option>
+                  <option value="2"{% if term.usage == '2' %} selected="selected"{% endif %}>Stank</option>
+                  <option value="3"{% if term.usage == '3' %} selected="selected"{% endif %}>Stank-tre</option>
+                </select>
+              </div>
+            </div>
+            <div class="inline fields">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden" name="on_ndbf"
+                    {% if term.on_ndbf %}selected="selected"{% endif %}
+                  >
+                  <label>NBDF</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden" name="on_gbahe"
+                    {% if term.on_gbahe %}selected="selected"{% endif %}
+                  >
+                  <label>GBAHE</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden">
+                  <label>Aotre da embann</label>
+                </div>
+              </div>
+  {% endif %}
+            </div>
+          </div>
+        </div>
+
+  {% if term %}
+        <div class="seven wide column">
+          <div class="ui teal segment">
+            <h4 class="ui header">Adpenngerioù</h4>
+            <div class="ui fluid accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ un adpennger
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <input type="text" placeholder="Penneger" id="variant_variant">
+                  </div>
+                  <div class="field">
+                    <button class="ui teal icon button" type="button" id="add_variant">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="max-height:300px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                  {% for variant in term.variants.all %}
+                  <tr>
+                    <td>{{ variant.variant }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_variant"
+                        data-id="{{ variant.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui three column stackable grid">
+
+            <div class="column">
+              <div class="ui top attached teal segment" id="deveret">
+                <h4 class="ui header">Stummoù deveret</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ ur stumm deveret
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <input type="text" id="derived_form_form" placeholder="Stumm deveret">
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" type="button" id="add_derived_form">
+                          <i class="add icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="max-height:150px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for derived_form in term.derived_forms.all %}
+                      <tr>
+                        <td>{{ derived_form.form }}</td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" type="button">
+                            <i class="edit icon"></i>
+                          </button>
+                          <button class="ui mini icon button" type="button" id="delete_derived_form"
+                            data-id="{{ derived_form.id }}">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="ui top attached teal segment" id="distagadur">
+                <h4 class="ui header">Distagadur</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ un distagadur
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <input type="text" placeholder="Distagadur fonetik" id="phonetic_form_phonetic_form">
+                      </div>
+                      <div class="field">
+                        <input type="file" id="phonetic_form_file">
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" type="button" id="add_phonetic_form">
+                          <i class="add icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for phonetic_form in term.phonetic_forms.all %}
+                      <tr>
+                        <td>{{ phonetic_form.phonetic_form }}</td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" type="button">
+                            <i class="play icon"></i>
+                          </button>
+                          <button class="ui mini icon button" type="button">
+                            <i class="edit icon"></i>
+                          </button>
+                          <button class="ui mini icon button" type="button" id="delete_phonetic_form"
+                            data-id="{{ phonetic_form.id }}">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="ui teal segment" id="kar">
+                <h4 class="ui header">Penngerioù kar</h4>
+                <div class="ui accordion">
+                  <div class="title">
+                    <i class="add icon"></i>
+                    Ouzhpennañ ur pennger kar
+                  </div>
+                  <div class="content">
+                    <div class="ui fields">
+                      <div class="field">
+                        <div class="ui search">
+                          <div class="ui icon input">
+                            <input class="prompt" type="text" placeholder="Penneger" autocomplete="off" >
+                            <i class="search icon"></i>
+                          </div>
+                          <div class="results"></div>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <button class="ui teal icon button" type="button" id="add_parent">
+                          <i class="add icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+                  <table class="ui very compact table">
+                    <tbody>
+                      {% for parent in term.parents.all %}
+                      <tr>
+                        <td>
+                          <a href="{% url 'skridaozer:meurgorf_etrefas' parent.id %}">{{ parent.canonic_form }}</a>
+                        </td>
+                        <td class="collapsing">
+                          <button class="ui mini icon button" type="button" id="delete_parent"
+                            data-id="{{ parent.id }}">
+                            <i class="delete icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui teal segment" id="termenadur">
+            <h4 class="ui header">Termenadur</h4>
+            <textarea rows="20" name="definition">
+{{ term.definition }}
+          </textarea>
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui clearing top attached teal segment" id="istorel">
+            <h4 class="ui header">Stummoù istorel testeniekaet</h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm istorel
+              </div>
+              <div class="content">
+                <button class="ui labeled icon teal right floated button" type="button" id="add_historical_occurrence">
+                  <i class="add icon"></i>
+                  Ouzhpennañ
+                </button>
+                <div class="field">
+                  <label>Stumm</label>
+                  <textarea rows=2 id="historical_occurrence_occurence"></textarea>
+                </div>
+                <div class="field">
+                  <label>Stumm peurunvan</label>
+                  <textarea rows=2 id="historical_occurrence_occurence_normalized"></textarea>
+                </div>
+                <div class="fields">
+                  <div class="field">
+                    <label>Bloavezh niv.</label>
+                    <input type="text" id="historical_occurrence_litteral_year">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh lizh.</label>
+                    <input type="text" id="historical_occurrence_year">
+                  </div>
+                  <div class="field">
+                    <label>Berradur</label>
+                    <select class="ui selection dropdown" id="historical_occurrence_book">
+  {% for book in books %}
+                      <option value="{{ book.id }}">{{ book.abbrevation }}</option>
+  {% endfor %}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Daveen</label>
+                    <input type="text" id="historical_occurrence_reference">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="max-height:350px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui striped celled table">
+                <thead>
+                  <tr>
+                    <th>Bloav.</th>
+                    <th>Stumm</th>
+                    <th>Berradur</th>
+                    <th>Daveen</th>
+                    <th></th>
+                  </tr>
+
+                </thead>
+                <tbody>
+                  {% for historical_occurrence in term.historical_occurrences.all %}
+                  <tr>
+                    <td>{{ historical_occurrence.year }}</td>
+                    <td>{{ historical_occurrence.occurence }}</td>
+                    <td>{{ historical_occurrence.book.abbrevation }}</td>
+                    <td>{{ historical_occurrence.reference }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <p></p>
+                      <button class="ui mini icon button" type="button" id="delete_historical_occurrence"
+                        data-id="{{ historical_occurrence.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="eight wide column">
+          <div class="ui teal segment" id="gerdarzh">
+            <h4 class="ui header">Gerdarzh</h4>
+            <textarea name="etymology" rows="8">{{ term.etymology }}</textarea>
+          </div>
+        </div>
+
+        <div class="eight wide column">
+          <div class="ui teal segment" id="notennou">
+            <h4 class="ui header">Notennoù studiañ</h4>
+            <textarea name="study_notes" rows="8">{{ term.study_notes }}</textarea>
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui secondary segment">
+            <p>Fichenn savet gant {{ term.created_by|default:"#" }}</br>
+              <i class="calendar icon"></i>{{ term.created_at }}
+            </p>
+          </div>
+        </div>
+  {% endif %}
+
+      </div>
+ </form>
+<script type="text/javascript">
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function send_info(data) {
+      $.ajax({
+        url: '{% url 'skridaozer:meurgorf_ajax' term_id %}',
+        type: 'POST',
+        data,
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(function (data) {
+        if (data.response == 'ok') {
+          window.location = window.location.href;
+        }
+      });
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    $('.ui.sticky')
+      .sticky({
+        context: '#formulaire'
+      });
+    $('.ui.checkbox')
+      .checkbox();
+    $('.selection.dropdown').dropdown();
+    $('.search.dropdown').dropdown();
+    $('.dropdown').dropdown();
+    $('.ui.accordion').accordion();
+    $('.label').popup();
+    $.fn.api.settings.api = {
+	 	'search' : '/search/colors/?query={value}'
+	};
+    $('.ui.search').search({
+      minCharacters : 3,
+      apiSettings: {
+        action:'search',
+        url: '{% url 'skridaozer:meurgorf_ajax' term_id %}?query={query}'
+      },
+    });
+
+    $('#add_variant').on('click', function () {
+      send_info({
+        'action': 'add_variant',
+        'variant': $('#variant_variant').val()
+      });
+    });
+    $('#add_derived_form').on('click', function() {
+      send_info({
+        'action': 'add_derived_form',
+        'form': $('#derived_form_form').val()
+      });
+    });
+    $('#add_phonetic_form').on('click', function() {
+      send_info({
+        'action': 'add_phonetic_form',
+        'phonetic_form': $('#phonetic_form_phonetic_form').val(),
+        'phonetic_file': $('#phonetic_form_file').val(),
+      });
+    });
+    $('#add_parent').on('click', function() {
+      var search = $('.ui.search').search('get result', '1');
+      if (typeof search === 'object' && search !== null) {
+        send_info({
+          'action': 'add_parent',
+          'id': search.id
+        });
+      }
+    });
+    $('#add_historical_occurrence').on('click', function() {
+      send_info({
+        'action': 'add_historical_occurrence',
+        'occurence': $('#historical_occurrence_occurence').val(),
+        'occurence_normalized': $('#historical_occurrence_occurence_normalized').val(),
+        'litteral_year': $('#historical_occurrence_litteral_year').val(),
+        'year': $('#historical_occurrence_year').val(),
+        'book': $('#historical_occurrence_book').val(),
+        'reference': $('#historical_occurrence_reference').val()
+      });
+    });
+    $('#delete_variant').on('click', function() {
+      send_info({
+        'action': 'delete_variant',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_derived_form').on('click', function() {
+      send_info({
+        'action': 'delete_derived_form',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_phonetic_form').on('click', function() {
+      send_info({
+        'action': 'delete_phonetic_form',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_parent').on('click', function() {
+      send_info({
+        'action': 'delete_parent',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_historical_occurrence').on('click', function() {
+      send_info({
+        'action': 'delete_historical_occurrence',
+        'id': $(this).data('id')
+      });
+    });
+</script>
+{% endblock %}

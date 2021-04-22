@@ -1,13 +1,14 @@
+{% load i18n %}
 <form class="ui fluid form" id="formulaire" method="POST">
     {% csrf_token %}
-    <h4 class="ui header">Je recherche un nom de lieu (commune, département, rue...)</h4>
+    <h4 class="ui header">{% translate "Je recherche un nom de lieu (commune, département, rue...)" %}</h4>
     <div class="ui fluid action input">
-        <input type="text" placeholder="Rechercher un nom..." value="{{ data.name }}" name="name">
+        <input type="text" placeholder="{% translate "Rechercher un nom..." %}" value="{{ data.name }}" name="name">
         <select class="ui compact selection dropdown" name="search_type">
-            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
-            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
-            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
-            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
+            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>{% translate "partie de mot" %}</option>
+            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>{% translate "mot entier" %}</option>
+            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>{% translate "début de mot" %}</option>
+            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>{% translate "fin de mot" %}</option>
         </select>
         <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();"
             data-content="klikit amañ">
@@ -17,15 +18,15 @@
     <div class="ui accordion field">
         <div class="title">
             <i class="icon dropdown"></i>
-            Plus d'options
+            {% translate "Plus d'options" %}
         </div>
         <div class="content">
             <div class="field">
-                <label>Commune</label>
+                <label>{% translate "Commune" %}</label>
                 <div class="two fields">
                     <div class="field">
                         <select class="ui search dropdown" name="city">
-                            <option value="">Selectionner une commune</option>
+                            <option value="">{% translate "Selectionner une commune" %}</option>
         {% for city in cities %}
                             <option value="{{ city.pk }}">{{ city.name_fra }}</option>
         {% endfor %}
@@ -34,24 +35,24 @@
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox">
-                            <label>Nom de lieu en dehors de Bretagne</label>
+                            <label>{% translate "Nom de lieu en dehors de Bretagne" %}</label>
                         </div>
                     </div>
                 </div>
                 <div class="two fields">
                     <div class="field">
-                        <label>Catégorie</label>
+                        <label>{% translate "Catégorie" %}</label>
                         <select multiple="" class="ui dropdown" name="category">
-                            <option value="tout">Toutes</option>
+                            <option value="tout">{% translate "Toutes" %}</option>
         {% for category in categories %}
                             <option value="{{ category.pk }}">{{ category.name_fra }}</option>
         {% endfor %}
                         </select>
                     </div>
                     <div class="field">
-                        <label>Département</label>
+                        <label>{% translate "Département" %}</label>
                         <select multiple="" class="ui dropdown" name="department">
-                            <option value="tout">Tous</option>
+                            <option value="tout">{% translate "Tous" %}</option>
         {% for department in departments %}
                             <option value="{{ department.pk }}">{{ department.name_fra }}</option>
         {% endfor %}

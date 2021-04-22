@@ -168,10 +168,11 @@ class GrammaticalCategoryStatSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     abbreviation = serializers.SerializerMethodField()
     terms_count = serializers.SerializerMethodField()
+    percent = serializers.SerializerMethodField()
 
     class Meta:
         model = GrammaticalCategory
-        fields = ('title', 'abbreviation', 'terms_count')
+        fields = ('title', 'abbreviation', 'terms_count', 'percent')
 
     def get_title(self, obj):
         lang = self.context['request'].headers.get('Accept-Language', 'fr_FR')
@@ -183,3 +184,6 @@ class GrammaticalCategoryStatSerializer(serializers.ModelSerializer):
 
     def get_terms_count(self, obj):
         return obj.terms.count()
+
+    def get_percent(self, obj):
+        return round((obj.terms.count() / Term.objects.count()) * 100, 2)

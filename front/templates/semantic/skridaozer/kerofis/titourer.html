@@ -1,0 +1,120 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <form class="ui form" method="POST" id="formulaire">{% csrf_token %}
+    <div class="ui stackable grid">
+      <div class="sixteen wide column">
+        <div class="ui teal fluid inverted segment">
+          <div class="inline fields">
+            <div class="field">
+              <label>Anv Bihan Titourer</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="first_name" value="{{ data.first_name }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Anv Titourer</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="last_name" value="{{ data.last_name }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Lesanv</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="surname" value="{{ data.surname }}" onchange="reset_page()">
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="field">
+              <label>Micher</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="occupation" value="{{ data.occupation }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Bloavezh ganedigezh</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="birthdate" value="{{ data.birthdate }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Lec’h ganedigezh</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="birthplace" value="{{ data.birthplace }}" onchange="reset_page()">
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="field">
+              <label>Kumun titouret</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="cities" value="{{ data.cities }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Abaoe pegoulz er gumun</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="arrival_date" value="{{ data.arrival_date }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field">
+              <label>Notennoù</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="notes" value="{{ data.notes }}" onchange="reset_page()">
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="field">
+              <label>Darempred</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="contact" value="{{ data.contact }}" onchange="reset_page()">
+              </div>
+            </div>
+          </div>
+          <div class="ui sixteen column centered grid">
+            <div class="ui centered row">
+              <div class="ui column">
+                <button class="ui labeled icon button" name="button">
+  {% if data %}
+                  <i class="save icon"></i>Entrenañ
+  {% else %}
+                  <i class="add icon"></i>Kemmañ
+  {% endif %}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sixteen wide column">
+        <div class="ui teal segment" id="termenadur">
+            <h4 class="ui header">Titourer</h4>
+            <table class="ui selectable table">
+              <thead>
+                <th>nTitourer</th>
+                <th>Anv Enklasker</th>
+                <th>Anv Bihan Titourer</th>
+                <th>Anv Titourer</th>
+                <th>Kumun titouret</th>
+              </thead>
+              <tbody>
+  {% for informant in informants %}
+                <tr onclick="javascript:document.location.href = '{% url 'skridaozer:kerofis_titourer' informant.id %}'">
+                  <td>{{ informant.id }}</td>
+                  <td>{{ informant.interviewed_by|default:"" }}</td>
+                  <td>{{ informant.first_name }}</td>
+                  <td>{{ informant.last_name }}</td>
+                  <td>{{ informant.cities }}</td>
+                </tr>
+  {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock %}

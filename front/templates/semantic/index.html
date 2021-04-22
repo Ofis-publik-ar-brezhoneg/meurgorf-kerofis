@@ -1,4 +1,4 @@
-{% load static %}<html>
+{% load i18n %}{% load static %}<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
@@ -17,61 +17,61 @@
 <div class="ui container">
   <div class="ui top pointing dropdown item">
     <i class="atlas icon"></i>
-    Ressources
+    {% translate "Ressources" %}
     <i class="ui dropdown icon"></i>
     <div class="menu">
-      <div class="header">Bases de données</div>
+      <div class="header">{% translate "Bases de données" %}</div>
       <a class="item" href="{% url 'kerofis' %}"><i class="map marked alternate icon"></i>KerOfis</a>
       <a class="item" href="http://www.fr.brezhoneg.bzh/36-termofis.htm"><i class="search icon"></i>TermOfis</a>
-      <div class="header">Dictionnaires</div>
+      <div class="header">{% translate "Dictionnaires" %}</div>
       <a class="item" href="{% url 'term' %}"><i class="history icon"></i>MeurGorf</a>
 
     </div>
   </div>
   <div class="ui dropdown item">
-    <i class="globe europe icon"></i>Traduction
+    <i class="globe europe icon"></i>{% translate "Traduction" %}
     <i class="ui dropdown icon"></i>
     <div class="menu">
-      <div class="header">Traduction automatique à base de règles</div>
+      <div class="header">{% translate "Traduction automatique à base de règles" %}</div>
         <a class="item" href="http://www.fr.brezhoneg.bzh/42-traducteur-automatique.htm"><i class="language icon"></i>Apertium</a>
     </div>
   </div>
   <div class="ui dropdown item">
     <i class="microphone icon"></i>
-    Parole
+    {% translate "Parole" %}
     <i class="ui dropdown icon"></i>
     <div class="menu">
-      <div class="header">Synthèse vocale</div>
+      <div class="header">{% translate "Synthèse vocale" %}</div>
       <a class="item" href="#"><i class="comment icon"></i>Sintezenn ar vouezh</a>
     </div>
   </div>
   <div class="ui dropdown item">
-    <i class="desktop icon"></i>Applications
+    <i class="desktop icon"></i>{% translate "Applications" %}
     <i class="ui dropdown icon"></i>
     <div class="menu">
-      <div class="item" href="#"><i class="spell check icon"></i>Correcteurs orthographiques</div>
+      <div class="item" href="#"><i class="spell check icon"></i>{% translate "Correcteurs orthographiques" %}</div>
     </div>
   </div>
   <div class="ui dropdown item">
-    <i class="database icon"></i>Données
+    <i class="database icon"></i>{% translate "Données" %}
     <i class="ui dropdown icon"></i>
     <div class="menu">
-      <div class="header">Corpus</div>
-      <a href="#" class="item"><i class="file alternate icon"></i>Corpus textuel</a>
-      <a href="#" class="item"><i class="file audio icon"></i>Corpus audio</a>
+      <div class="header">{% translate "Corpus" %}</div>
+      <a href="#" class="item"><i class="file alternate icon"></i>{% translate "Corpus textuel" %}</a>
+      <a href="#" class="item"><i class="file audio icon"></i>{% translate "Corpus audio" %}</a>
     </div>
   </div>
   
 
   <div class="right menu">
     <a class="item">
-      <i class="newspaper icon"></i>Actualités
+      <i class="newspaper icon"></i>{% translate "Actualités" %}
     </a>
     <a class="item">
-      <i class="question icon"></i>A propos
+      <i class="question icon"></i>{% translate "A propos" %}
     </a>
     <a class="item">
-      <i class="external alternate icon"></i>Liens utiles
+      <i class="external alternate icon"></i>{% translate "Liens utiles" %}
     </a>
   </div>
 </div>
@@ -90,7 +90,7 @@
           Porched niverel ar brezhoneg
         </span>
         <span class="ui sub header">
-          Portail numérique pour la langue bretonne
+          {% translate "Portail numérique pour la langue bretonne" %}
         </span>
       </h1>
       <div class="ui hidden divider"></div>

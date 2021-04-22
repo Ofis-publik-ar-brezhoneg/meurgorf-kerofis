@@ -1,5 +1,6 @@
 {% extends "semantic/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block page_head %}
 	<!-- LEAFLET -->
@@ -20,22 +21,22 @@
 	<div class="row">
 		<div class="ui sixteen wide column">
 			<div class="ui breadcrumb">
-				<a class="section" href="accueil.html">Accueil</a>
+				<a class="section" href="accueil.html">{% translate "Accueil" %}</a>
 				<i class="right angle icon divider"></i>
-				<div class="section">Ressources</div>
+				<div class="section">{% translate "Ressources" %}</div>
 				<i class="right angle icon divider"></i>
 				<div class="active section">KerOfis</div>
 			</div>
 			<!-- SUB MENU -->
 			<div class="ui three item pointing menu">
 				<a class="item{% if request.path == '/kerofis/' %} active{% endif %}" href="{% url 'kerofis' %}">
-					Rechercher
+					{% translate "Rechercher" %}
 				</a>
 				<a class="item{% if request.path == '/kerofis/presentation' %} active{% endif %}" href="{% url 'kerofis-presentation' %}">
-					Présentation
+					{% translate "Présentation" %}
 				</a>
 				<a class="item{% if request.path == '/kerofis/savoir' %} active{% endif %}" href="{% url 'kerofis-savoir' %}">
-					En savoir plus
+					{% translate "En savoir plus" %}
 				</a>
 			</div>
 		</div>

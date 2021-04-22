@@ -35,32 +35,31 @@ class Location(models.Model):
         db_table = 'kerofis_kreiz'
 
     name = models.CharField(max_length=255, db_column='kk_anv')
-    on_ign = models.BooleanField(db_column='kk_ign')
-    ign_date = models.DateField(null=True, db_column='kk_deiziad_ign')
-    formalized_date = models.DateField(null=True, db_column='kk_deiziad_ofisielisaet')
-    is_public = models.BooleanField(db_column='kk_aotre_embann')
+    on_ign = models.BooleanField(db_column='kk_ign', default=False)
+    ign_date = models.DateField(null=True, blank=True, db_column='kk_deiziad_ign')
+    formalized_date = models.DateField(null=True, blank=True, db_column='kk_deiziad_ofisielisaet')
+    is_public = models.BooleanField(db_column='kk_aotre_embann', default=True)
     generic_name = models.CharField(max_length=255, db_column='kk_stagadenn')
-    on_bf = models.BooleanField(db_column='kk_kartenn_bf')
-    city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL, related_name='locations', db_column='kk_kumun')
-    department = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL, db_column='kk_departamant')
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, related_name='locations',
+    on_bf = models.BooleanField(db_column='kk_kartenn_bf', default=False)
+    bf_date = models.DateField(null=True, blank=True, db_column='kk_deiziad_bf')
+    city = models.ForeignKey(City, null=True, blank=True, on_delete=models.SET_NULL, related_name='locations', db_column='kk_kumun')
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.SET_NULL, db_column='kk_departamant')
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL, related_name='locations',
                                  db_column='kk_rummad')
-    reference = models.TextField(db_column='kk_daveenn')
-    notes = models.TextField(db_column='kk_notenn_studi')
-    formalized_proposal = models.CharField(max_length=120, blank=True, null=True, db_column='kk_kinnig_skoueriekaat')
-    proposal_author = models.TextField(db_column='kk_goulenner')
-    square_bf = models.CharField(max_length=5, db_column='kk_karrezenn')
-    longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True,
+    reference = models.TextField(db_column='kk_daveenn', blank=True, default="")
+    notes = models.TextField(db_column='kk_notenn_studi', blank=True, default="")
+    formalized_proposal = models.CharField(max_length=120, blank=True, db_column='kk_kinnig_skoueriekaat', default="")
+    proposal_author = models.TextField(db_column='kk_goulenner', blank=True, default="")
+    square_bf = models.CharField(max_length=5, db_column='kk_karrezenn', blank=True, default="")
+    longitude = models.DecimalField(max_digits=22, decimal_places=16, null=True, blank=True,
                                     db_column='kk_daveenn_douaroniel_lg')
-    latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True,
+    latitude = models.DecimalField(max_digits=22, decimal_places=16, null=True, blank=True,
                                    db_column='kk_daveenn_douaroniel_lt')
-    etymological_note_bre = models.TextField(db_column='kk_gerdarzh_bre')
-    etymological_note_fra = models.TextField(db_column='kk_gerdarzh_fra')
+    etymological_note_bre = models.TextField(db_column='kk_gerdarzh_bre', blank=True, default="")
+    etymological_note_fra = models.TextField(db_column='kk_gerdarzh_fra', blank=True, default="")
     created_at = models.DateTimeField(default=now, db_column='kk_deiziad_ebarzhin')
     created_by = models.ForeignKey('auth.User', null=True, related_name='locations', on_delete=models.SET_NULL,
                                    db_column='kk_aozer_ar_fichenn')
-    updated_at = models.DateTimeField(null=True)
-    updated_by = models.ForeignKey('auth.User', null=True, related_name='+', on_delete=models.SET_NULL)
     is_name_of_day = models.BooleanField(default=False, db_column='kk_anv_deiz')
     old_id = models.IntegerField(null=True)
 
@@ -79,18 +78,21 @@ class Informant(models.Model):
     class Meta:
         db_table = 'kerofis_titourer'
 
-    first_name = models.CharField(max_length=100, null=True, db_column='kt_anv_bihan_titourer')
-    last_name = models.CharField(max_length=200, null=True, db_column='kt_anv_titourer')
-    surname = models.CharField(max_length=50, null=True, db_column='kt_lesanv')
-    occupation = models.CharField(max_length=200, null=True, db_column='kt_micher')
-    birthdate = models.CharField(max_length=4, db_column='kt_bloaz_ganedigezh')
-    birthplace = models.CharField(max_length=50, null=True, db_column='kt_lech_ganedigezh')
-    cities = models.CharField(max_length=250, null=True, db_column='kt_kumun_titouret')
-    arrival_date = models.CharField(max_length=4, null=True, db_column='kt_pegoulz_er_gumun')
-    notes = models.TextField(null=True, db_column='kt_notenn')
-    contact = models.TextField(null=True, db_column='kt_darempred')
+    first_name = models.CharField(max_length=100, default='', db_column='kt_anv_bihan_titourer')
+    last_name = models.CharField(max_length=200, default='', db_column='kt_anv_titourer')
+    surname = models.CharField(max_length=50, default='', db_column='kt_lesanv')
+    occupation = models.CharField(max_length=200, default='', db_column='kt_micher')
+    birthdate = models.CharField(max_length=4, default='', db_column='kt_bloaz_ganedigezh')
+    birthplace = models.CharField(max_length=50, default='', db_column='kt_lech_ganedigezh')
+    cities = models.CharField(max_length=250, default='', db_column='kt_kumun_titouret')
+    arrival_date = models.CharField(max_length=4, default='', db_column='kt_pegoulz_er_gumun')
+    notes = models.TextField(default='', db_column='kt_notenn')
+    contact = models.TextField(default='', db_column='kt_darempred')
     interviewed_by = models.ForeignKey('auth.User', null=True, on_delete=models.SET_NULL, db_column='kt_enklasker')
     old_id = models.IntegerField(null=True)
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class PhoneticTranscription(models.Model):
@@ -111,7 +113,7 @@ class PhoneticTranscriptionLink(models.Model):
 
     phonetic_transcription = models.ForeignKey(PhoneticTranscription, null=True, related_name='links',
                                                on_delete=models.SET_NULL, db_column='kde_niv')
-    link = models.FileField(max_length=30, db_column='kde_distagadur_enrolladenn')
+    link = models.FileField(db_column='kde_distagadur_enrolladenn')
 
 
 class OldForm(models.Model):

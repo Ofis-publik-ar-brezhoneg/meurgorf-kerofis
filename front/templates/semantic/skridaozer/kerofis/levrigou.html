@@ -1,0 +1,130 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <div class="ui form" method="POST" id="formulaire">
+    <div class="ui stackable grid">
+      <div class="sixteen wide column">
+        <div class="ui teal fluid inverted segment">
+          <div class="inline fields">
+            <div class="field" style="width: 50%">
+              <label>Seurt levrig</label>
+              <select class="ui fluid selection dropdown" name="type" id="type">
+                <option>raklevrig</option>
+                <option>Levrig echu</option>
+              </select>
+            </div>
+            <div class="field" style="width: 50%">
+              <label>Kumun</label>
+              <select class="ui fluid selection dropdown" name="city" id="city">
+                <option></option>
+  {% for city in cities %}
+                <option value="{{ city.id }}">{{ city.name_bre }}</option>
+  {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="ui sixteen column centered grid">
+            <div class="ui centered row">
+              <div class="ui column">
+                <button class="ui labeled icon button" name="button" id="krouin">
+                  <i class="download icon"></i>Krouiñ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content-js %}
+<script type="text/javascript">
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function formatRow(fields, line) {
+        return $.map(fields, function(field) {
+          if (field.obj) {
+            if (field.obj) {
+              return $.map(line[field.obj], function (res) {
+                    return $.map(field.keys, function (key) { return res[key] }).join(' ');
+                }).join(', ');
+            }
+          } else if (field.keys) {
+            return $.map(field.keys, function (key) { return line[key] }).join(' ');
+          } else {
+            return line[field.key];
+          }
+        })
+    }
+    function getFieldsFromType(model_type) {
+        if (model_type == 'raklevrig') {
+          return [
+            {'text': 'Stagadenn', 'keys': ['generic_name', 'name'] },
+            {'text': 'Distagadur(-ioù)', 'key': 'phonetic_transcriptions_list' },
+            {'text': 'Stummoù all', 'obj': 'other_forms', 'keys': ['usage_form', 'litteral_year', 'book', 'reference'] },
+            {'text': 'Stummoù kozhtesteniekaet', 'obj': 'attested_forms', 'keys': ['attested_form', 'litteral_year', 'book', 'reference']},
+            {'text': 'Notennoù studiañ', 'key': 'notes' },
+            {'text': 'Displegadennoù', 'key': 'etymological_note_fra' },
+            {'text': 'Displegadennoù br', 'key': 'etymological_note_bre' },
+            {'text': 'Kinnig OPLB', 'key': 'formalized_proposal' },
+          ]
+        } else {
+          return [
+            {'text': 'Kinnig OPLB', 'key': 'formalized_proposal' },
+            {'text': 'Stagadenn', 'keys': ['generic_name', 'name'] },
+            {'text': 'Distagadur(-ioù)', 'key': 'phonetic_transcriptions' },
+            {'text': 'Stummoù kozhtesteniekaet', 'obj': 'attested_forms', 'keys': ['attested_form', 'litteral_year', 'book', 'reference']},
+            {'text': 'Stummoù all', 'obj': 'other_forms', 'keys': ['usage_form', 'litteral_year', 'book', 'reference'] },
+          ]
+        }
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    $('#krouin').on('click', function () {
+        let city = $('#city').val();
+        var model_type = $('#type').val();
+        var fields = getFieldsFromType(model_type);
+        var url = '/api/locations/';
+        if (city) {
+            url += 'city=' + city;
+        }
+        $.ajax({
+            url,
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        }).then(function (data) {
+            let content = "data:text/csv;charset=utf-8,";
+            $.each(fields, function () {
+                content += this.text + ";"
+            });
+            content += "\r\n";
+            for (let i = 0; i < data.results.length; i++) {
+                content += formatRow(fields, data.results[i]).join(";") + "\r\n";
+            }
+            const encodedUri = encodeURI(content);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "levrigoù.csv");
+            document.body.appendChild(link);
+            link.click();
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,662 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <div class="ui container" id="fichenn">
+    <p></p>
+    <form class="ui form" method="POST" id="formulaire">{% csrf_token %}
+      <div class="ui right close rail">
+        <div class="ui sticky" style="width: 272px !important; height: 262.683px !important; left: 164px;">
+          <p></p>
+          <div class="ui compact segment">
+            <button class="ui teal labeled icon button" name="button">
+              <i class="save icon"></i>Enrollañ
+            </button>
+            <p></p>
+  {% if location %}
+            <a class="ui button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+              Krouiñ ur fichenn nevez
+            </a>
+  {% else %}
+            <a class="ui negative labeled icon button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+              <i class="delete icon"></i>Dilemel
+            </a>
+  {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="ui stackable grid">
+        <div class="eight wide column">
+          <div class="ui teal fluid inverted segment">
+            <h4>Stumm kein</h4>
+            <div class="fields">
+              <div class="field">
+                <label>Stagadenn</label>
+                <input type="text" name="generic_name" value="{{ location.generic_name }}">
+              </div>
+              <div class="field">
+                <label>Lec'hanv</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="name" value="{{ location.name }}">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+  {% if location %}
+        <div class="eight wide column">
+          <div class="ui teal segment">
+            <h4 class="ui header">Stumm skoueriekaet <span class="ui label">{{ location.standardized_forms.count }}</span></h4>
+            <div class="ui fluid accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm skoueriekaet
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <input type="text" id="standardized_form_form" placeholder="Anv">
+                  </div>
+                  <div class="field">
+                    <input type="date" id="standardized_form_date" placeholder="Deziad degemer">
+                  </div>
+                  <div class="field">
+                    <button class="ui teal icon button" type="button" id="add_standardized_form">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div style="max-height:300px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                {% for standardized_form in location.standardized_forms.all %}
+                  <tr>
+                    <td>{{ standardized_form.standardized_form }}</td>
+                    <td>{{ standardized_form.date }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_standardized_form"
+                              data-id="{{ standardized_form.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui teal segment" id=titourouhollek>
+            <h4 class="ui header">Titouroù hollek</h4>
+            <div class="ui five fields">
+              <div class="info field">
+                <label>INSEE</label>
+                <input type="text" value="{{ location.city.insee_code }}" readonly="">
+              </div>
+              <div class="info field">
+                <label>Cod post</label>
+                <input type="text" value="{{ location.city.postal_code }}" readonly="">
+              </div>
+              <div class="field">
+                <label>Kumun</label>
+                <select type="text" name="city" value="{{ location.city.id }}">
+                  <option></option>
+  {% for city in cities %}
+                  <option value="{{ city.id }}" {% if location.city.id == city.id %}selected="selected"{% endif %}>{{ city.name_bre }}</option>
+  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Rummad</label>
+                <select type="text" name="category" value="{{ location.category.id }}">
+                  <option></option>
+  {% for category in categories %}
+                  <option value="{{ category.id }}" {% if location.category.id == category.id %}selected="selected"{% endif %}>{{ category.name_bre }}</option>
+  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Daveennoù douaroniel</label>
+                <input type="text" name="" value="">
+              </div>
+            </div>
+            <div class="ui fields"></div>
+            <div class="ui five fields">
+              <div class="field">
+                <label>Deiziad IGN</label>
+                <input type="date" name="ign_date" value="{{ location.ign_date }}">
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <label>IGN</label>
+                  <input type="checkbox" name="on_ign" {% if location.on_ign %}checked="checked"{% endif %} />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Karrezenn</label>
+                <input type="text" name="square_bf" value="{{ location.square_bf }}">
+              </div>
+              <div class="field">
+                <label>Deiziad B. Fold.</label>
+                <input type="date" name="bf_date" value="{{ location.bf_date }}">
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <label>B. Fold.</label>
+                  <input type="checkbox" name="on_bf" {% if location.on_bf %}checked="checked"{% endif %} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui eight wide column">
+          <div class="ui top attached teal segment" id="distagadur">
+            <h4 class="ui header">Distagadur <span class="ui label">{{ location.phonetic_transcriptions.count }}</span></h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ un distagadur
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field" style="width: 100%">
+                    <label>Orin</label>
+                    <select id="phonetic_transcription_informant" class="ui search dropdown">
+  {% for informant in informants %}
+                      <option value="{{ informant.id }}">{{ informant }}</option>
+  {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Distagadur</label>
+                    <input type="text" id="phonetic_transcription_phonetic_transcription" placeholder="Distagadur fonetik">
+                  </div>
+                  <div class="field">
+                    <label>Deiziad</label>
+                    <input type="text" id="phonetic_transcription_created_at">
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Skouer</label>
+                  <input type="checkbox" id="phonetic_transcription_is_standard">
+                </div>
+                <div class="fields">
+                  <div class="field">
+                    <input type="file" id="phonetic_transcription_link">
+                  </div>
+                  <div class="field">
+                    <button class="ui teal icon button" type="button" id="add_phonetic_transcription">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                {% for phonetic_transcription in location.phonetic_transcriptions.all %}
+                  <tr>
+                    <td>{{ phonetic_transcription.phonetic_transcription }}</td>
+                    <td><a href="#">{{ phonetic_transcription.informant.pk }}</a></td>
+                    <td>{{ phonetic_transcription.created_at }}</td>
+                    <td>
+                      <div class="ui fitted checkbox checked">
+                        <input type="checkbox" {% if phonetic_transcription.is_standard %}checked="checked" {% endif %}/>
+                        <label></label>
+                      </div>
+                    </td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="play icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_phonetic_transcription"
+                        data-id="{{ phonetic_transcription.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui eight wide column">
+          <div class="ui teal segment" id="kozh">
+            <h4 class="ui header">Stumm kozh <span class="ui label">{{ location.old_forms.count }}</span></h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm kozh
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Stumm</label>
+                    <input type="text" id="old_form_old_form">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh</label>
+                    <input type="text" id="old_form_litteral_year">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh niverel</label>
+                    <input type="text" id="old_form_year">
+                  </div>
+                </div>
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Berradur</label>
+                    <select class="ui dropdown" id="old_form_book">
+  {% for book in books %}
+                      <option value="{{ book.id }}">{{ book.abbrevation }}</option>
+  {% endfor %}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Daveenn</label>
+                    <input type="text" id="old_form_reference">
+                  </div>
+                  <div class="field">
+                    <label>Ouzhpennañ</label>
+                    <button class="ui teal icon button" type="button" id="add_old_form">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                {% for old_form in location.old_forms.all %}
+                  <tr>
+                    <td>{{ old_form.old_form }}<br> </td>
+                    <td>{{ old_form.litteral_year }}</td>
+                    <td>{{ old_form.book.abbrevation }}</td>
+                    <td></td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_old_form"
+                        data-id="{{ old_form.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui eight wide column">
+          <div class="ui teal segment">
+            <h4 class="ui header">Stumm all en implij <span class="ui label">{{ location.other_forms.count }}</span></h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm all en implij
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Anv</label>
+                    <input type="text" id="other_form_usage_form">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh</label>
+                    <input type="text" id="other_form_litteral_year">
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Bloavezh niverel</label>
+                  <input type="text" id="other_form_year">
+                </div>
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Berradur</label>
+                    <select class="ui dropdown" id="other_form_book">
+  {% for book in books %}
+                      <option value="{{ book.id }}">{{ book.abbrevation }}</option>
+  {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Daveenn</label>
+                    <input type="text" id="other_form_reference">
+                  </div>
+
+                  <div class="field">
+                    <label>Ouzhpennañ</label>
+                    <button class="ui teal icon button" type="button" id="add_other_form">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                {% for other_form in location.other_forms.all %}
+                  <tr>
+                    <td>{{ other_form.usage_form }}<br> </td>
+                    <td>{{ other_form.litteral_year }}</td>
+                    <td>{{ other_form.book.abbrevation }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_other_form"
+                        data-id="{{ other_form.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui eight wide column">
+          <div class="ui teal segment">
+            <h4 class="ui header">Stumm brezhoneg testeniekaet <span class="ui label">{{ location.attested_forms.count }}</span></h4>
+            <div class="ui accordion">
+              <div class="title">
+                <i class="add icon"></i>
+                Ouzhpennañ ur stumm brezhoneg testeniekaet
+              </div>
+              <div class="content">
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Anv</label>
+                    <input type="text" id="attested_form_attested_form">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh</label>
+                    <input type="text" id="attested_form_litteral_year">
+                  </div>
+                  <div class="field">
+                    <label>Bloavezh niverel</label>
+                    <input type="text" id="attested_form_year">
+                  </div>
+                </div>
+                <div clas="ui fields">
+                  <div class="field">
+                    <label>Skouer</label>
+                    <input type="checkbox" id="attested_form_is_labeled">
+                  </div>
+                </div>
+                <div class="ui fields">
+                  <div class="field">
+                    <label>Berradur</label>
+                    <select class="ui dropdown" id="attested_form_book">
+  {% for book in books %}
+                      <option value="{{ book.id }}">{{ book.abbrevation }}</option>
+  {% endfor %}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Daveenn</label>
+                    <input type="text" id="attested_form_reference">
+                  </div>
+                  <div class="field">
+                    <label>Ouzhpennañ</label>
+                    <button class="ui teal icon button" type="button" id="add_attested_form">
+                      <i class="add icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
+              <table class="ui very compact table">
+                <tbody>
+                {% for attested_form in location.attested_forms.all %}
+                  <tr>
+                    <td>{{ attested_form.attested_form }}</td>
+                    <td>{{ attested_form.litteral_year }}</td>
+                    <td>
+                      <label class="ui label" data-content="{{ attested_form.book.title }}">{{ attested_form.book.abbrevation }}</label>
+                    </td>
+                    <td>{{ attested_form.reference }}</td>
+                    <td class="collapsing">
+                      <button class="ui mini icon button" type="button">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" id="delete_attested_form"
+                        data-id="{{ attested_form.id }}">
+                        <i class="delete icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui sixteen wide column">
+          <div class="ui teal segment" id="abepseurt">
+            <h4 class="ui header">A bep seurt</h4>
+
+            <div class="ui inline fields">
+              <div class="field">
+                <label>Goulenner</label>
+                <input type="text" name="proposal_author" value="{{ location.proposal_author }}">
+              </div>
+              <div class="field">
+                <label>Daveenn</label>
+                <input type="text" name="reference" value="{{ location.reference }}">
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <label>Aotre da embann</label>
+                  <input type="checkbox" name="is_public" {% if location.is_public %}checked="checked"{% endif %}>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <label>Anv an deiz</label>
+                  <input type="checkbox" name="is_name_of_day" {% if location.is_name_of_day %}checked="checked"{% endif %}>
+                </div>
+              </div>
+            </div>
+            <div class="ui field">
+              <label>Notennoù studiañ</label>
+              <textarea name="notes" rows="10">{{ location.notes }}</textarea>
+            </div>
+            <div class="ui two fields">
+              <div class="field">
+                <label>Gerdarzh ha displegadenn e brezhoneg</label>
+                <textarea name="etymological_note_bre">{{ location.etymological_note_bre }}</textarea>
+              </div>
+              <div class="field">
+                <label>Gerdarzh ha displegadenn e galleg</label>
+                <textarea name="etymological_note_fra">{{ location.etymological_note_fra }}</textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="sixteen wide column">
+          <div class="ui secondary segment">
+            <div class="ui two column grid">
+              <div class="column">
+                <p>Fichenn savet gant {{ location.created_by }}</br>
+                  <i class="calendar icon"></i>{{ location.created_at }}
+                </p>
+              </div>
+              <div class="column">
+                <div class="ui field">
+                  <label>Kinnig skoueriekaat</label>
+                  <input type="text" name="" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function send_info(data) {
+      $.ajax({
+        url: '{% url 'skridaozer:kerofis_ajax' location_id %}',
+        type: 'POST',
+        data,
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(function (data) {
+        if (data.response == 'ok') {
+          window.location = window.location.href;
+        }
+      });
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    $('.ui.sticky')
+      .sticky({
+        context: '#formulaire'
+      });
+    $('.ui.checkbox')
+      .checkbox();
+    $('.selection.dropdown').dropdown();
+    $('.search.dropdown').dropdown();
+    $('.dropdown').dropdown();
+    $('.ui.accordion').accordion();
+    $('.label').popup();
+
+    $('#add_standardized_form').on('click', function() {
+      send_info({
+        'action': 'add_standardized_form',
+        'form': $('#standardized_form_form').val(),
+        'date': $('#standardized_form_date').val()
+      });
+    });
+    $('#add_phonetic_transcription').on('click', function() {
+      send_info({
+        'action': 'add_phonetic_transcription',
+        'phonetic_transcription': $('#phonetic_transcription_phonetic_transcription').val(),
+        'informant': $('#phonetic_transcription_informant').val(),
+        'created_at': $('#phonetic_transcription_created_at').val(),
+        'is_standard': $('#phonetic_transcription_is_standard').prop('checked'),
+        'link': $('#phonetic_transcription_link').val()
+      });
+    });
+    $('#add_old_form').on('click', function() {
+      send_info({
+        'action': 'add_old_form',
+        'old_form': $('#old_form_old_form').val(),
+        'litteral_year': $('#old_form_litteral_year').val(),
+        'year': $('#old_form_year').val(),
+        'book': $('#old_form_book').val(),
+        'reference': $('#old_form_reference').val()
+      });
+    });
+    $('#add_other_form').on('click', function() {
+      send_info({
+        'action': 'add_other_form',
+        'usage_form': $('#other_form_usage_form').val(),
+        'litteral_year': $('#other_form_litteral_year').val(),
+        'year': $('#other_form_year').val(),
+        'book': $('#other_form_book').val(),
+        'reference': $('#other_form_reference').val()
+      });
+    });
+    $('#add_attested_form').on('click', function() {
+      send_info({
+        'action': 'add_attested_form',
+        'attested_form': $('#attested_form_attested_form').val(),
+        'is_labeled': $('#attested_form_is_labeled').prop('checked'),
+        'litteral_year': $('#attested_form_litteral_year').val(),
+        'year': $('#attested_form_year').val(),
+        'book': $('#attested_form_book').val(),
+        'reference': $('#attested_form_reference').val(),
+      });
+    });
+    $('#delete_standardized_form').on('click', function() {
+      send_info({
+        'action': 'delete_standardized_form',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_phonetic_transcription').on('click', function() {
+      send_info({
+        'action': 'delete_phonetic_transcription',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_old_form').on('click', function() {
+      send_info({
+        'action': 'delete_old_form',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_other_form').on('click', function() {
+      send_info({
+        'action': 'delete_other_form',
+        'id': $(this).data('id')
+      });
+    });
+    $('#delete_attested_form').on('click', function() {
+      send_info({
+        'action': 'delete_attested_form',
+        'id': $(this).data('id')
+      });
+    });
+  </script>
+{% endblock %}

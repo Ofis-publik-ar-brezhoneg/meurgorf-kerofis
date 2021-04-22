@@ -35,8 +35,6 @@ class Term(models.Model):
     created_at = models.DateTimeField(default=now, db_column='mp_deziad_foran')
     created_by = models.ForeignKey('auth.User', null=True, related_name='terms', on_delete=models.SET_NULL,
                                    db_column='mp_aozer')
-    updated_at = models.DateTimeField(null=True)
-    updated_by = models.ForeignKey('auth.User', null=True, related_name='+', on_delete=models.SET_NULL)
     usage = models.SmallIntegerField(default=Usage.USUAL, choices=[
         (Usage.VERY_USUAL, 'Very Usual'),
         (Usage.USUAL, 'Usual'),

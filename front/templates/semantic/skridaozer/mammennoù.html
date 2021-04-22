@@ -1,0 +1,156 @@
+{% extends "semantic/skridaozer/base.html" %}
+{% load static %}
+
+{% block content %}
+  <p></p>
+  <form class="ui form" method="{% if book %}post{% else %}get{% endif %}" id="formulaire">
+  {% if book %}
+    {% csrf_token %}
+    <div class="ui right close rail">
+      <div class="ui sticky" style="width: 272px !important; height: 262.683px !important; left: 164px;">
+        <p></p>
+        <div class="ui compact segment">
+          <button class="ui teal labeled icon button" name="button" type="submit">
+            <i class="save icon"></i>Enrollañ
+          </button>
+
+          <!--
+          <p></p>
+          <button class="ui button" name="button">
+            Krouiñ ur fichenn nevez
+          </button>
+          -->
+
+          <p></p>
+          <a class="ui negative labeled icon button" name="button" href="{% url 'skridaozer:mammennou' %}">
+            <i class="delete icon"></i>Dilemel
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+    <div class="ui stackable grid">
+  {% if book %}
+      <div class="sixteen wide column">
+        <div class="ui teal fluid segment">
+          <div class="row fields">
+            <div class="field">
+              <label>Berradur</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="abbrevation" value="{{ book.abbrevation }}">
+                </div>
+            </div>
+            <div class="field" style="width: 100%;">
+              <label>Levr</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="title" value="{{ book.title }}">
+                </div>
+            </div>
+          </div>
+          <div class="row fields">
+            <div class="field">
+              <label>Aozer</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="author" value="{{ book.author }}">
+                </div>
+            </div>
+            <div class="field" style="width: 100%;">
+              <label>Deskrivadur</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="description" value="{{ book.description }}">
+                </div>
+            </div>
+          </div>
+          <div class="row fields">
+            <div class="field">
+              <label>Stummoù kozh</label>
+                <div class="ui huge inverted input">
+                  <input type="checkbox" name="is_kerofis_old" {% if book.is_kerofis_old %}checked="checked"{% endif %}>
+                </div>
+            </div>
+            <div class="field">
+              <label>Stummoù all</label>
+                <div class="ui huge inverted input">
+                  <input type="checkbox" name="is_kerofis_other" {% if book.is_kerofis_other %}checked="checked"{% endif %}>
+                </div>
+            </div>
+            <div class="field">
+              <label>Stummoù testeniekaet</label>
+                <div class="ui huge inverted input">
+                  <input type="checkbox" name="is_kerofis_attested" {% if book.is_kerofis_attested %}checked="checked"{% endif %}>
+                </div>
+            </div>
+            <div class="field">
+              <label>Meurgorf</label>
+                <div class="ui huge inverted input">
+                  <input type="checkbox" name="is_meurgorf" {% if book.is_meurgorf %}checked="checked"{% endif %}>
+                </div>
+            </div>
+            <div class="field">
+              <label>Bev</label>
+                <div class="ui huge inverted input">
+                  <input type="checkbox" name="is_active" {% if book.is_active %}checked="checked"{% endif %}>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% else %}
+      <div class="eight wide column">
+        <div class="ui middle aligned centered grid teal fluid inverted segment">
+          <div class="row">
+            <div class="column">
+              <div class="field">
+                <label>Berradur</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="abbrevation" value="">
+                </div>
+              </div>
+              <div class="field">
+                <label>Levr</label>
+                <div class="ui huge inverted input">
+                  <input type="text" name="title" value="">
+                </div>
+              </div>
+              <div class="field">
+                <button class="ui labeled icon button" name="button">
+                  <i class="search icon"></i>Kas
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% endif %}
+      <div class="sixteen wide column">
+        <div class="ui teal segment">
+          <table class="ui very basic table">
+            <thead>
+              <tr>
+                <th>Berradur</th>
+                <th>Levr</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+              <tr>
+                <td class="selectable{% if not book.is_active %} grey-text{% endif %}">
+                  <a href="{% url 'skridaozer:mammennou' book.id %}">{{ book.abbrevation }}</a>
+                </td>
+                <td class="selectable{% if not book.is_active %} grey-text{% endif %}">
+                  <a href="{% url 'skridaozer:mammennou' book.id %}">{{ book.title }}</a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+  <style>
+    .grey-text {
+      color: rgba(40,40,40,.3);
+    }
+  </style>
+{% endblock %}

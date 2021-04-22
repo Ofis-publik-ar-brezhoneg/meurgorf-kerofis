@@ -1,27 +1,28 @@
+{% load i18n %}
 <div class="ui bottom attached tab segment{% if number_tab == 1 %} active{% endif %}" data-tab="{{ term.id }}">
     {% if term.phonetic_forms.count %}
-    <h4 class="ui header">Prononciation</h4>
+    <h4 class="ui header">{% translate "Prononciation" %}</h4>
     {% for phonetic in term.phonetic_forms.all %}
     <div class="ui labels">
-      <a class="ui label" data-content="écouter" href="{{ phonetic.phonetic_url }}">
+      <a class="ui label" data-content="{% translate "écouter" %}" href="{{ phonetic.phonetic_url }}">
         <i class="play circle outline icon"></i>
           {{ phonetic.phonetic_form }}
       </a>
-      <a href="#" class="ui icon label" data-content="copier dans le presse-papier">
+      <a href="#" class="ui icon label" data-content="{% translate "copier dans le presse-papier" %}">
         <i class="ui copy icon"></i>
       </a>
     </div>
     {% endfor %}
     {% endif %}
     <h4 class="ui header">
-        Fréquence d'emploi:
+        {% translate "Fréquence d'emploi:" %}
         <div class="ui pink disabled rating" data-rating="{{ term.usage }}" data-max-rating="3" data-icon="comment" data-content="{{ term.usage_label_fra }}"></div>
     </h4>
     {% if term.on_ndbf or term.on_gbahe %}
-    <h4 class="ui header">Présent dans</h4>
+    <h4 class="ui header">{% translate "Présent dans" %}</h4>
     <div class="ui labels">
         {% if term.on_ndbf %}
-        <div class="ui button label" data-content="Nouveau dictionnaire breton-français Roparz Hemon">
+        <div class="ui button label" data-content="{% translate "Nouveau dictionnaire breton-français Roparz Hemon" %}">
             <i class="book icon"></i> NDBF
         </div>
         {% endif %}
@@ -32,7 +33,7 @@
         {% endif %}
     </div>
     {% endif %}
-    <h4 class="ui header">Mots parents</h4>
+    <h4 class="ui header">{% translate "Mots parents" %}</h4>
     {% if term.parents.count %}
     <div class="ui pink basic labels">
         {% for parent in term.parents.all %}
@@ -45,7 +46,7 @@
     {% else %}
     <div class="ui labels">
       <div class="ui label">
-          Aucun
+          {% translate "Aucun" %}
       </div>
     </div>
     {% endif %}
@@ -54,7 +55,7 @@
     <div class="ui accordion">
         <div class="title">
             <i class="icon dropdown"></i>
-            Variantes historiques ou dialectales attestées
+            {% translate "Variantes historiques ou dialectales attestées" %}
             <div class="ui label">{{ term.variants.count }}</div>
         </div>
         <div class="content">
@@ -63,27 +64,27 @@
                 {% for variant in term.variants.all %}
                 {{ variant.variant }}{% if not forloop.last %}, {% endif %}
                 {% empty %}
-                Aucune
+                {% translate "Aucune" %}
                 {% endfor %}
                 </span>
                 {% if term.variants.count %}
                 <p>
                     <button class="ui button" onclick="javascript:download_items('variantes')">
-                        Télécharger les variantes
+                        {% translate "Télécharger les variantes" %}
                     </button>
                 </p>
                 {% endif %}
             </div>
         </div>
         <div class="title">
-            <i class="icon dropdown"></i>Formes fléchies
+            <i class="icon dropdown"></i>{% translate "Formes fléchies" %}
             <div class="ui label">{{ term.derived_forms.count }}</div>
         </div>
         <div class="content">
             {% if term.derived_forms.count %}
             <a class="ui labeled icon basic button" onclick="javascript:download_items('formes_flechies')">
                 <i class="download icon"></i>
-                Télécharger les formes fléchies
+                {% translate "Télécharger les formes fléchies" %}
             </a>
             <div class="ui segment">
                 <div class="ui list" id="formes_flechies">
@@ -94,12 +95,12 @@
             </div>
             {% else %}
                 <div class="ui segment">
-                    Aucune
+                    {% translate "Aucune" %}
                 </div>
             {% endif %}
         </div>
         <div class="active title">
-            <i class="icon dropdown"></i>Définition
+            <i class="icon dropdown"></i>{% translate "Définition" %}
         </div>
         <div class="active content">
             <div class="ui text container">
@@ -112,7 +113,7 @@
         </div>
         <div class="title">
             <i class="icon dropdown"></i>
-            Exemples historiques
+            {% translate "Exemples historiques" %}
             <div class="ui label">{{ term.historical_occurrences.count }}</div>
         </div>
         <div class="content">
@@ -120,7 +121,7 @@
 {% if term.historical_occurrences.count > 0 %}
                 <a class="ui labeled icon basic button" onclick="javascript:download_items('historiques', true)">
                     <i class="download icon"></i>
-                    Télécharger tous les exemples
+                    {% translate "Télécharger tous les exemples" %}
                 </a>
             <span id="historiques">
     {% for historical_occurrence in term.historical_occurrences.all %}
@@ -132,14 +133,14 @@
                     <div class="accordion">
                         <div class="title">
                             <i class="dropdown icon"></i>
-                            Afficher le texte dans son orthographe originelle
+                            {% translate "Afficher le texte dans son orthographe originelle" %}
                         </div>
                         <div class="content">
                             <p>{{ historical_occurrence.occurence }}</p>
                         </div>
                     </div>
                     <p></p>
-                    <p>Référence :
+                    <p>{% translate "Référence :" %}
                         <span class="ui button horizontal label" data-content="{{ historical_occurrence.book.title }}">
                         <i class="book icon"></i> {{ historical_occurrence.book.abbrevation }}.
                       </span><br /> {{ historical_occurrence.reference }}</p>

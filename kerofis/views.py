@@ -1,8 +1,13 @@
+import random
+
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
+from django.views.generic import View
 from django.urls import reverse
+from django.shortcuts import redirect
+from django.http import JsonResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
@@ -12,6 +17,8 @@ from rest_framework.response import Response
 from commun.pagination import StandardPagination
 from commun.pagination import AutoCompletePagination
 from commun.views import ExportView
+from commun.views import OldExportView
+from commun.models import Book
 
 from .models import Category
 from .models import City
@@ -26,6 +33,7 @@ from .models import OtherForm
 from .models import TermSearchQuery
 from .models import PhoneticTranscriptionLink
 from .filters import LocationFilter
+from .forms import LocationForm
 from .serializers import LocationSerializer
 from .serializers import LocationCategorySerializer
 from .serializers import InformantSerializer
@@ -70,11 +78,14 @@ class KerofisSearch(TemplateView):
             paginator = Paginator(queryset.order_by('name', 'pk').distinct('name', 'pk'), 20)
             context['paginator'] = paginator
             context['locations'] = paginator.get_page(context['page'])
+        else:
+            locations_of_day = list(Location.objects.filter(is_name_of_day=True).all())
+            if len(locations_of_day):
+                context['location_of_day'] = locations_of_day[random.randint(0, len(locations_of_day) - 1)]
 
         return context
 
     def get_template_names(self):
-        print(self.request.POST.get('name'))
         if self.request.POST.get('name'):
             return ['semantic/kerofis/search.html']
 
@@ -169,7 +180,7 @@ class KerofisStatView(GenericViewSet):
         })
 
 
-class KerofisExportView(ExportView):
+class KerofisExportView(OldExportView):
     model = Location
     queryset = Location.objects.all()
 
@@ -208,3 +219,256 @@ class AttestedFormView(ModelViewSet):
     serializer_class = AttestedFormSerializer
     model = AttestedForm
     queryset = AttestedForm.objects.all()
+
+
+class SkridaozerKerofisLocationView(TemplateView):
+    template_name = 'semantic/skridaozer/kerofis/etrefas.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['location_id'] = kwargs.get('location_id')
+        context['cities'] = City.objects.all().order_by('name_bre')
+        context['categories'] = Category.objects.all().order_by('name_bre')
+        context['informants'] = Informant.objects.all().order_by('first_name', 'last_name')
+        context['books'] = Book.objects.all().order_by('abbrevation')
+
+        if kwargs.get('location_id'):
+            context['location'] = Location.objects.get(pk=kwargs['location_id'])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        data = self.request.POST
+
+        if kwargs.get('location_id'):
+            form = LocationForm(self.request.POST, instance=context['location'])
+            if form.is_valid():
+                form.save()
+            else:
+                print(form.errors)
+        else:
+            obj = Location(generic_name=data['generic_name'], name=data['name'], created_by=self.request.user)
+            obj.save()
+            return redirect(reverse('skridaozer:kerofis_etrefas', kwargs={'location_id': obj.id}))
+
+        return self.render_to_response(context)
+
+
+class SkridaozerKerofisStatView(TemplateView):
+    template_name = 'semantic/skridaozer/kerofis/stadegou.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['stats_1'] = {
+            "enrolladenn  en  diaz": [
+                Location.objects.count(),
+                ''
+            ],
+            "distagadur evit": [
+                PhoneticTranscription.objects.count(),
+                "{} anv-lec'h".format(Location.objects.filter(phonetic_transcriptions__isnull=False).count())
+            ],
+            "stumm skoueriekaet": [
+                StandardizedForm.objects.count(),
+                "{} %".format(round((StandardizedForm.objects.count() / Location.objects.count()) * 100, 2))
+            ],
+            "Aotre da embann": ['', ''],
+            "Lec'hanvadurezh": [
+                Location.objects.filter(is_public=True).count(),
+                "{} %".format(
+                    round((Location.objects.filter(is_public=True).count() / Location.objects.count()) * 100, 2)
+                )
+            ]
+        }
+
+        context['stats_2'] = {
+            "stumm kozh testeniekaet": OldForm.objects.count(),
+            "stumm  brezhoneg  testeniekaet": AttestedForm.objects.count(),
+            "stumm all implijet": OtherForm.objects.count(),
+            "daveenn douaroniel": Location.objects.filter(longitude__isnull=False).count(),
+            "deiziad ofisielisaet": Location.objects.filter(formalized_date__isnull=False).count(),
+            "ign": Location.objects.filter(on_ign=True).count(),
+            "gerdarzh fra": Location.objects.filter(etymological_note_fra__isnull=False).count(),
+            "gerdarzh bre": Location.objects.filter(etymological_note_bre__isnull=False).count(),
+            "goulenn": TermSearchQuery.objects.count(),
+            "distagadur skouer": PhoneticTranscription.objects.filter(is_standard=True).count(),
+            "distagadur enrolladenn": PhoneticTranscriptionLink.objects.count()
+        }
+
+        context["dep"] = Location.objects.values('department__name_bre').annotate(locations_count=Count('id'))
+
+        queryset = Category.objects.all()
+        kwargs = {
+            'context': {'request': self.request},
+            'many': True
+        }
+        context["categories"] = CategoryStatSerializer(queryset, **kwargs).data
+
+        return context
+
+
+class SkridaozerKerofisExportView(ExportView):
+    model = Location
+
+
+class SkridaozerKerofisSearchView(TemplateView):
+    template_name = 'semantic/skridaozer/kerofis/klask.html'
+
+    def get_context_data(self, **kwargs):
+        queryset = None
+
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all().order_by('name_bre')
+
+        if self.request.POST:
+            context['data'] = self.request.POST
+            context['page'] = self.request.POST.get('page') or 1
+            data = context['data']
+            filters = {}
+            operation = data.get('search_type')
+            if data.get('generic_name'):
+                filters[f"generic_name__unaccent__{operation}"] = data['generic_name']
+            if data.get('name'):
+                filters[f"generic_name__unaccent__{operation}"] = data['name']
+            if data.get('city'):
+                filters[f"city__name__unaccent__{operation}"] = data['city']
+            if data.get('department'):
+                filters['department__name__unaccent'] = data['department']
+            if data.get('category'):
+                filters['category'] = data['category']
+
+            queryset = Location.objects.filter(**filters)
+            paginator = Paginator(queryset.order_by('generic_name', 'pk').distinct('generic_name', 'pk'), 20)
+            context['paginator'] = paginator
+            context['locations'] = paginator.get_page(context['page'])
+        else:
+            context['data'] = {'search_type': 'istartswith'}
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
+class SkridaozerKerofisInformantView(TemplateView):
+    template_name = 'semantic/skridaozer/kerofis/titourer.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['informants'] = Informant.objects.all().order_by('id')
+
+        if kwargs.get('informant_id'):
+            context['data'] = Informant.objects.get(pk=kwargs['informant_id'])
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        obj = context['data']
+        data = self.request.POST
+        obj.first_name = data.get('first_name')
+        obj.last_name = data.get('last_name')
+        obj.surname = data.get('surname')
+        obj.occupation = data.get('occupation')
+        obj.birthdate = data.get('birthdate')
+        obj.birthplace = data.get('birthplace')
+        obj.cities = data.get('cities')
+        obj.arrival_date = data.get('arrival_date')
+        obj.notes = data.get('notes')
+        obj.contact = data.get('contact')
+        obj.interviewed_by = self.request.user
+        obj.save()
+
+        context['data'] = obj
+
+        return self.render_to_response(context)
+
+
+class SkridaozerKerofisExportInfoView(TemplateView):
+    template_name = 'semantic/skridaozer/kerofis/levrigou.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cities'] = City.objects.all()
+
+        return context
+
+
+class SkridaozerKerofisAjaxView(View):
+
+    def post(self, request, *args, **kwargs):
+        try:
+            action = request.POST.get('action')
+            obj = Location.objects.get(pk=kwargs['location_id'])
+            getattr(self, action)(obj, request.POST)
+
+            return JsonResponse({"response": "ok"})
+        except Exception as e:
+            return JsonResponse({"response": "error", "msg": str(e)})
+
+    def add_standardized_form(self, obj, data):
+        form = StandardizedForm(standardized_form=data['form'], date=data['date'], location=obj)
+        form.save()
+
+    def add_phonetic_transcription(self, obj, data):
+        phonetic_transcription = PhoneticTranscription(
+            location=obj,
+            phonetic_transcription=data['phonetic_transcription'],
+            is_standard=data['is_standard'] == 'true',
+            informant=Informant.objects.get(pk=data['informant']),
+            created_at=data['created_at']
+        )
+        phonetic_transcription.save()
+        phonetic_transcription_link = PhoneticTranscriptionLink(phonetic_transcription=phonetic_transcription, link=data['link'])
+        phonetic_transcription_link.save()
+
+    def add_old_form(self, obj, data):
+        old_form = OldForm(
+            location=obj,
+            old_form=data['old_form'],
+            litteral_year=data['litteral_year'],
+            year=data['year'],
+            book=Book.objects.get(pk=data['book']),
+            reference=data['reference']
+        )
+        old_form.save()
+
+    def add_other_form(self, obj, data):
+        other_form = OtherForm(
+            location=obj,
+            usage_form=data['usage_form'],
+            litteral_year=data['litteral_year'],
+            year=data['year'],
+            book=Book.objects.get(pk=data['book']),
+            reference=data['reference']
+        )
+        other_form.save()
+
+    def add_attested_form(self, obj, data):
+        attested_form = AttestedForm(
+            location=obj,
+            attested_form=data['attested_form'],
+            is_labeled=data['is_labeled'] == 'true',
+            litteral_year=data['litteral_year'],
+            year=data['year'],
+            book=Book.objects.get(pk=data['book']),
+            reference=data['reference']
+        )
+        attested_form.save()
+
+    def delete_standardized_form(self, obj, data):
+        StandardizedForm.objects.get(location=obj, pk=data['id']).delete()
+
+    def delete_phonetic_transcription(self, obj, data):
+        PhoneticTranscription.objects.get(location=obj, pk=data['id']).delete()
+
+    def delete_old_form(self, obj, data):
+        OldForm.objects.get(location=obj, pk=data['id']).delete()
+
+    def delete_other_form(self, obj, data):
+        OtherForm.objects.get(location=obj, pk=data['id']).delete()
+
+    def delete_attested_form(self, obj, data):
+        AttestedForm.objects.get(location=obj, pk=data['id']).delete()

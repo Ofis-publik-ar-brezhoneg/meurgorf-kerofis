@@ -1,5 +1,6 @@
 {% extends "semantic/meurgorf/base.html" %}
 {% load static %}
+{% load i18n %}
 {% load commun_tags %}
 
 {% block content %}
@@ -8,19 +9,19 @@
         <h1 class="ui header">
             <i class="history icon"></i>
             <div class="content">MeurGorf
-                <div class="sub header">dictionnaire historique du breton</div>
+                <div class="sub header">{% translate "dictionnaire historique du breton" %}</div>
             </div>
         </h1>
         <form method="POST" action="{% url 'term' %}" class="ui fluid form" id="formulaire">
             <div class="ui fluid action input{% if data.term == '' %} error{% endif %}">
                 {% csrf_token %}
                 <input id="page" type="hidden" name="page" value="{{ page }}" />
-                <input name="term" type="text" placeholder="Rechercher..." value="{{ data.term }}" onchange="reset_page()">
+                <input name="term" type="text" placeholder="{% translate "Rechercher..." %}" value="{{ data.term }}" onchange="reset_page()">
                 <select name="search_type" class="ui selection dropdown" onchange="reset_page()">
-                    <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
-                    <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
-                    <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
-                    <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
+                    <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>{% translate "partie de mot" %}</option>
+                    <option value="me"{% if data.search_type == "me" %} selected{% endif %}>{% translate "mot entier" %}</option>
+                    <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>{% translate "début de mot" %}</option>
+                    <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>{% translate "fin de mot" %}</option>
                 </select>
                 <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();">
                     <i class="search icon"></i>
@@ -29,12 +30,12 @@
             <div class="ui accordion field">
                 <div class="title{% if data.category or data.book %} active{% endif %}">
                     <i class="icon dropdown"></i>
-                    Plus d'options
+                    {% translate "Plus d'options" %}
                 </div>
                 <div class="content{% if data.category or data.abrev %} active{% endif %}">
                     <div class="two fields">
                         <div class="field">
-                            <label>Catégorie grammaticale</label>
+                            <label>{% translate "Catégorie grammaticale" %}</label>
                             <div class="ui fluid selection dropdown" id="select_category">
                                 <input type="hidden" name="category" value="{{ data.category }}">
                                 <i class="dropdown icon"></i>
@@ -67,7 +68,7 @@
 </div>
 <div class="ui six wide column">
     <div class="ui segment">
-        <h3 class="ui header">Historique de recherche</h3>
+        <h3 class="ui header">{% translate "Historique de recherche" %}</h3>
         <div class="ui horizontal list">
     {% for search_query in search_queries %}
             <a class="item" href="{% url 'term' %}?search={{ search_query.query }}&search_type={{ search_query.query_type }}">{{ search_query.query }}</a>
@@ -76,9 +77,9 @@
     </div>
     {% if related_terms %}
     <div class="ui segment">
-        <h3 class="ui header">Voir aussi</h3>
+        <h3 class="ui header">{% translate "Voir aussi" %}</h3>
         <div class="ui pink labels">
-            Mots Précédents :
+            {% translate "Mots Précédents :" %}
         {% for related_term in related_terms.0 %}
             <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
@@ -96,13 +97,13 @@
     <div class="ui compact segment">
         <div class="ui statistic">
             <div class="label">
-                le dictionnaire contient
+                {% translate "le dictionnaire contient" %}
             </div>
             <div class="value">
                 {{ terms_count }}
             </div>
             <div class="label">
-                entrées
+                {% translate "entrées" %}
             </div>
         </div>
     </div>
@@ -116,23 +117,23 @@
     <div class="ui sixteen wide column">
         <div class="ui segment">
         <h2 class="ui header">
-            La recherche a renvoyé
+            {% translate "La recherche a renvoyé" %}
             <span class="ui horizontal big label">{{ paginator.count }}</span>
-            résultats
+            {% translate "résultats" %}
         </h2>
         <table class="ui selectable celled striped table">
             <thead>
-                <tr><th>Entrée</th>
-                <th>Catégorie grammaticale</th>
+                <tr><th>{% translate "Entrée" %}</th>
+                <th>{% translate "Catégorie grammaticale" %}</th>
                 </tr>
             </thead>
             <tbody>
             {% for term in terms %}
                 <tr>
-                    <td class="selectable" data-label="Entrée">
+                    <td class="selectable" data-label="{% translate "Entrée" %}">
                         <a href="{% url 'term' term.id %}">{{ term.canonic_form|bold:data.term }}</a>
                     </td>
-                    <td data-label="Catégorie grammaticale">{{ term.grammatical_category.title_fra }}</td>
+                    <td data-label="{% translate "Catégorie grammaticale" %}">{{ term.grammatical_category.title_fra }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -140,7 +141,7 @@
                 <tr>
                     <th colspan="2">
                         <div class="ui left floated">
-                            Résultats {{ terms.start_index }} à {{ terms.end_index }} sur {{ paginator.count }}
+                            {% translate "Résultats" %} {{ terms.start_index }} {% translate "à" %} {{ terms.end_index }} {% translate "sur" %} {{ paginator.count }}
                         </div>
                         <div class="ui right floated pagination menu">
             {% if terms.has_previous %}
@@ -211,9 +212,9 @@
 <div class="row">
     <div class="ui sixteen wide column">
         <div class="ui segment">
-            <p>Mot absent du dictionnaire, vérifiez l'orthographe.</p>
-            <p>Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce que son rajout soit étudié.</p>
-            <a href="#">Nous contacter</a>
+            <p>{% translate "Mot absent du dictionnaire, vérifiez l'orthographe." %}</p>
+            <p>{% translate "Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce que son rajout soit étudié." %}</p>
+            <a href="#">{% translate "Nous contacter" %}</a>
         </div>
     </div>
 </div>

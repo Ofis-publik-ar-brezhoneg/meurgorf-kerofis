@@ -8,48 +8,47 @@
     <div class="ui stackable grid">
       <div class="sixteen wide column">
         <div class="ui teal fluid inverted segment">
-          <div class="fields">
+          <div class="inline fields">
             <div class="field">
-              <label>Pennger</label>
+              <label>Stagadenn</label>
               <div class="ui huge inverted input">
-                <input type="text" name="canonic_form" value="{{ data.canonic_form }}" onchange="reset_page()">
+                <input type="text" name="generic_name" value="{{ data.generic_name }}" onchange="reset_page()">
               </div>
             </div>
             <div class="field">
-              <label>Stumm istorel</label>
+              <label>Lec’hanv</label>
               <div class="ui huge inverted input">
-                <input type="text" name="historical_occurrence" value="{{ data.historical_occurrence }}" onchange="reset_page()">
+                <input type="text" name="name" value="{{ data.name }}" onchange="reset_page()">
               </div>
             </div>
-            <div class="field" style="width: 100%">
-              <label>Rumenn-ger</label>
-              <select class="ui fluid selection dropdown clearable" name="category" id="select_category" onchange="reset_page()">
-                <option></option>
-  {% for category in categories %}
-                <option value="{{ category.id }}"{% if data.category == category.id %} selected="selected"{% endif %}>{{ category.title_bre }}</option>
-  {% endfor %}
-              </select>
+            <div class="field">
+              <label>Gerioù-alc’hwez</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="search_keyword" value="{{ data.search_keyword }}" onchange="reset_page()">
+              </div>
             </div>
           </div>
           <div class="inline fields">
             <div class="field">
-              <div class="ui floating dropdown clearable labeled icon button" id="select_book" onchange="reset_page()">
-                <input type="hidden" name="book" value="{{ data.book }}">
-                <i class="book icon"></i>
-                <span class="text">Oberenn</span>
-                <div class="menu">
-                  <div class="ui icon search input">
-                    <i class="search icon"></i>
-                    <input type="text" placeholder="Rechercher un livre">
-                  </div>
-                  <div class="scrolling menu">
-                    <div class="item" data-text="Oberenn" data-value=""></div>
-    {% for book in books %}
-                    <div class="item" data-value="{{ book.id }}">{{ book.title }}</div>
-    {% endfor %}
-                  </div>
-                </div>
+              <label>Kumun</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="city" value="{{ data.city }}" onchange="reset_page()">
               </div>
+            </div>
+            <div class="field">
+              <label>Departamant</label>
+              <div class="ui huge inverted input">
+                <input type="text" name="department" value="{{ data.department }}" onchange="reset_page()">
+              </div>
+            </div>
+            <div class="field" style="width: 100%">
+              <label>Rummad</label>
+              <select class="ui fluid selection dropdown clearable" name="category" id="select_category" onchange="reset_page()">
+                <option></option>
+  {% for category in categories %}
+                <option value="{{ category.id }}"{% if data.category == category.id %} selected="selected"{% endif %}>{{ category.name_bre }}</option>
+  {% endfor %}
+              </select>
             </div>
           </div>
           <div class="inline fields">
@@ -78,6 +77,56 @@
               </div>
             </div>
           </div>
+          <div class="inline fields">
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_old" onchange="reset_page()"{% if data.is_old %} checked="checked"{% endif %}>
+                <label>Er stummoù kozh kepken</label>
+              </div>
+            </div>
+              <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_normalized" onchange="reset_page()"{% if data.is_normalized %} checked="checked"{% endif %}>
+                <label>Er stummoù skoueriekaet hepken</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_standardized" onchange="reset_page()"{% if data.is_standardized %} checked="checked"{% endif %}>
+                <label>Er stummoù testeniekaet hepken</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="display_normalized" onchange="reset_page()"{% if data.display_normalized %} checked="checked"{% endif %}>
+                <label>Ar stummoù skoueriekaet</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="has_coordinated" onchange="reset_page()"{% if data.has_coordinated %} checked="checked"{% endif %}>
+                <label>Gant daveennoù douaroniel</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_on_ign" onchange="reset_page()"{% if data.is_on_ign %} checked="checked"{% endif %}>
+                <label>Kaset d’an IGN</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_official" onchange="reset_page()"{% if data.is_official %} checked="checked"{% endif %}>
+                <label>Bet ofisialisaet</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="is_public" onchange="reset_page()"{% if data.is_public %} checked="checked"{% endif %}>
+                <label>Embannet</label>
+              </div>
+            </div>
+          </div>
           <div class="ui sixteen column centered grid">
             <div class="ui centered row">
               <div class="ui column">
@@ -89,16 +138,16 @@
           </div>
         </div>
       </div>
-  {% if terms %}
+  {% if locations %}
       <div class="sixteen wide column">
         <div class="ui teal segment" id="termenadur">
-            <h4 class="ui header">Disoc’h : {{ terms.start_index }}-{{ terms.end_index }} - Page {{ page }}/{{ paginator.num_pages }} </h4>
+            <h4 class="ui header">Disoc’h : {{ locations.start_index }}-{{ locations.end_index }} - Page {{ page }}/{{ paginator.num_pages }} </h4>
             <table class="ui selectable table">
               <tbody>
-    {% for term in terms %}
-                <tr onclick="javascript:document.location.href = '{% url 'skridaozer:meurgorf_etrefas' term.id %}'">
-                  <td>{{ term.canonic_form }}</td>
-                  <td>{{ term.grammatical_category.title_bre }}</td>
+    {% for location in locations %}
+                <tr onclick="javascript:document.location.href = '{% url 'skridaozer:kerofis_etrefas' location.id %}'">
+                  <td>{{ location.generic_name }}</td>
+                  <td>{{ location.category.name_bre }}</td>
                 </tr>
     {% endfor %}
                 <tr>

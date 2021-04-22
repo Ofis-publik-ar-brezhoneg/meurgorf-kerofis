@@ -1,28 +1,29 @@
 {% extends "semantic/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block page %}
     <div class="row">
         <div class="ui sixteen wide column">
             <div class="ui breadcrumb">
-                <a class="section" href="/">Accueil</a>
+                <a class="section" href="/">{% translate "Accueil" %}</a>
                 <i class="right angle icon divider"></i>
-                <div class="section">Ressources</div>
+                <div class="section">{% translate "Ressources" %}</div>
                 <i class="right angle icon divider"></i>
                 <div class="active section">Meurgorf</div>
             </div>
             <div class="ui four item pointing menu">
                 <a class="item{% if request.path == '/meurgorf/' %} active{% endif %}" href="/meurgorf/">
-                    Rechercher
+                    {% translate "Rechercher" %}
                 </a>
                 <a class="item{% if request.path == '/meurgorf/presentation' %} active{% endif %}" href="/meurgorf/presentation">
-                    Présentation
+                    {% translate "Présentation" %}
                 </a>
                 <a class="item{% if request.path == '/meurgorf/sources' %} active{% endif %}" href="/meurgorf/sources">
-                    Sources
+                    {% translate "Sources" %}
                 </a>
                 <a class="ui item{% if request.path == '/meurgorf/abrev' %} active{% endif %}" href="/meurgorf/abrev">
-                    Abréviations
+                    {% translate "Abréviations" %}
                 </a>
             </div>
         </div>

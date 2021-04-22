@@ -120,7 +120,7 @@ class LocationSerializer(serializers.ModelSerializer):
                   'phonetic_transcriptions_list', 'other_forms', 'attested_forms', 'name', 'on_ign', 'ign_date',
                   'formalized_date', 'is_public', 'generic_name', 'on_bf', 'reference', 'notes', 'formalized_proposal',
                   'proposal_author', 'square_bf', 'longitude', 'latitude', 'etymological_note_bre', 'old_forms',
-                  'etymological_note_fra', 'created_at', 'updated_at', 'created_by', 'updated_by', 'postal_code',
+                  'etymological_note_fra', 'created_at', 'created_by', 'postal_code',
                   'insee_code')
 
     def get_phonetic_transcriptions_list(self, instance):
@@ -226,10 +226,11 @@ class InformantSerializer(serializers.ModelSerializer):
 class CategoryStatSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     locations_count = serializers.SerializerMethodField()
+    percent = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ('name', 'locations_count')
+        fields = ('name', 'locations_count', 'percent')
 
     def get_name(self, obj):
         lang = self.context['request'].headers.get('Accept-Language', 'fr_FR')
@@ -237,3 +238,6 @@ class CategoryStatSerializer(serializers.ModelSerializer):
 
     def get_locations_count(self, obj):
         return obj.locations.count()
+
+    def get_percent(self, obj):
+        return round((obj.locations.count() / Location.objects.count()) * 100, 2)

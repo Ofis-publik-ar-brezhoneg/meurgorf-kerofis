@@ -1,11 +1,12 @@
 {% extends "semantic/kerofis/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="ui segment">
     <h1 class="ui header"><i class="map marked alternate icon"></i>
         <div class="content">KerOfis
-            <div class="sub header">Base de données toponymiques</div>
+            <div class="sub header">{% translate "Base de données toponymiques" %}</div>
         </div>
     </h1>
     <div class="ui text container">

@@ -32,10 +32,10 @@
           class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
           href="{% url 'skridaozer:meurgorf_klask' %}">Klask</a>
         <a
-          class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
+          class="item{% if request.resolver_match.url_name == 'meurgorf_stadegou' %} active selected{% endif %}"
           href="{% url 'skridaozer:meurgorf_stadegou' %}">Stadegoù</a>
         <a
-          class="item{% if request.resolver_match.url_name == 'meurgorf_klask' %} active selected{% endif %}"
+          class="item{% if request.resolver_match.url_name == 'meurgorf_ezporzhian' %} active selected{% endif %}"
           href="{% url 'skridaozer:meurgorf_ezporzhian' %}">Ezporzhiañ</a>
         <a
           class="item{% if request.resolver_match.url_name == 'meurgorf_etrefas' %} active selected{% endif %}"
@@ -61,6 +61,9 @@
         <a
            class="item{% if request.resolver_match.url_name == 'kerofis_ezporzhian' %} active selected{% endif %}"
            href="{% url 'skridaozer:kerofis_ezporzhian' %}">Ezporzhiañ</a>
+        <a
+          class="item{% if request.resolver_match.url_name == 'kerofis_etrefas' %} active selected{% endif %}"
+          href="{% url 'skridaozer:kerofis_etrefas' %}">Ouzhpennañ ur Stagadenn</a>
       </div>
     </div>
   </div>
@@ -71,7 +74,9 @@
         transition: 'overlay'
     });
     $('.ui.left.sidebar').sidebar('attach events', '.open.button');
-    $('.ui .dropdown').dropdown();
+    $('.ui .dropdown:not(.notclearable)').dropdown();
+    $('.ui .dropdown.clearable').dropdown({ clearable: true });
   </script>
+  {% block content-js %}{% endblock content-js %}
 </body>
 </html>
