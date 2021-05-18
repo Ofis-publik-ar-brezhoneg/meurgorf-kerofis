@@ -1,13 +1,13 @@
 <form class="ui fluid form" id="formulaire" method="POST">
     {% csrf_token %}
-    <h4 class="ui header">Je recherche un nom de lieu (commune, département, rue...)</h4>
+    <h4 class="ui header">Je recherche un nom de lieu (nom de commune, de village, de rue...)</h4>
     <div class="ui fluid action input">
         <input type="text" placeholder="Rechercher un nom..." value="{{ data.name }}" name="name">
         <select class="ui compact selection dropdown" name="search_type">
-            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de mot</option>
-            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>mot entier</option>
-            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de mot</option>
-            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de mot</option>
+            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>partie de nom</option>
+            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>nom entier</option>
+            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>début de nom</option>
+            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>fin de nom</option>
         </select>
         <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();"
             data-content="klikit amañ">
@@ -34,7 +34,7 @@
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox">
-                            <label>Nom de lieu en dehors de Bretagne</label>
+                            <label>Nom de lieu hors de Bretagne</label>
                         </div>
                     </div>
                 </div>
