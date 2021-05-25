@@ -1,14 +1,14 @@
 {% load i18n %}
 <form class="ui fluid form" id="formulaire" method="POST">
     {% csrf_token %}
-    <h4 class="ui header">{% translate "Je recherche un nom de lieu (commune, département, rue...)" %}</h4>
+    <h4 class="ui header">{% translate "Je recherche un nom de lieu (nom de commune, de village, de rue...)" %}</h4>
     <div class="ui fluid action input">
         <input type="text" placeholder="{% translate "Rechercher un nom..." %}" value="{{ data.name }}" name="name">
         <select class="ui compact selection dropdown" name="search_type">
-            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>{% translate "partie de mot" %}</option>
-            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>{% translate "mot entier" %}</option>
-            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>{% translate "début de mot" %}</option>
-            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>{% translate "fin de mot" %}</option>
+            <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>{% translate "partie de nom" %}</option>
+            <option value="me"{% if data.search_type == "me" %} selected{% endif %}>{% translate "nom entier" %}</option>
+            <option value="dm"{% if data.search_type == "dm" %} selected{% endif %}>{% translate "début de nom" %}</option>
+            <option value="fm"{% if data.search_type == "fm" %} selected{% endif %}>{% translate "fin de nom" %}</option>
         </select>
         <a class="ui pink icon button" onclick="document.getElementById('formulaire').submit();"
             data-content="klikit amañ">
@@ -35,7 +35,7 @@
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox">
-                            <label>{% translate "Nom de lieu en dehors de Bretagne" %}</label>
+                            <label>{% translate "Nom de lieu hors de Bretagne" %}</label>
                         </div>
                     </div>
                 </div>

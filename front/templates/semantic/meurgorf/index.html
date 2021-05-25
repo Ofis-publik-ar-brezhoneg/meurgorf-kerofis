@@ -16,7 +16,7 @@
             <div class="ui fluid action input{% if data.term == '' %} error{% endif %}">
                 {% csrf_token %}
                 <input id="page" type="hidden" name="page" value="{{ page }}" />
-                <input name="term" type="text" placeholder="{% translate "Rechercher..." %}" value="{{ data.term }}" onchange="reset_page()">
+                <input name="term" type="text" placeholder="{% translate "Rechercher un mot..." %}" value="{{ data.term }}" onchange="reset_page()">
                 <select name="search_type" class="ui selection dropdown" onchange="reset_page()">
                     <option value="pm"{% if data.search_type == "pm" %} selected{% endif %}>{% translate "partie de mot" %}</option>
                     <option value="me"{% if data.search_type == "me" %} selected{% endif %}>{% translate "mot entier" %}</option>
@@ -77,15 +77,15 @@
     </div>
     {% if related_terms %}
     <div class="ui segment">
-        <h3 class="ui header">{% translate "Voir aussi" %}</h3>
+        <h3 class="ui header">{% translate "Ordre alphabétique" %}</h3>
         <div class="ui pink labels">
-            {% translate "Mots Précédents :" %}
+            {% translate "Mots précédents :" %}
         {% for related_term in related_terms.0 %}
             <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
-            Mots suivants :
+            <p>{% translate "Mots suivants :" %}</p>
         {% for related_term in related_terms.1 %}
             <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
                 {{ related_term.canonic_form }}
@@ -141,7 +141,7 @@
                 <tr>
                     <th colspan="2">
                         <div class="ui left floated">
-                            {% translate "Résultats" %} {{ terms.start_index }} {% translate "à" %} {{ terms.end_index }} {% translate "sur" %} {{ paginator.count }}
+                            {% translate "Résultats" %} {{ terms.start_index }} {% translate "à" %} {{ terms.end_index }} {% translate "entrées" %} {{ paginator.count }} {% translate "sur" %}
                         </div>
                         <div class="ui right floated pagination menu">
             {% if terms.has_previous %}
