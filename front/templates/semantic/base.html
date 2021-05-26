@@ -39,12 +39,21 @@
         <div class="right menu">
             <div class="ui item">
                 <div class="ui dropdown inverted button">
+    {% if LANGUAGE_CODE == 'fr' %}
                     <i class="globe icon"></i>
                     français
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a href="#" class="disabled item">brezhoneg</a>
+                        <a href="/br{{ request.get_full_path|slice:'3:' }}" class="item">brezhoneg</a>
                     </div>
+    {% else %}
+                    <i class="globe icon"></i>
+                    brezhoneg
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="/fr{{ request.get_full_path|slice:'3:' }}" class="item">français</a>
+                    </div>
+    {% endif %}
                 </div>
             </div>
         </div>

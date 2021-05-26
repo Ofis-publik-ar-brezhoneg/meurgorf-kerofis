@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 17:38+0200\n"
+"POT-Creation-Date: 2021-05-25 20:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,148 +16,153 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !"
+"=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n"
+"%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > "
+"19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 "
+"&& n % 1000000 == 0) ? 3 : 4);\n"
 
 #: front/templates/semantic/base.html:34 front/templates/semantic/index.html:93
 msgid "Portail numérique pour la langue bretonne"
-msgstr ""
+msgstr "Porched niverel evit ar brezhoneg"
 
 #: front/templates/semantic/base.html:35 front/templates/semantic/base.html:152
 msgid "Office public de la langue bretonne"
-msgstr ""
+msgstr "Ofis publik ar brezhoneg"
 
 #: front/templates/semantic/base.html:59
 msgid "Rechercher sur le site..."
-msgstr ""
+msgstr "Klask el lec'hienn…"
 
 #: front/templates/semantic/base.html:64
 msgid "Outils numériques"
-msgstr ""
+msgstr "Ostilhoù niverel"
 
 #: front/templates/semantic/base.html:68 front/templates/semantic/index.html:20
 #: front/templates/semantic/kerofis/base.html:25
 #: front/templates/semantic/meurgorf/base.html:10
 msgid "Ressources"
-msgstr ""
+msgstr "Loazioù"
 
 #: front/templates/semantic/base.html:71 front/templates/semantic/index.html:23
 msgid "Bases de données"
-msgstr ""
+msgstr "Diazoù roadennoù"
 
 #: front/templates/semantic/base.html:74 front/templates/semantic/index.html:26
 msgid "Dictionnaires"
-msgstr ""
+msgstr "Geriadurioù"
 
 #: front/templates/semantic/base.html:79 front/templates/semantic/index.html:32
 msgid "Traduction"
-msgstr ""
+msgstr "Treiñ"
 
 #: front/templates/semantic/base.html:82 front/templates/semantic/index.html:35
 msgid "Traduction automatique à base de règles"
-msgstr ""
+msgstr "Treiñ emgefre diazezet war reolennoù"
 
 #: front/templates/semantic/base.html:89 front/templates/semantic/index.html:41
 msgid "Parole"
-msgstr ""
+msgstr "Komz"
 
 #: front/templates/semantic/base.html:92 front/templates/semantic/index.html:44
 msgid "Synthèse vocale"
-msgstr ""
+msgstr "Sintezenn ar gomz"
 
 #: front/templates/semantic/base.html:97 front/templates/semantic/index.html:49
 msgid "Applications"
-msgstr ""
+msgstr "Arloadoù"
 
 #: front/templates/semantic/base.html:100
 #: front/templates/semantic/index.html:52
 msgid "Correcteurs orthographiques"
-msgstr ""
+msgstr "Difazierioù reizhskrivadur"
 
 #: front/templates/semantic/base.html:104
 #: front/templates/semantic/index.html:56
 msgid "Données"
-msgstr ""
+msgstr "Roadennoù"
 
 #: front/templates/semantic/base.html:107
 #: front/templates/semantic/index.html:59
 msgid "Corpus"
-msgstr ""
+msgstr "Korpusoù"
 
 #: front/templates/semantic/base.html:108
 #: front/templates/semantic/index.html:60
 msgid "Corpus textuel"
-msgstr ""
+msgstr "Korpus testennoù"
 
 #: front/templates/semantic/base.html:109
 #: front/templates/semantic/index.html:61
 msgid "Corpus audio"
-msgstr ""
+msgstr "Korpus kleved"
 
 #: front/templates/semantic/base.html:114
 msgid "Les technologies de la langue"
-msgstr ""
+msgstr "Teknologiezhioù ar yezh"
 
 #: front/templates/semantic/base.html:117
 #: front/templates/semantic/index.html:68
 msgid "Actualités"
-msgstr ""
+msgstr "Keleier"
 
 #: front/templates/semantic/base.html:120
 #: front/templates/semantic/base.html:154
 #: front/templates/semantic/index.html:71
 msgid "A propos"
-msgstr ""
+msgstr "Diwar-benn"
 
 #: front/templates/semantic/base.html:123
 #: front/templates/semantic/index.html:74
 msgid "Liens utiles"
-msgstr ""
+msgstr "Liammoù talvoudus"
 
 #: front/templates/semantic/base.html:127
 #: front/templates/semantic/base.html:156
 #: front/templates/semantic/meurgorf/index.html:216
 msgid "Nous contacter"
-msgstr ""
+msgstr "Mont e darempred ganimp"
 
 #: front/templates/semantic/base.html:155
 #: front/templates/semantic/base.html:167
 msgid "Site internet"
-msgstr ""
+msgstr "Lec'hienn Internet"
 
 #: front/templates/semantic/base.html:162
 msgid "L'Office public de la langue bretonne"
-msgstr ""
+msgstr "Ofis publik ar brezhoneg"
 
 #: front/templates/semantic/base.html:171
 msgid "Contact"
-msgstr ""
+msgstr "Darempred"
 
 #: front/templates/semantic/base.html:180
 msgid "Mentions légales"
-msgstr ""
+msgstr "Menegoù lezennel"
 
 #: front/templates/semantic/base.html:183
 msgid "Crédit"
-msgstr ""
+msgstr "Kredad"
 
 #: front/templates/semantic/kerofis/base.html:23
 #: front/templates/semantic/meurgorf/base.html:8
 msgid "Accueil"
-msgstr ""
+msgstr "Degemer"
 
 #: front/templates/semantic/kerofis/base.html:32
 #: front/templates/semantic/meurgorf/base.html:16
 msgid "Rechercher"
-msgstr ""
+msgstr "Klask"
 
 #: front/templates/semantic/kerofis/base.html:35
 #: front/templates/semantic/meurgorf/base.html:19
 msgid "Présentation"
-msgstr ""
+msgstr "Kinnig"
 
 #: front/templates/semantic/kerofis/base.html:38
 #: front/templates/semantic/kerofis/index.html:50
 msgid "En savoir plus"
-msgstr ""
+msgstr "Gouzout hiroc'h"
 
 #: front/templates/semantic/kerofis/index.html:12
 #: front/templates/semantic/kerofis/location.html:9
@@ -165,148 +170,144 @@ msgstr ""
 #: front/templates/semantic/kerofis/savoir.html:8
 #: front/templates/semantic/kerofis/search.html:8
 msgid "Base de données toponymiques"
-msgstr ""
+msgstr "Diaz lec'hanvadurezh"
 
 #: front/templates/semantic/kerofis/index.html:18
 msgid "Voir la carte sur OpenStreetMap.bzh"
-msgstr ""
+msgstr "Gwelet ar gartenn war OpenStreetMap.bzh"
 
 #: front/templates/semantic/kerofis/index.html:36
 msgid "Nom de lieu du jour"
-msgstr ""
+msgstr "Anv-lec'h an deiz"
 
 #: front/templates/semantic/kerofis/index.html:56
 msgid "la base contient"
-msgstr ""
+msgstr "en diaz e kaver"
 
 #: front/templates/semantic/kerofis/index.html:63
 msgid "noms de lieux"
-msgstr ""
+msgstr "anv-lec'h"
 
 #: front/templates/semantic/kerofis/location.html:18
 msgid "forme bretonne normalisée"
-msgstr ""
+msgstr "stumm brezhonek skouer"
 
 #: front/templates/semantic/kerofis/location.html:22
 msgid "Informations générales"
-msgstr ""
+msgstr "Titouroù hollek"
 
 #: front/templates/semantic/kerofis/location.html:23
 msgid "Informations linguistiques"
-msgstr ""
+msgstr "Titouroù yezhoniel"
 
 #: front/templates/semantic/kerofis/location.html:29
 msgid "Prononciation normalisée"
-msgstr ""
+msgstr "Distagadur skouer"
 
 #: front/templates/semantic/kerofis/location.html:36
 #: front/templates/semantic/meurgorf/partial/result_table.html:10
 msgid "copier dans le presse-papier"
-msgstr ""
+msgstr "Eilañ er golver"
 
 #: front/templates/semantic/kerofis/location.html:42
 msgid "Autres formes actuelles"
-msgstr ""
+msgstr "Stummoù all a vremañ"
 
 #: front/templates/semantic/kerofis/location.html:48
 #: front/templates/semantic/kerofis/partial/location_form.html:44
 #: front/templates/semantic/kerofis/search.html:33
 msgid "Catégorie"
-msgstr ""
+msgstr "Rummad"
 
 #: front/templates/semantic/kerofis/location.html:51
 #: front/templates/semantic/kerofis/partial/location_form.html:25
 #: front/templates/semantic/kerofis/search.html:32
 msgid "Commune"
-msgstr ""
+msgstr "Kumun"
 
 #: front/templates/semantic/kerofis/location.html:56
 #: front/templates/semantic/kerofis/partial/location_form.html:53
 msgid "Département"
-msgstr ""
+msgstr "Departamant"
 
 #: front/templates/semantic/kerofis/location.html:61
 msgid "Copier le lien vers la fiche"
-msgstr ""
+msgstr "Eilañ al liamm a gas d'ar fichenn-mañ"
 
 #: front/templates/semantic/kerofis/location.html:71
 msgid "Formes anciennes"
-msgstr ""
+msgstr "Stummoù kozh"
 
 #: front/templates/semantic/kerofis/location.html:82
 msgid "Plus..."
-msgstr ""
+msgstr "Muioc'h..."
 
 #: front/templates/semantic/kerofis/location.html:85
 msgid "Formes bretonnes attestées"
-msgstr ""
+msgstr "Stummoù brezhonek testeniekaet"
 
 #: front/templates/semantic/kerofis/location.html:95
 msgid "Autres informations sur le toponyme"
-msgstr ""
+msgstr "Titouroù all war al lec'hanv"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:4
-msgid "Je recherche un nom de lieu (commune, département, rue...)"
-msgstr ""
+msgid "Je recherche un nom de lieu (nom de commune, de village, de rue...)"
+msgstr "Klask a ran un anv-lec'h (anv ur gumun, ur gêriadenn, ur straed...)"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:6
 msgid "Rechercher un nom..."
-msgstr ""
+msgstr "Klask un anv…"
 
-#: front/templates/semantic/kerofis/partial/location_form.html:8
 #: front/templates/semantic/meurgorf/index.html:20
 msgid "partie de mot"
-msgstr ""
+msgstr "ul lodenn eus an anv"
 
-#: front/templates/semantic/kerofis/partial/location_form.html:9
 #: front/templates/semantic/meurgorf/index.html:21
 msgid "mot entier"
-msgstr ""
+msgstr "anv a-bezh"
 
-#: front/templates/semantic/kerofis/partial/location_form.html:10
 #: front/templates/semantic/meurgorf/index.html:22
 msgid "début de mot"
-msgstr ""
+msgstr "deroù an anv"
 
-#: front/templates/semantic/kerofis/partial/location_form.html:11
 #: front/templates/semantic/meurgorf/index.html:23
 msgid "fin de mot"
-msgstr ""
+msgstr "dibenn an anv"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:21
 #: front/templates/semantic/meurgorf/index.html:32
 msgid "Plus d'options"
-msgstr ""
+msgstr "Klask ur ger…"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:29
 msgid "Selectionner une commune"
-msgstr ""
+msgstr "Dibab ur gumun"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:38
-msgid "Nom de lieu en dehors de Bretagne"
-msgstr ""
+msgid "Nom de lieu hors de Bretagne"
+msgstr "Anv-lec'h e-maez Breizh"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:46
 msgid "Toutes"
-msgstr ""
+msgstr "An holl"
 
 #: front/templates/semantic/kerofis/partial/location_form.html:55
 msgid "Tous"
-msgstr ""
+msgstr "An holl"
 
 #: front/templates/semantic/kerofis/search.html:17
 #: front/templates/semantic/meurgorf/index.html:119
 msgid "La recherche a renvoyé"
-msgstr ""
+msgstr "Kavet ez eus bet"
 
 #: front/templates/semantic/kerofis/search.html:19
 #: front/templates/semantic/meurgorf/index.html:121
 msgid "résultats"
-msgstr ""
+msgstr "disoc'h"
 
 #: front/templates/semantic/kerofis/search.html:25
 msgid "Cliquez sur le signe"
-msgstr ""
+msgstr "Klikit war an arouezenn evit gouzout hiroc'h war an anv"
 
 #: front/templates/semantic/kerofis/search.html:25
 msgid "pour accéder à plus d'information sur le nom."
@@ -314,156 +315,169 @@ msgstr ""
 
 #: front/templates/semantic/kerofis/search.html:29
 msgid "Générique"
-msgstr ""
+msgstr "Stagadenn"
 
 #: front/templates/semantic/kerofis/search.html:30
 msgid "Spécifique"
-msgstr ""
+msgstr "Korf an anv"
 
 #: front/templates/semantic/kerofis/search.html:31
 msgid "Forme bretonne correcte"
-msgstr ""
+msgstr "Stumm brezhonek reizh"
 
 #: front/templates/semantic/kerofis/search.html:46
-msgid "Voir la notice"
-msgstr ""
+msgid "Voir la fiche"
+msgstr "Gwelet ar fichenn"
 
 #: front/templates/semantic/meurgorf/base.html:22
 msgid "Sources"
-msgstr ""
+msgstr "Mammennoù"
 
 #: front/templates/semantic/meurgorf/base.html:25
 msgid "Abréviations"
-msgstr ""
+msgstr "Berradurioù"
 
 #: front/templates/semantic/meurgorf/index.html:11
 #: front/templates/semantic/meurgorf/presentation.html:5
 msgid "dictionnaire historique du breton"
-msgstr ""
+msgstr "geriadur istorel ar brezhoneg"
 
 #: front/templates/semantic/meurgorf/index.html:18
 msgid "Rechercher..."
-msgstr ""
+msgstr "Klask..."
 
 #: front/templates/semantic/meurgorf/index.html:37
 #: front/templates/semantic/meurgorf/index.html:126
 #: front/templates/semantic/meurgorf/index.html:135
 msgid "Catégorie grammaticale"
-msgstr ""
+msgstr "Rummenn-ger"
 
 #: front/templates/semantic/meurgorf/index.html:70
 msgid "Historique de recherche"
-msgstr ""
+msgstr "Istor an enklaskoù"
 
 #: front/templates/semantic/meurgorf/index.html:79
 msgid "Voir aussi"
-msgstr ""
+msgstr "Sellet ivez ouzh"
 
 #: front/templates/semantic/meurgorf/index.html:81
 msgid "Mots Précédents :"
-msgstr ""
+msgstr "Gerioù kent :"
 
 #: front/templates/semantic/meurgorf/index.html:99
 msgid "le dictionnaire contient"
-msgstr ""
+msgstr "er geriadur e kaver"
 
 #: front/templates/semantic/meurgorf/index.html:105
 msgid "entrées"
-msgstr ""
+msgstr "pennger"
 
 #: front/templates/semantic/meurgorf/index.html:125
 #: front/templates/semantic/meurgorf/index.html:132
 msgid "Entrée"
-msgstr ""
+msgstr "Pennger"
 
 #: front/templates/semantic/meurgorf/index.html:143
 msgid "Résultats"
-msgstr ""
+msgstr "Disoc'hoù"
 
 #: front/templates/semantic/meurgorf/index.html:143
 msgid "à"
-msgstr ""
+msgstr "betek"
 
 #: front/templates/semantic/meurgorf/index.html:143
 msgid "sur"
-msgstr ""
+msgstr "diwar…"
 
 #: front/templates/semantic/meurgorf/index.html:214
 msgid "Mot absent du dictionnaire, vérifiez l'orthographe."
-msgstr ""
+msgstr "N'emañ ket er geriadur, gwiriit ar reizhskrivadur."
 
 #: front/templates/semantic/meurgorf/index.html:215
-msgid ""
-"Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue "
-"bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce "
-"que son rajout soit étudié."
-msgstr ""
+msgid "Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce que son rajout soit étudié."
+msgstr "Graet eo Meurgorf evit dastum an holl c'herioù brezhonek, mard oc'h sur ez eus (bet) eus ar ger-se e c'hallit goulenn e vefe studiet evit bezañ ouzhpennet."
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:3
 msgid "Prononciation"
-msgstr ""
+msgstr "Distagadur"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:6
 msgid "écouter"
-msgstr ""
+msgstr "selaou"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:17
 msgid "Fréquence d'emploi:"
-msgstr ""
+msgstr "Stankter implij :"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:21
 msgid "Présent dans"
-msgstr ""
+msgstr "Kavet e"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:24
 msgid "Nouveau dictionnaire breton-français Roparz Hemon"
-msgstr ""
+msgstr "Geriadur nevez brezhoneg-galleg Roparz Hemon"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:35
 msgid "Mots parents"
-msgstr ""
+msgstr "Gerioù kar"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:48
 msgid "Aucun"
-msgstr ""
+msgstr "Hini ebet"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:57
 msgid "Variantes historiques ou dialectales attestées"
-msgstr ""
+msgstr "Adstummoù istorel pe rannyezhel testeniekaet"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:66
 #: front/templates/semantic/meurgorf/partial/result_table.html:97
 msgid "Aucune"
-msgstr ""
+msgstr "Hini ebet"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:72
 msgid "Télécharger les variantes"
-msgstr ""
+msgstr "Pellgargañ an adstummoù"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:79
 msgid "Formes fléchies"
-msgstr ""
+msgstr "Furmoù pleget"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:86
 msgid "Télécharger les formes fléchies"
-msgstr ""
+msgstr "Pellgargañ ar furmoù pleget"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:102
 msgid "Définition"
-msgstr ""
+msgstr "Termenadur"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:115
 msgid "Exemples historiques"
-msgstr ""
+msgstr "Skouerioù istorel"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:123
 msgid "Télécharger tous les exemples"
-msgstr ""
+msgstr "Pellgargañ an holl skouerioù"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:135
 msgid "Afficher le texte dans son orthographe originelle"
-msgstr ""
+msgstr "Diskwel an destenn en he reizhskrivadur orin"
 
 #: front/templates/semantic/meurgorf/partial/result_table.html:142
 msgid "Référence :"
-msgstr ""
+msgstr "Daveenn :"
+
+#: front/templates/semantic/kerofis/partial/location_form.html:8
+msgid "partie de nom"
+msgstr "ul lodenn eus an anv"
+
+#: front/templates/semantic/kerofis/partial/location_form.html:9
+msgid "nom entier"
+msgstr "anv a-bezh"
+
+#: front/templates/semantic/kerofis/partial/location_form.html:10
+msgid "début de nom"
+msgstr "deroù an anv"
+
+#: front/templates/semantic/kerofis/partial/location_form.html:11
+msgid "fin de nom"
+msgstr "dibenn an anv"

@@ -47,6 +47,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -90,7 +91,13 @@ DATABASES = {
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = False
 
-LANGUAGE_CODE = env('LANGUAGE_CODE', default='br-FR')
+LOCALE_PATHS = (ROOT_DIR.path('locale'), )
+LANGUAGES = [
+    ('br', 'Brezhoneg'),
+    ('fr', 'Français'),
+    ('es', 'Espagnol')
+]
+LANGUAGE_CODE = env('LANGUAGE_CODE', default='br-fr')
 TIME_ZONE = env('TIME_ZONE', default='Europe/Paris')
 USE_I18N = True
 USE_L10N = True
@@ -219,8 +226,6 @@ ADMIN_URL = r'^admin/'
 EMAIL_HOST = env('EMAIL_HOST', default='localhost')
 EMAIL_PORT = env('EMAIL_PORT', default=1025)
 EMAIL_SENDER = env('EMAIL_SENDER', default='')
-
-USE_NPM = env('USE_NPM', default=False)
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 

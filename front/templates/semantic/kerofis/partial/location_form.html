@@ -44,18 +44,30 @@
                         <label>{% translate "Catégorie" %}</label>
                         <select multiple="" class="ui dropdown" name="category">
                             <option value="tout">{% translate "Toutes" %}</option>
+    {% if LANGUAGE_CODE == 'fr' %}
         {% for category in categories %}
                             <option value="{{ category.pk }}">{{ category.name_fra }}</option>
         {% endfor %}
+    {% else %}
+        {% for category in categories %}
+                            <option value="{{ category.pk }}">{{ category.name_bre }}</option>
+        {% endfor %}
+    {% endif %}
                         </select>
                     </div>
                     <div class="field">
                         <label>{% translate "Département" %}</label>
                         <select multiple="" class="ui dropdown" name="department">
                             <option value="tout">{% translate "Tous" %}</option>
+    {% if LANGUAGE_CODE == 'fr' %}
         {% for department in departments %}
                             <option value="{{ department.pk }}">{{ department.name_fra }}</option>
         {% endfor %}
+    {% else %}
+        {% for department in departments %}
+                            <option value="{{ department.pk }}">{{ department.name_bre }}</option>
+        {% endfor %}
+    {% endif %}
                         </select>
                     </div>
                 </div>

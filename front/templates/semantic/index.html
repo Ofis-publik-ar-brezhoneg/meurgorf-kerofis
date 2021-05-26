@@ -10,7 +10,6 @@
 </head>
 <body>
 
-
 <!-- side menu -->
 
 <div class="ui fluid inverted secondary stackable sticky menu" id="top-intro">
@@ -25,7 +24,6 @@
       <a class="item" href="http://www.fr.brezhoneg.bzh/36-termofis.htm"><i class="search icon"></i>TermOfis</a>
       <div class="header">{% translate "Dictionnaires" %}</div>
       <a class="item" href="{% url 'term' %}"><i class="history icon"></i>MeurGorf</a>
-
     </div>
   </div>
   <div class="ui dropdown item">
@@ -90,14 +88,21 @@
           Porched niverel ar brezhoneg
         </span>
         <span class="ui sub header">
-          {% translate "Portail numérique pour la langue bretonne" %}
+          Portail numérique pour la langue bretonne
         </span>
       </h1>
       <div class="ui hidden divider"></div>
-      <a href="#" class="ui disabled inverted button">
+      {% if LANGUAGE_CODE == 'fr' %}
+      <a href="/br/" class="ui inverted button">
         Mont war al lec'hienn brezhonek
       </a>
-      <a href="#" class="ui inverted button">Accéder au site en français</a>
+      <a href="/fr/" class="ui disabled inverted button">Accéder au site en français</a>
+      {% else %}
+      <a href="/br/" class="ui disabled inverted button">
+        Mont war al lec'hienn brezhonek
+      </a>
+      <a href="/fr/" class="ui inverted button">Accéder au site en français</a>
+      {% endif %}
     </div>
 
   </div>

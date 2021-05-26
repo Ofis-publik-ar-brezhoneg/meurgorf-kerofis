@@ -1,0 +1,489 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-05-25 23:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: front/templates/semantic/base.html:34 front/templates/semantic/index.html:93
+msgid "Portail numérique pour la langue bretonne"
+msgstr ""
+
+#: front/templates/semantic/base.html:35 front/templates/semantic/base.html:161
+msgid "Office public de la langue bretonne"
+msgstr ""
+
+#: front/templates/semantic/base.html:68
+msgid "Rechercher sur le site..."
+msgstr ""
+
+#: front/templates/semantic/base.html:73
+msgid "Outils numériques"
+msgstr ""
+
+#: front/templates/semantic/base.html:77 front/templates/semantic/index.html:20
+#: front/templates/semantic/kerofis/base.html:26
+#: front/templates/semantic/meurgorf/base.html:11
+msgid "Ressources"
+msgstr ""
+
+#: front/templates/semantic/base.html:80 front/templates/semantic/index.html:23
+msgid "Bases de données"
+msgstr ""
+
+#: front/templates/semantic/base.html:83 front/templates/semantic/index.html:26
+msgid "Dictionnaires"
+msgstr ""
+
+#: front/templates/semantic/base.html:88 front/templates/semantic/index.html:32
+msgid "Traduction"
+msgstr ""
+
+#: front/templates/semantic/base.html:91 front/templates/semantic/index.html:35
+msgid "Traduction automatique à base de règles"
+msgstr ""
+
+#: front/templates/semantic/base.html:98 front/templates/semantic/index.html:41
+msgid "Parole"
+msgstr ""
+
+#: front/templates/semantic/base.html:101
+#: front/templates/semantic/index.html:44
+msgid "Synthèse vocale"
+msgstr ""
+
+#: front/templates/semantic/base.html:106
+#: front/templates/semantic/index.html:49
+msgid "Applications"
+msgstr ""
+
+#: front/templates/semantic/base.html:109
+#: front/templates/semantic/index.html:52
+msgid "Correcteurs orthographiques"
+msgstr ""
+
+#: front/templates/semantic/base.html:113
+#: front/templates/semantic/index.html:56
+msgid "Données"
+msgstr ""
+
+#: front/templates/semantic/base.html:116
+#: front/templates/semantic/index.html:59
+msgid "Corpus"
+msgstr ""
+
+#: front/templates/semantic/base.html:117
+#: front/templates/semantic/index.html:60
+msgid "Corpus textuel"
+msgstr ""
+
+#: front/templates/semantic/base.html:118
+#: front/templates/semantic/index.html:61
+msgid "Corpus audio"
+msgstr ""
+
+#: front/templates/semantic/base.html:123
+msgid "Les technologies de la langue"
+msgstr ""
+
+#: front/templates/semantic/base.html:126
+#: front/templates/semantic/index.html:68
+msgid "Actualités"
+msgstr ""
+
+#: front/templates/semantic/base.html:129
+#: front/templates/semantic/base.html:163
+#: front/templates/semantic/index.html:71
+msgid "A propos"
+msgstr ""
+
+#: front/templates/semantic/base.html:132
+#: front/templates/semantic/index.html:74
+msgid "Liens utiles"
+msgstr ""
+
+#: front/templates/semantic/base.html:136
+#: front/templates/semantic/base.html:165
+#: front/templates/semantic/meurgorf/index.html:217
+msgid "Nous contacter"
+msgstr ""
+
+#: front/templates/semantic/base.html:164
+#: front/templates/semantic/base.html:176
+msgid "Site internet"
+msgstr ""
+
+#: front/templates/semantic/base.html:171
+msgid "L'Office public de la langue bretonne"
+msgstr ""
+
+#: front/templates/semantic/base.html:180
+msgid "Contact"
+msgstr ""
+
+#: front/templates/semantic/base.html:189
+msgid "Mentions légales"
+msgstr ""
+
+#: front/templates/semantic/base.html:192
+msgid "Crédit"
+msgstr ""
+
+#: front/templates/semantic/kerofis/base.html:24
+#: front/templates/semantic/meurgorf/base.html:9
+msgid "Accueil"
+msgstr ""
+
+#: front/templates/semantic/kerofis/base.html:33
+#: front/templates/semantic/meurgorf/base.html:17
+msgid "Rechercher"
+msgstr ""
+
+#: front/templates/semantic/kerofis/base.html:36
+#: front/templates/semantic/meurgorf/base.html:20
+msgid "Présentation"
+msgstr ""
+
+#: front/templates/semantic/kerofis/base.html:39
+#: front/templates/semantic/kerofis/index.html:52
+msgid "En savoir plus"
+msgstr ""
+
+#: front/templates/semantic/kerofis/index.html:13
+#: front/templates/semantic/kerofis/location.html:10
+#: front/templates/semantic/kerofis/presentation.html:9
+#: front/templates/semantic/kerofis/savoir.html:9
+#: front/templates/semantic/kerofis/search.html:9
+msgid "Base de données toponymiques"
+msgstr ""
+
+#: front/templates/semantic/kerofis/index.html:19
+msgid "Voir la carte sur OpenStreetMap.bzh"
+msgstr ""
+
+#: front/templates/semantic/kerofis/index.html:38
+msgid "Nom de lieu du jour"
+msgstr ""
+
+#: front/templates/semantic/kerofis/index.html:59
+msgid "la base contient"
+msgstr ""
+
+#: front/templates/semantic/kerofis/index.html:66
+msgid "noms de lieux"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:19
+msgid "forme bretonne normalisée"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:23
+msgid "Informations générales"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:24
+msgid "Informations linguistiques"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:30
+msgid "Prononciation normalisée"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:37
+#: front/templates/semantic/meurgorf/partial/result_table.html:11
+msgid "copier dans le presse-papier"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:43
+msgid "Autres formes actuelles"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:49
+#: front/templates/semantic/kerofis/partial/location_form.html:44
+#: front/templates/semantic/kerofis/search.html:34
+msgid "Catégorie"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:52
+#: front/templates/semantic/kerofis/partial/location_form.html:25
+#: front/templates/semantic/kerofis/search.html:33
+msgid "Commune"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:57
+#: front/templates/semantic/kerofis/partial/location_form.html:53
+msgid "Département"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:62
+msgid "Copier le lien vers la fiche"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:72
+msgid "Formes anciennes"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:83
+msgid "Plus..."
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:86
+msgid "Formes bretonnes attestées"
+msgstr ""
+
+#: front/templates/semantic/kerofis/location.html:96
+msgid "Autres informations sur le toponyme"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:4
+msgid "Je recherche un nom de lieu (nom de commune, de village, de rue...)"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:6
+msgid "Rechercher un nom..."
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:8
+msgid "partie de nom"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:9
+msgid "nom entier"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:10
+msgid "début de nom"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:11
+msgid "fin de nom"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:21
+#: front/templates/semantic/meurgorf/index.html:33
+msgid "Plus d'options"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:29
+msgid "Selectionner une commune"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:38
+msgid "Nom de lieu hors de Bretagne"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:46
+msgid "Toutes"
+msgstr ""
+
+#: front/templates/semantic/kerofis/partial/location_form.html:55
+msgid "Tous"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:18
+#: front/templates/semantic/meurgorf/index.html:120
+msgid "La recherche a renvoyé"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:20
+#: front/templates/semantic/meurgorf/index.html:122
+msgid "résultats"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:26
+msgid "Cliquez sur le signe"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:26
+msgid "pour accéder à plus d'information sur le nom."
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:30
+msgid "Générique"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:31
+msgid "Spécifique"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:32
+msgid "Forme bretonne correcte"
+msgstr ""
+
+#: front/templates/semantic/kerofis/search.html:47
+msgid "Voir la fiche"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/base.html:23
+msgid "Sources"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/base.html:26
+msgid "Abréviations"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:12
+#: front/templates/semantic/meurgorf/presentation.html:6
+msgid "dictionnaire historique du breton"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:19
+msgid "Rechercher un mot..."
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:21
+msgid "partie de mot"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:22
+msgid "mot entier"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:23
+msgid "début de mot"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:24
+msgid "fin de mot"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:38
+#: front/templates/semantic/meurgorf/index.html:127
+#: front/templates/semantic/meurgorf/index.html:136
+msgid "Catégorie grammaticale"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:71
+msgid "Historique de recherche"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:80
+msgid "Ordre alphabétique"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:82
+msgid "Mots précédents :"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:88
+msgid "Mots suivants :"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:100
+msgid "le dictionnaire contient"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:106
+#: front/templates/semantic/meurgorf/index.html:144
+msgid "entrées"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:126
+#: front/templates/semantic/meurgorf/index.html:133
+msgid "Entrée"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:144
+msgid "Résultats"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:144
+msgid "à"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:144
+msgid "sur"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:215
+msgid "Mot absent du dictionnaire, vérifiez l'orthographe."
+msgstr ""
+
+#: front/templates/semantic/meurgorf/index.html:216
+msgid ""
+"Meurgorf a vocation a rassembler l'ensemble du vocabulaire de la langue "
+"bretonne, si vous êtes certain que ce mot existe vous pouvez demander à ce "
+"que son rajout soit étudié."
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:4
+msgid "Prononciation"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:7
+msgid "écouter"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:18
+msgid "Fréquence d'emploi :"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:22
+msgid "Présent dans :"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:25
+msgid "Nouveau dictionnaire breton-français Roparz Hemon"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:37
+msgid "Mots parents :"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:50
+msgid "Aucun"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:60
+msgid "Variantes historiques ou dialectales attestées"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:73
+#: front/templates/semantic/meurgorf/partial/result_table.html:105
+msgid "Aucune"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:79
+msgid "Télécharger les variantes"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:87
+msgid "Formes fléchies"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:94
+msgid "Télécharger les formes fléchies"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:110
+msgid "Définition"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:124
+msgid "Exemples historiques"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:133
+msgid "Télécharger tous les exemples"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:143
+msgid "Afficher le texte dans son orthographe originelle"
+msgstr ""
+
+#: front/templates/semantic/meurgorf/partial/result_table.html:155
+msgid "Référence :"
+msgstr ""

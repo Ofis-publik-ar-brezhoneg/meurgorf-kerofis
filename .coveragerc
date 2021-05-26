@@ -1,3 +1,0 @@
-[run]
-include = specter/*
-omit = *migrations*, *tests*

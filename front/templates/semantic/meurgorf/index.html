@@ -41,9 +41,15 @@
                                 <i class="dropdown icon"></i>
                                 <div class="default text"></div>
                                 <div class="menu">
+                            {% if LANGUAGE_CODE == 'fr' %}
                                 {% for category in categories %}
                                     <div class="item" data-value="{{ category.id }}">{{ category.title_fra }}</div>
                                 {% endfor %}
+                            {% else %}
+                                {% for category in categories %}
+                                    <div class="item" data-value="{{ category.id }}">{{ category.title_bre }}</div>
+                                {% endfor %}
+                            {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -81,13 +87,15 @@
         <div class="ui pink labels">
             {% translate "Mots précédents :" %}
         {% for related_term in related_terms.0 %}
-            <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
+            <a class="ui label" href="{% url 'term' related_term.id %}"
+               data-content="{% if LANGUAGE_CODE == 'fr' %}{{ related_term.grammatical_category.title_fra }}{% else %}{{ related_term.grammatical_category.title_bre }}{% endif %}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
             <p>{% translate "Mots suivants :" %}</p>
         {% for related_term in related_terms.1 %}
-            <a class="ui label" href="{% url 'term' related_term.id %}" data-content="{{ related_term.grammatical_category.title_fra }}">
+            <a class="ui label" href="{% url 'term' related_term.id %}"
+               data-content="{% if LANGUAGE_CODE == 'fr' %}{{ related_term.grammatical_category.title_fra }}{% else %}{{ related_term.grammatical_category.title_bre }}{% endif %}">
                 {{ related_term.canonic_form }}
             </a>
         {% endfor %}
@@ -133,7 +141,13 @@
                     <td class="selectable" data-label="{% translate "Entrée" %}">
                         <a href="{% url 'term' term.id %}">{{ term.canonic_form|bold:data.term }}</a>
                     </td>
-                    <td data-label="{% translate "Catégorie grammaticale" %}">{{ term.grammatical_category.title_fra }}</td>
+                    <td data-label="{% translate "Catégorie grammaticale" %}">
+                {% if LANGUAGE_CODE == 'fr' %}
+                        {{ term.grammatical_category.title_fra }}
+                {% else %}
+                        {{ term.grammatical_category.title_bre }}
+                {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -196,9 +210,13 @@
         {% for term in terms %}
             <a class="item{% if forloop.counter == 1 %} active{% endif %}" data-tab="{{ term.id }}">
                 <h3 class="ui header">{{ term.canonic_form }}
-                  <div class="sub header">
-                    {{ term.grammatical_category.title_fra }}
-                  </div>
+                    <div class="sub header">
+                    {% if LANGUAGE_CODE == 'fr' %}
+                        {{ term.grammatical_category.title_fra }}
+                    {% else %}
+                        {{ term.grammatical_category.title_bre }}
+                    {% endif %}
+                    </div>
                 </h3>
             </a>
         {% endfor %}
