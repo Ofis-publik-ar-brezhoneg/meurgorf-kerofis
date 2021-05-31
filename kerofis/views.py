@@ -331,7 +331,7 @@ class SkridaozerKerofisSearchView(TemplateView):
             if data.get('generic_name'):
                 filters[f"generic_name__unaccent__{operation}"] = data['generic_name']
             if data.get('name'):
-                filters[f"generic_name__unaccent__{operation}"] = data['name']
+                filters[f"name__unaccent__{operation}"] = data['name']
             if data.get('city'):
                 filters[f"city__name__unaccent__{operation}"] = data['city']
             if data.get('department'):
