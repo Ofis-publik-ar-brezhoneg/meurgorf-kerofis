@@ -204,6 +204,10 @@
 
 {% block content-js %}
   <script type="text/javascript">
+    $(document).ready(
+        function () {
+            $('.ui.checkbox').checkbox();
+    });
     $('.paginator').on('click', function () {
         $('#page').val(this.dataset.value);
         $('#formulaire').submit();

@@ -226,14 +226,14 @@ class SkridaozerKerofisLocationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['location_id'] = kwargs.get('location_id', '0')
+        context['location_id'] = self.kwargs.get('location_id', '0')
         context['cities'] = City.objects.all().order_by('name_bre')
         context['categories'] = Category.objects.all().order_by('name_bre')
         context['informants'] = Informant.objects.all().order_by('first_name', 'last_name')
         context['books'] = Book.objects.all().order_by('abbrevation')
 
-        if kwargs.get('location_id'):
-            context['location'] = Location.objects.get(pk=kwargs['location_id'])
+        if self.kwargs.get('location_id'):
+            context['location'] = Location.objects.get(pk=self.kwargs['location_id'])
 
         return context
 
@@ -241,7 +241,7 @@ class SkridaozerKerofisLocationView(TemplateView):
         context = self.get_context_data(**kwargs)
         data = self.request.POST
 
-        if kwargs.get('location_id'):
+        if self.kwargs.get('location_id'):
             form = LocationForm(self.request.POST, instance=context['location'])
             if form.is_valid():
                 form.save()
@@ -360,8 +360,8 @@ class SkridaozerKerofisInformantView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['informants'] = Informant.objects.all().order_by('id')
 
-        if kwargs.get('informant_id'):
-            context['data'] = Informant.objects.get(pk=kwargs['informant_id'])
+        if self.kwargs.get('informant_id'):
+            context['data'] = Informant.objects.get(pk=self.kwargs['informant_id'])
 
         return context
 
@@ -402,7 +402,7 @@ class SkridaozerKerofisAjaxView(View):
     def post(self, request, *args, **kwargs):
         try:
             action = request.POST.get('action')
-            obj = Location.objects.get(pk=kwargs['location_id'])
+            obj = Location.objects.get(pk=self.kwargs['location_id'])
             getattr(self, action)(obj, request.POST)
 
             return JsonResponse({"response": "ok"})

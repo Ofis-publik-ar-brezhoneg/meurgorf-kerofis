@@ -78,7 +78,7 @@ class SkridaozerBookView(TemplateView):
     def post(self, request, *args, **kwargs):
         data = self.request.POST
 
-        instance = Book.objects.get(pk=kwargs['book_id'])
+        instance = Book.objects.get(pk=self.kwargs['book_id'])
         instance.abbrevation = data['abbrevation']
         instance.title = data['title']
         instance.description = data['description']
@@ -96,7 +96,7 @@ class SkridaozerBookView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if kwargs.get('book_id'):
-            context['book'] = Book.objects.get(pk=kwargs['book_id'])
+            context['book'] = Book.objects.get(pk=self.kwargs['book_id'])
         if self.request.GET.get('abbrevation') or self.request.GET.get('title'):
             context['books'] = Book.objects.filter(abbrevation__icontains=self.request.GET.get('abbrevation'),
                                                    title__icontains=self.request.GET.get('title'))

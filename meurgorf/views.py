@@ -197,9 +197,9 @@ class SkridaozerMeurgorfTermView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = GrammaticalCategory.objects.all().order_by('title_bre')
         context['books'] = Book.objects.all().order_by('abbrevation')
-        context['term_id'] = kwargs.get('term_id', 0)
-        if kwargs.get('term_id'):
-            context['term'] = Term.objects.get(pk=kwargs['term_id'])
+        context['term_id'] = self.kwargs.get('term_id', 0)
+        if self.kwargs.get('term_id'):
+            context['term'] = Term.objects.get(pk=self.kwargs['term_id'])
             context['related_terms'] = get_related(context['term'].canonic_form)
 
         return context
@@ -208,7 +208,7 @@ class SkridaozerMeurgorfTermView(TemplateView):
         context = self.get_context_data(**kwargs)
         data = self.request.POST
 
-        if kwargs.get('term_id'):
+        if self.kwargs.get('term_id'):
             form = TermForm(self.request.POST, instance=context['term'])
             if form.is_valid():
                 form.save()
@@ -301,7 +301,7 @@ class SkridaozerMeurgorfAjaxView(View):
     def post(self, request, *args, **kwargs):
         try:
             action = request.POST.get('action')
-            obj = Term.objects.get(pk=kwargs['term_id'])
+            obj = Term.objects.get(pk=self.kwargs['term_id'])
             getattr(self, action)(obj, request.POST)
 
             return JsonResponse({"response": "ok"})
