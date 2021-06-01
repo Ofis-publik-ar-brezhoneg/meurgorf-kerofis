@@ -9,7 +9,6 @@ from .models import Location
 from .models import Category
 from .models import City
 from .models import Department
-from .models import Informant
 from .models import StandardizedForm
 from .models import PhoneticTranscription
 from .models import OtherForm
@@ -214,13 +213,6 @@ class LocationSerializer(serializers.ModelSerializer):
             instance.city.save()
 
         return super().update(instance, validated_data)
-
-
-class InformantSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Informant
-        fields = '__all__'
 
 
 class CategoryStatSerializer(serializers.ModelSerializer):

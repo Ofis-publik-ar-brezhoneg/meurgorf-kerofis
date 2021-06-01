@@ -148,6 +148,18 @@
             </table>
         </div>
       </div>
+    {% else %}
+        {% if terms.end_index == 0 %}
+    <div class="sixteen wide column">
+        <div class="ui teal segment">
+            <h3>La référence n'a pas été trouvé</h3>
+            <a class="ui labeled icon button"
+               href="{% url 'skridaozer:meurgorf_ouzhpennan' %}?canonic_form={{ request.POST.canonic_form }}&grammatical_category={{ request.POST.category }}">
+                <i class="add icon"></i>Ouzhpennañ
+            </a>
+        </div>
+    </div>
+        {% endif %}
     {% endif %}
     </div>
   </form>

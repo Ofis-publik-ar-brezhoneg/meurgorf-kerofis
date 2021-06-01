@@ -17,7 +17,6 @@ from rest_framework.response import Response
 from commun.pagination import StandardPagination
 from commun.pagination import AutoCompletePagination
 from commun.views import ExportView
-from commun.views import OldExportView
 from commun.models import Book
 
 from .models import Category
@@ -35,15 +34,8 @@ from .models import PhoneticTranscriptionLink
 from .filters import LocationFilter
 from .forms import LocationForm
 from .serializers import LocationSerializer
-from .serializers import LocationCategorySerializer
-from .serializers import InformantSerializer
 from .serializers import CategoryStatSerializer
-from .serializers import CitySerializer
-from .serializers import StandardizedFormSerializer
-from .serializers import PhoneticTranscriptionsSerializer
-from .serializers import OldFormsSerializer
-from .serializers import OtherFormsSerializer
-from .serializers import AttestedFormSerializer
+
 
 OPERATIONS = {
     "pm": "icontains",
@@ -115,12 +107,6 @@ class KerofisRedirect(RedirectView):
         return reverse('kerofis', kwargs={'location_id': location_id})
 
 
-class LocationCategoryView(ModelViewSet):
-    serializer_class = LocationCategorySerializer
-    model = Category
-    queryset = Category.objects.all()
-
-
 class LocationView(ModelViewSet):
     serializer_class = LocationSerializer
     model = Location
@@ -141,84 +127,6 @@ class LocationView(ModelViewSet):
                 self._paginator = self.pagination_class()
 
         return self._paginator
-
-
-class InformantView(ModelViewSet):
-    serializer_class = InformantSerializer
-    model = Informant
-    queryset = Informant.objects.all()
-
-
-class KerofisStatView(GenericViewSet):
-    serializer_class = CategoryStatSerializer
-    model = Category
-    queryset = Category.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
-
-        return Response({
-            "locations": Location.objects.count(),
-            "phonetic_transcription": PhoneticTranscription.objects.count(),
-            "locations_with_phonetic": Location.objects.filter(phonetic_transcriptions__isnull=False).count(),
-            "normalized_forms": StandardizedForm.objects.count(),
-            "public_locations": Location.objects.filter(is_public=True).count(),
-            "old_forms": OldForm.objects.count(),
-            "attested_forms": AttestedForm.objects.count(),
-            "other_forms": OtherForm.objects.count(),
-            "has_coordinates": Location.objects.filter(longitude__isnull=False).count(),
-            "has_formalized_date": Location.objects.filter(formalized_date__isnull=False).count(),
-            "is_on_ign": Location.objects.filter(on_ign=True).count(),
-            "etymological_note_fra": Location.objects.filter(etymological_note_fra__isnull=False).count(),
-            "etymological_note_bre": Location.objects.filter(etymological_note_bre__isnull=False).count(),
-            "nb_query": TermSearchQuery.objects.count(),
-            "standard_phonetic": PhoneticTranscription.objects.filter(is_standard=True).count(),
-            "phonetic_links": PhoneticTranscriptionLink.objects.count(),
-            "by_department": Location.objects.values('department__name_bre').annotate(locations_count=Count('id')),
-            "categories": serializer.data
-        })
-
-
-class KerofisExportView(OldExportView):
-    model = Location
-    queryset = Location.objects.all()
-
-
-class CityView(ModelViewSet):
-    serializer_class = CitySerializer
-    model = City
-    queryset = City.objects.all()
-
-
-class StandardizedFormView(ModelViewSet):
-    serializer_class = StandardizedFormSerializer
-    model = StandardizedForm
-    queryset = StandardizedForm.objects.all()
-
-
-class PhoneticTranscriptionView(ModelViewSet):
-    serializer_class = PhoneticTranscriptionsSerializer
-    model = PhoneticTranscription
-    queryset = PhoneticTranscription.objects.all()
-
-
-class OldFormView(ModelViewSet):
-    serializer_class = OldFormsSerializer
-    model = OldForm
-    queryset = OldForm.objects.all()
-
-
-class OtherFormView(ModelViewSet):
-    serializer_class = OtherFormsSerializer
-    model = OtherForm
-    queryset = OtherForm.objects.all()
-
-
-class AttestedFormView(ModelViewSet):
-    serializer_class = AttestedFormSerializer
-    model = AttestedForm
-    queryset = AttestedForm.objects.all()
 
 
 class SkridaozerKerofisLocationView(TemplateView):
@@ -253,6 +161,16 @@ class SkridaozerKerofisLocationView(TemplateView):
             return redirect(reverse('skridaozer:kerofis_etrefas', kwargs={'location_id': obj.id}))
 
         return self.render_to_response(context)
+
+
+class SkridaozerKerofisAddLocationView(RedirectView):
+    pattern_name = 'skridaozer:kerofis_etrefas'
+
+    def get_redirect_url(self, *args, **kwargs):
+        location = Location(name=self.request.GET['name'], generic_name=self.request.GET['generic_name'])
+        location.save()
+
+        return super().get_redirect_url(location_id=location.id)
 
 
 class SkridaozerKerofisStatView(TemplateView):
@@ -317,8 +235,6 @@ class SkridaozerKerofisSearchView(TemplateView):
     template_name = 'semantic/skridaozer/kerofis/klask.html'
 
     def get_context_data(self, **kwargs):
-        queryset = None
-
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all().order_by('name_bre')
 
@@ -333,18 +249,26 @@ class SkridaozerKerofisSearchView(TemplateView):
             if data.get('name'):
                 filters[f"name__unaccent__{operation}"] = data['name']
             if data.get('city'):
-                filters[f"city__name__unaccent__{operation}"] = data['city']
+                filters[f"city__name_bre__unaccent__{operation}"] = data['city']
             if data.get('department'):
-                filters['department__name__unaccent'] = data['department']
+                filters['department__name_bre__unaccent'] = data['department']
             if data.get('category'):
                 filters['category'] = data['category']
 
+            sorting = self.request.POST.get('sorting_field', 'generic_name')
+            if self.request.POST.get('sorting_order') == 'desc':
+                sorting = f'-{sorting}'
+
             queryset = Location.objects.filter(**filters)
-            paginator = Paginator(queryset.order_by('generic_name', 'pk').distinct('generic_name', 'pk'), 20)
+            paginator = Paginator(queryset.order_by(sorting, 'pk'), 20)
             context['paginator'] = paginator
             context['locations'] = paginator.get_page(context['page'])
         else:
             context['data'] = {'search_type': 'istartswith'}
+
+        context['sorting_field'] = self.request.POST.get('sorting_field', 'generic_name')
+        context['sorting_order'] = self.request.POST.get('sorting_order', 'asc')
+        context['sorting_label'] = 'descending' if self.request.POST.get('sorting_order') == 'desc' else 'ascending'
 
         return context
 

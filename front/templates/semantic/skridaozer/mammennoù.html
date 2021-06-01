@@ -14,13 +14,6 @@
             <i class="save icon"></i>Enrollañ
           </button>
 
-          <!--
-          <p></p>
-          <button class="ui button" name="button">
-            Krouiñ ur fichenn nevez
-          </button>
-          -->
-
           <p></p>
           <a class="ui negative labeled icon button" name="button" href="{% url 'skridaozer:mammennou' %}">
             <i class="delete icon"></i>Dilemel
@@ -122,6 +115,7 @@
         </div>
       </div>
   {% endif %}
+  {% if books %}
       <div class="sixteen wide column">
         <div class="ui teal segment">
           <table class="ui very basic table">
@@ -129,6 +123,7 @@
               <tr>
                 <th>Berradur</th>
                 <th>Levr</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
@@ -140,12 +135,27 @@
                 <td class="selectable{% if not book.is_active %} grey-text{% endif %}">
                   <a href="{% url 'skridaozer:mammennou' book.id %}">{{ book.title }}</a>
                 </td>
+                <td>
+                  <a href="{% url 'skridaozer:mammennou_lemel' book.id %}" class="ui icon button">
+                    <i class="trash icon"></i>
+                  </a>
+                </td>
               </tr>
             {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
+  {% else %}
+      <div class="sixteen wide column">
+        <div class="ui teal segment">
+          <h3>La référence n'a pas été trouvé</h3>
+          <a href="{% url 'skridaozer:mammennou_ouzhpennan' %}?abbrevation={{ request.GET.abbrevation }}" class="ui labeled icon button">
+                  <i class="add icon"></i>Ouzhpennañ
+          </a>
+        </div>
+      </div>
+  {% endif %}
     </div>
   </form>
   <style>
