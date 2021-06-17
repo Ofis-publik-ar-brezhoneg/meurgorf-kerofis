@@ -10,17 +10,11 @@
         </div>
     </h1>
     <div class="ui text container">
-        <p>KerOfis est la base de données du service Patrimoine linguistique et signalisation de l'Office public. Elle
-            permet de consulter la forme bretonne des toponymes bretons et d'obtenir des informations de type
-            étymologique sur ces toponymes.</p>
-        <p>Vous trouverez également dans KerOfis les formes bretonnes de noms de lieux étrangers (l'Europe, la Corse,
-            les Andes, le Nil, etc.), ainsi que les noms administratifs de Bretagne (noms de Pays, de Communautés de
-            communes, etc.).</p>
-        <p>Les formes correctes des topoynmes figurant dans KerOfis sont rassemblées dans un fichier libre de droits que
-            l'on peut télécharger ici : Données libres de droits</p>
-        <p>La liste des communes de Bretagne est accessible ici.</p>
-        <p>Contactez le Service Patrimoine linguistique et signalisation pour plus d'informations.</p>
-        <p></p>
+{% if LANGUAGE_CODE == 'fr' %}
+    {% include 'semantic/kerofis/partial/presentation_fr.html' %}
+{% else %}
+    {% include 'semantic/kerofis/partial/presentation_br.html' %}
+{% endif %}
     </div>
 </div>
 {% endblock content %}
