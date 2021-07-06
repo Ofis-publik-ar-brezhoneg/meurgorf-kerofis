@@ -1,5 +1,6 @@
 {% extends "semantic/skridaozer/base.html" %}
 {% load static %}
+{% load commun_tags %}
 
 {% block content %}
   <p></p>
@@ -14,15 +15,13 @@
               <i class="save icon"></i>Enrollañ
             </button>
             <p></p>
-  {% if location %}
-            <a class="ui button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+            <a class="ui button" href="{% url 'skridaozer:kerofis_etrefas' %}">
               Krouiñ ur fichenn nevez
             </a>
-  {% else %}
-            <a class="ui negative labeled icon button" href="{% url 'skridaozer:meurgorf_etrefas' %}">
+            <p></p>
+            <a class="ui negative labeled icon button" href="#" onclick="javascript:$('#delete_modal').modal('show');">
               <i class="delete icon"></i>Dilemel
             </a>
-  {% endif %}
           </div>
         </div>
       </div>
@@ -72,20 +71,21 @@
               </div>
             </div>
 
-
             <div style="max-height:300px;overflow-y: scroll;overflow-x: hidden" ;>
               <table class="ui very compact table">
                 <tbody>
                 {% for standardized_form in location.standardized_forms.all %}
                   <tr>
                     <td>{{ standardized_form.standardized_form }}</td>
-                    <td>{{ standardized_form.date }}</td>
+                    <td>{{ standardized_form.date|date:"d/m/Y" }}</td>
                     <td class="collapsing">
-                      <button class="ui mini icon button" type="button">
+                      <button class="ui mini icon button open_update" type="button"
+                              data-url="{% url 'skridaozer:kerofis_view' 'standardized_form' standardized_form.id %}">
                         <i class="edit icon"></i>
                       </button>
                       <button class="ui mini icon button" type="button" id="delete_standardized_form"
-                              data-id="{{ standardized_form.id }}">
+                              data-id="{{ standardized_form.id }}"
+                      >
                         <i class="delete icon"></i>
                       </button>
                     </td>
@@ -136,7 +136,7 @@
             <div class="ui five fields">
               <div class="field">
                 <label>Deiziad IGN</label>
-                <input type="date" name="ign_date" value="{{ location.ign_date }}">
+                <input type="date" name="ign_date" value="{{ location.ign_date|date:"Y-m-d" }}">
               </div>
               <div class="field">
                 <div class="ui checkbox">
@@ -150,13 +150,22 @@
                 <input type="text" name="square_bf" value="{{ location.square_bf }}">
               </div>
               <div class="field">
-                <label>Deiziad B. Fold.</label>
-                <input type="date" name="bf_date" value="{{ location.bf_date }}">
-              </div>
-              <div class="field">
                 <div class="ui checkbox">
                   <label>B. Fold.</label>
                   <input type="checkbox" name="on_bf" {% if location.on_bf %}checked="checked"{% endif %} />
+                </div>
+              </div>
+            </div>
+            <div class="ui fields"></div>
+            <div class="ui five fields">
+              <div class="field">
+                <label>Deiziad ofisielisaet</label>
+                <input type="date" name="formalized_date" value="{{ location.formalized_date|date:"Y-m-d" }}">
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <label>Bet ofisielisaet</label>
+                  <input type="checkbox" name="is_formalized" readonly {% if location.formalized_date %}checked="checked"{% endif %} />
                 </div>
               </div>
             </div>
@@ -216,7 +225,11 @@
                 {% for phonetic_transcription in location.phonetic_transcriptions.all %}
                   <tr>
                     <td>{{ phonetic_transcription.phonetic_transcription }}</td>
-                    <td><a href="#">{{ phonetic_transcription.informant.pk }}</a></td>
+                    <td>
+                      <a href="{% url 'skridaozer:kerofis_titourer' phonetic_transcription.informant.pk %}" target="_blank">
+                          {{ phonetic_transcription.informant.display }}
+                      </a>
+                    </td>
                     <td>{{ phonetic_transcription.created_at }}</td>
                     <td>
                       <div class="ui fitted checkbox checked">
@@ -228,7 +241,8 @@
                       <button class="ui mini icon button" type="button">
                         <i class="play icon"></i>
                       </button>
-                      <button class="ui mini icon button" type="button">
+                      <button class="ui mini icon button open_update" type="button"
+                              data-url="{% url 'skridaozer:kerofis_view' 'phonetic_transcription' phonetic_transcription.id %}">
                         <i class="edit icon"></i>
                       </button>
                       <button class="ui mini icon button" type="button" id="delete_phonetic_transcription"
@@ -268,11 +282,11 @@
                   </div>
                 </div>
                 <div class="ui fields">
-                  <div class="field">
+                  <div class="field" style="width: 100%">
                     <label>Berradur</label>
                     <select class="ui dropdown" id="old_form_book">
-  {% for book in books %}
-                      <option value="{{ book.id }}">{{ book.abbrevation }}</option>
+  {% for book in books_old %}
+                      <option value="{{ book.id }}">{{ book.abbrevation }}{% if book.title %} ({{ book.title }}){% endif %}</option>
   {% endfor %}
                     </select>
                   </div>
@@ -293,14 +307,15 @@
             <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
               <table class="ui very compact table">
                 <tbody>
-                {% for old_form in location.old_forms.all %}
+                {% for old_form in location.old_forms.all|order_by:"year" %}
                   <tr>
                     <td>{{ old_form.old_form }}<br> </td>
                     <td>{{ old_form.litteral_year }}</td>
                     <td>{{ old_form.book.abbrevation }}</td>
                     <td></td>
                     <td class="collapsing">
-                      <button class="ui mini icon button" type="button">
+                      <button class="ui mini icon button open_update" type="button"
+                              data-url="{% url 'skridaozer:kerofis_view' 'old_form' old_form.id %}">
                         <i class="edit icon"></i>
                       </button>
                       <button class="ui mini icon button" type="button" id="delete_old_form"
@@ -367,13 +382,14 @@
             <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
               <table class="ui very compact table">
                 <tbody>
-                {% for other_form in location.other_forms.all %}
+                {% for other_form in location.other_forms.all|order_by:"litteral_year" %}
                   <tr>
                     <td>{{ other_form.usage_form }}<br> </td>
                     <td>{{ other_form.litteral_year }}</td>
                     <td>{{ other_form.book.abbrevation }}</td>
                     <td class="collapsing">
-                      <button class="ui mini icon button" type="button">
+                      <button class="ui mini icon button" type="button"
+                              data-url="{% url 'skridaozer:kerofis_view' 'other_form' other_form.id %}">
                         <i class="edit icon"></i>
                       </button>
                       <button class="ui mini icon button" type="button" id="delete_other_form"
@@ -444,7 +460,7 @@
             <div style="max-height:200px;overflow-y: scroll;overflow-x: hidden" ;>
               <table class="ui very compact table">
                 <tbody>
-                {% for attested_form in location.attested_forms.all %}
+                {% for attested_form in location.attested_forms.all|order_by:"litteral_year" %}
                   <tr>
                     <td>{{ attested_form.attested_form }}</td>
                     <td>{{ attested_form.litteral_year }}</td>
@@ -453,7 +469,8 @@
                     </td>
                     <td>{{ attested_form.reference }}</td>
                     <td class="collapsing">
-                      <button class="ui mini icon button" type="button">
+                      <button class="ui mini icon button open_update" type="button"
+                              data-url="{% url 'skridaozer:kerofis_view' 'attested_form' attested_form.id %}">
                         <i class="edit icon"></i>
                       </button>
                       <button class="ui mini icon button" type="button" id="delete_attested_form"
@@ -534,7 +551,38 @@
       </div>
     </form>
   </div>
-
+  <div class="ui basic modal" id="delete_modal">
+    <div class="ui icon header">
+      <i class="trash icon"></i>
+      Supprimer la fiche
+    </div>
+    <div class="content">
+      <p>Etes-vous sur de vouloir supprimer cette fiche ?</p>
+    </div>
+    <div class="actions">
+      <div class="ui red basic cancel inverted button">
+        <i class="remove icon"></i>
+        Non
+      </div>
+      <div class="ui green ok inverted button" onclick="delete_entry()">
+        <i class="checkmark icon"></i>
+        Oui
+      </div>
+    </div>
+  </div>
+  <div class="ui modal" id="update_modal">
+    <form id="update_form" class="content">
+    </form>
+    <div class="actions">
+      <div class="ui black deny button">
+        Annuler
+      </div>
+      <div class="ui positive right labeled icon button" onclick="send_update()">
+        Mettre à jour
+        <i class="update icon"></i>
+      </div>
+    </div>
+  </div>
   <script type="text/javascript">
     function getCookie(name) {
         var cookieValue = null;
@@ -563,6 +611,42 @@
         if (data.response == 'ok') {
           window.location = window.location.href;
         }
+      });
+    }
+    function delete_entry() {
+      $.ajax({
+        url: '{% url 'skridaozer:kerofis_ajax' location_id %}',
+        type: 'DELETE',
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(function () {
+        window.location.replace("{% url 'skridaozer:kerofis_klask' %}");
+      });
+    }
+    function send_update() {
+      var paramObj = {};
+      $.each($('#update_form').serializeArray(), function(_, kv) {
+        if (paramObj.hasOwnProperty(kv.name)) {
+          paramObj[kv.name] = $.makeArray(paramObj[kv.name]);
+          paramObj[kv.name].push(kv.value);
+        }
+        else {
+          paramObj[kv.name] = kv.value;
+        }
+      });
+      send_info(paramObj);
+    }
+    function open_update_modal(url) {
+      $.ajax({
+        url: url,
+        type: 'GET',
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(function (data) {
+        $('#update_modal .content').html(data);
+        $('#update_modal').modal('show');
       });
     }
 
@@ -627,6 +711,9 @@
         'book': $('#attested_form_book').val(),
         'reference': $('#attested_form_reference').val(),
       });
+    });
+    $('.open_update').on('click', function() {
+      open_update_modal($(this).data('url'));
     });
     $('#delete_standardized_form').on('click', function() {
       send_info({

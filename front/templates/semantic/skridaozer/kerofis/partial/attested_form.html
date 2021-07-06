@@ -1,0 +1,36 @@
+<input type="hidden" name="action" value="update_attested_form" />
+<input type="hidden" name="id" value="{{ obj.id }}" />
+<div class="ui fields">
+  <div class="field">
+    <label>Anv</label>
+    <input type="text" name="attested_form" value="{{ obj.attested_form }}">
+  </div>
+  <div class="field">
+    <label>Bloavezh</label>
+    <input type="text" name="litteral_year" value="{{ obj.litteral_year }}">
+  </div>
+  <div class="field">
+    <label>Bloavezh niverel</label>
+    <input type="number" name="year" value="{{ obj.year }}">
+  </div>
+</div>
+<div clas="ui fields">
+  <div class="field">
+    <label>Skouer</label>
+    <input type="checkbox" name="is_labeled"{% if obj.is_labeled %} checked="checked"{% endif %}>
+  </div>
+</div>
+<div class="ui fields">
+  <div class="field">
+    <label>Berradur</label>
+    <select class="ui dropdown" name="book">
+{% for book in books %}
+      <option value="{{ book.id }}"{% if obj.book.id == book.id %} selected="selected"{% endif %}>{{ book.abbrevation }}</option>
+{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label>Daveenn</label>
+    <input type="text" name="reference" value="{{ obj.reference }}">
+  </div>
+</div>

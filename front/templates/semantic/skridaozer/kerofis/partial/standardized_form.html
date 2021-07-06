@@ -1,0 +1,12 @@
+<input type="hidden" name="action" value="update_standardized_form" />
+<input type="hidden" name="id" value="{{ obj.id }}" />
+<div class="ui fields">
+    <div class="field">
+      <label>Dibab</label>
+      <input type="text" name="standardized_form" placeholder="Anv" value="{{ obj.standardized_form }}">
+    </div>
+    <div class="field">
+      <label>Deiziad degemer</label>
+      <input type="date" name="date" placeholder="Deziad degemer" value="{{ obj.date|date:"Y-m-d" }}">
+    </div>
+</div>

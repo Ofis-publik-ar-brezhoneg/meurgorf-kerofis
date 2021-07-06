@@ -15,7 +15,6 @@ urlpatterns = [
         TemplateView.as_view(template_name='semantic/kerofis/savoir.html'),
         name='kerofis-savoir'
     ),
-    # url(r'^$', TemplateView.as_view(template_name='semantic/kerofis/index.html'), name='kerofis')
     url(r'^(?P<location_id>\d+)?$', KerofisSearch.as_view(), name='kerofis'),
     url(r'^city/(?P<location_name>[\w \[\]]+)?$', KerofisRedirect.as_view(), name='kerofis-city')
 ]

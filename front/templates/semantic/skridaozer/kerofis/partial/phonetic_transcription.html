@@ -1,0 +1,31 @@
+<input type="hidden" name="action" value="update_phonetic_transcription" />
+<input type="hidden" name="id" value="{{ obj.id }}" />
+<div class="ui fields">
+  <div class="field" style="width: 100%">
+    <label>Orin</label>
+    <select name="informant" class="ui search dropdown">
+{% for informant in informants %}
+      <option value="{{ informant.id }}"{% if obj.informant.id == informant.id %} selected="selected"{% endif %}>{{ informant }}</option>
+{% endfor %}
+    </select>
+  </div>
+</div>
+<div class="ui fields">
+  <div class="field">
+    <label>Distagadur</label>
+    <input type="text" name="phonetic_transcription" placeholder="Distagadur fonetik" value="{{ obj.phonetic_transcription }}">
+  </div>
+  <div class="field">
+    <label>Deiziad</label>
+    <input type="date" name="created_at" value="{{ obj.created_at|date:"Y-m-d" }}">
+  </div>
+</div>
+<div class="field">
+  <label>Skouer</label>
+  <input type="checkbox" name="is_standard"{% if obj.is_standard %} checked="checked"{% endif %}>
+</div>
+<!--<div class="fields">-->
+<!--  <div class="field">-->
+<!--    <input type="file" name="link">-->
+<!--  </div>-->
+<!--</div>-->

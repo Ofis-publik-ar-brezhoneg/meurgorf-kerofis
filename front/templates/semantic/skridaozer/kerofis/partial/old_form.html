@@ -1,0 +1,32 @@
+<input type="hidden" name="action" value="update_old_form" />
+<input type="hidden" name="id" value="{{ obj.id }}" />
+<div class="ui fields">
+  <div class="field">
+    <label>Stumm</label>
+    <input type="text" name="old_form" value="{{ obj.old_form }}">
+  </div>
+  <div class="field">
+    <label>Bloavezh</label>
+    <input type="text" name="litteral_year" value="{{ obj.litteral_year }}">
+  </div>
+  <div class="field">
+    <label>Bloavezh niverel</label>
+    <input type="text" name="year" value="{{ obj.year }}">
+  </div>
+</div>
+<div class="ui fields">
+  <div class="field" style="width: 50%">
+    <label>Berradur</label>
+    <select class="ui dropdown" name="book">
+{% for book in books_old %}
+      <option value="{{ book.id }}"{% if obj.book.id == book.id %} selected="selected"{% endif %}>
+        {{ book.abbrevation }}{% if book.title %} ({{ book.title }}){% endif %}
+      </option>
+{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label>Daveenn</label>
+    <input type="text" name="reference" value="{{ obj.reference }}">
+  </div>
+</div>

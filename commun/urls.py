@@ -19,6 +19,7 @@ from kerofis.views import SkridaozerKerofisSearchView
 from kerofis.views import SkridaozerKerofisInformantView
 from kerofis.views import SkridaozerKerofisExportInfoView
 from kerofis.views import SkridaozerKerofisAjaxView
+from kerofis.views import SkridaozerKerofisTemplateView
 
 
 class LoggedMainView(LoginRequiredMixin, TemplateView):
@@ -47,4 +48,5 @@ urlpatterns = [
     url(r'kerofis/etrefas/(?P<location_id>\d+)?$', SkridaozerKerofisLocationView.as_view(), name='kerofis_etrefas'),
     url(r'kerofis/ezporzhiañ', SkridaozerKerofisExportView.as_view(), name='kerofis_ezporzhian'),
     url(r'kerofis/ajax/(?P<location_id>\d+)$', SkridaozerKerofisAjaxView.as_view(), name='kerofis_ajax'),
+    url(r'kerofis/view/(?P<template>\w+)/(?P<id>\d+)?$', SkridaozerKerofisTemplateView.as_view(), name='kerofis_view')
 ]

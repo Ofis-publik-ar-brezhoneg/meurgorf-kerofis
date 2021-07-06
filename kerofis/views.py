@@ -7,6 +7,7 @@ from django.views.generic import RedirectView
 from django.views.generic import View
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -139,6 +140,7 @@ class SkridaozerKerofisLocationView(TemplateView):
         context['categories'] = Category.objects.all().order_by('name_bre')
         context['informants'] = Informant.objects.all().order_by('first_name', 'last_name')
         context['books'] = Book.objects.all().order_by('abbrevation')
+        context['books_old'] = Book.objects.filter(is_kerofis_old=True).order_by('abbrevation')
 
         if self.kwargs.get('location_id'):
             context['location'] = Location.objects.get(pk=self.kwargs['location_id'])
@@ -237,6 +239,7 @@ class SkridaozerKerofisSearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all().order_by('name_bre')
+        context['departments'] = Department.objects.all().order_by('name_bre')
 
         if self.request.POST:
             context['data'] = self.request.POST
@@ -247,11 +250,18 @@ class SkridaozerKerofisSearchView(TemplateView):
             if data.get('generic_name'):
                 filters[f"generic_name__unaccent__{operation}"] = data['generic_name']
             if data.get('name'):
-                filters[f"name__unaccent__{operation}"] = data['name']
+                if data.get('is_old'):
+                    filters[f"old_forms__old_form__unaccent__{operation}"] = data['name']
+                elif data.get('is_standardized'):
+                    filters[f"standardized_forms__standardized_form__unaccent__{operation}"] = data['name']
+                elif data.get('is_attested'):
+                    filters[f"attested_forms__attested_form__unaccent__{operation}"] = data['name']
+                else:
+                    filters[f"name__unaccent__{operation}"] = data['name']
             if data.get('city'):
                 filters[f"city__name_bre__unaccent__{operation}"] = data['city']
             if data.get('department'):
-                filters['department__name_bre__unaccent'] = data['department']
+                filters['department'] = data['department']
             if data.get('category'):
                 filters['category'] = data['category']
 
@@ -259,12 +269,9 @@ class SkridaozerKerofisSearchView(TemplateView):
             if self.request.POST.get('sorting_order') == 'desc':
                 sorting = f'-{sorting}'
 
-            queryset = Location.objects.filter(**filters)
-            paginator = Paginator(queryset.order_by(sorting, 'pk'), 20)
-            context['paginator'] = paginator
-            context['locations'] = paginator.get_page(context['page'])
+            context['locations'] = Location.objects.filter(**filters)
         else:
-            context['data'] = {'search_type': 'istartswith'}
+            context['data'] = {'search_type': 'icontains'}
 
         context['sorting_field'] = self.request.POST.get('sorting_field', 'generic_name')
         context['sorting_order'] = self.request.POST.get('sorting_order', 'asc')
@@ -333,6 +340,13 @@ class SkridaozerKerofisAjaxView(View):
         except Exception as e:
             return JsonResponse({"response": "error", "msg": str(e)})
 
+    def delete(self, request, *args, **kwargs):
+        try:
+            Location.objects.filter(pk=self.kwargs['location_id']).delete()
+            return JsonResponse({"response": "ok"})
+        except Exception as e:
+            return JsonResponse({"response": "error", "msg": str(e)})
+
     def add_standardized_form(self, obj, data):
         form = StandardizedForm(standardized_form=data['form'], date=data['date'], location=obj)
         form.save()
@@ -383,6 +397,48 @@ class SkridaozerKerofisAjaxView(View):
         )
         attested_form.save()
 
+    def update_standardized_form(self, obj, data):
+        obj = StandardizedForm.objects.get(pk=data['id'])
+        obj.standardized_form = data['standardized_form']
+        obj.date = data['date']
+        obj.save()
+
+    def update_phonetic_transcription(self, obj, data):
+        obj = PhoneticTranscription.objects.get(pk=data['id'])
+        obj.phonetic_transcription = data['phonetic_transcription']
+        obj.is_standard = data['is_standard'] == 'on'
+        obj.informant = Informant.objects.get(pk=data['informant']) if data['informant'] else None
+        obj.created_at = data['created_at']
+        obj.save()
+
+    def update_old_form(self, obj, data):
+        obj = OldForm.objects.get(pk=data['id'])
+        obj.old_form = data['old_form']
+        obj.litteral_year = data['litteral_year']
+        obj.year = data['year']
+        obj.book = Book.objects.get(pk=data['book']) if data['book'] else None
+        obj.reference = data['reference']
+        obj.save()
+
+    def update_other_form(self, obj, data):
+        obj = OtherForm.objects.get(pk=data['id'])
+        obj.usage_form = data['usage_form']
+        obj.litteral_year = data['litteral_year']
+        obj.year = data['year']
+        obj.book = Book.objects.get(pk=data['book']) if data['book'] else None
+        obj.reference = data['reference']
+        obj.save()
+
+    def update_attested_form(self, obj, data):
+        obj = AttestedForm.objects.get(pk=data['id'])
+        obj.attested_form = data['attested_form']
+        obj.is_labeled = data['is_labeled'] == 'on'
+        obj.litteral_year = data['litteral_year']
+        obj.year = data['year']
+        obj.book = Book.objects.get(pk=data['book']) if data['book'] else None
+        obj.reference = data['reference']
+        obj.save()
+
     def delete_standardized_form(self, obj, data):
         StandardizedForm.objects.get(location=obj, pk=data['id']).delete()
 
@@ -397,3 +453,32 @@ class SkridaozerKerofisAjaxView(View):
 
     def delete_attested_form(self, obj, data):
         AttestedForm.objects.get(location=obj, pk=data['id']).delete()
+
+
+class SkridaozerKerofisTemplateView(View):
+
+    def get(self, request, *args, **kwargs):
+        template = 'semantic/skridaozer/kerofis/partial/'
+        context = {
+            'informants': Informant.objects.all().order_by('first_name', 'last_name'),
+            'books_old': Book.objects.filter(is_kerofis_old=True).order_by('abbrevation'),
+            'books': Book.objects.all().order_by('abbrevation')
+        }
+        if self.kwargs['template'] == 'standardized_form':
+            template += 'standardized_form.html'
+            context['obj'] = StandardizedForm.objects.get(pk=self.kwargs['id'])
+        elif self.kwargs['template'] == 'phonetic_transcription':
+            template += 'phonetic_transcription.html'
+            context['obj'] = PhoneticTranscription.objects.get(pk=self.kwargs['id'])
+        elif self.kwargs['template'] == 'old_form':
+            template += 'old_form.html'
+            context['obj'] = OldForm.objects.get(pk=self.kwargs['id'])
+        elif self.kwargs['template'] == 'other_form':
+            template += 'other_form.html'
+            context['obj'] = OtherForm.objects.get(pk=self.kwargs['id'])
+        elif self.kwargs['template'] == 'attested_form':
+            template += 'attested_form.html'
+            context['obj'] = AttestedForm.objects.get(pk=self.kwargs['id'])
+        else:
+            raise NotImplemented
+        return render(request, template, context=context)

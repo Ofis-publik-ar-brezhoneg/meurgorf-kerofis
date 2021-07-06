@@ -1,0 +1,30 @@
+<input type="hidden" name="action" value="update_other_form" />
+<input type="hidden" name="id" value="{{ obj.id }}" />
+<div class="ui fields">
+  <div class="field">
+    <label>Anv</label>
+    <input type="text" name="usage_form" value="{{ obj.usage_form }}">
+  </div>
+  <div class="field">
+    <label>Bloavezh</label>
+    <input type="text" name="litteral_year" value="{{ obj.litteral_year }}">
+  </div>
+</div>
+<div class="field">
+  <label>Bloavezh niverel</label>
+  <input type="text" name="year" value="{{ obj.year }}">
+</div>
+<div class="ui fields">
+  <div class="field">
+    <label>Berradur</label>
+    <select class="ui dropdown" name="book">
+{% for book in books %}
+      <option value="{{ book.id }}"{% if obj.book.id == book.id %} selected="selected">{{ book.abbrevation }}</option>
+{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label>Daveenn</label>
+    <input type="text" name="reference" value="{{ obj.reference }}">
+  </div>
+</div>

@@ -94,6 +94,11 @@ class Informant(models.Model):
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
+    @property
+    def display(self):
+        interviewed = f"{self.interviewed_by.first_name} {self.interviewed_by.last_name}" if self.interviewed_by else ""
+        return f"{self.first_name} {self.last_name} ({self.pk} {interviewed})"
+
 
 class PhoneticTranscription(models.Model):
     class Meta:

@@ -37,18 +37,21 @@
                 <input type="text" name="city" value="{{ data.city }}" onchange="reset_page()">
               </div>
             </div>
-            <div class="field">
-              <label>Departamant</label>
-              <div class="ui huge inverted input">
-                <input type="text" name="department" value="{{ data.department }}" onchange="reset_page()">
-              </div>
+            <div class="field" style="width: 100%">
+                <label>Departamant</label>
+                <select class="ui fluid selection dropdown clearable" name="department" id="select_department" onchange="reset_page()">
+                    <option></option>
+    {% for department in departments %}
+                    <option value="{{ department.id }}"{% if data.department|add:"0" == department.id %} selected="selected"{% endif %}>{{ department.name_bre }}</option>
+    {% endfor %}
+                </select>
             </div>
             <div class="field" style="width: 100%">
               <label>Rummad</label>
               <select class="ui fluid selection dropdown clearable" name="category" id="select_category" onchange="reset_page()">
                 <option></option>
   {% for category in categories %}
-                <option value="{{ category.id }}"{% if data.category == category.id %} selected="selected"{% endif %}>{{ category.name_bre }}</option>
+                <option value="{{ category.id }}"{% if data.category|add:"0" == category.id %} selected="selected"{% endif %}>{{ category.name_bre }}</option>
   {% endfor %}
               </select>
             </div>
@@ -57,7 +60,7 @@
             <div class="field">
               <div class="ui radio checkbox">
                 <input type="radio" name="search_type" value="icontains" onchange="reset_page()"{% if data.search_type == 'icontains' %} checked="checked"{% endif %}>
-                <label>Darn eus ar ger</label>
+                <label>Ul lodenn eus an anv</label>
               </div>
             </div>
             <div class="field">
@@ -82,19 +85,19 @@
           <div class="inline fields">
             <div class="field">
               <div class="ui checkbox">
-                <input type="checkbox" name="is_old" onchange="reset_page()"{% if data.is_old %} checked="checked"{% endif %}>
+                <input class="search_type" type="checkbox" name="is_old" onchange="change_search_type(this)"{% if data.is_old %} checked="checked"{% endif %}>
                 <label>Er stummoù kozh kepken</label>
               </div>
             </div>
               <div class="field">
               <div class="ui checkbox">
-                <input type="checkbox" name="is_normalized" onchange="reset_page()"{% if data.is_normalized %} checked="checked"{% endif %}>
+                <input class="search_type" type="checkbox" name="is_standardized" onchange="change_search_type(this)"{% if data.is_normalized %} checked="checked"{% endif %}>
                 <label>Er stummoù skoueriekaet hepken</label>
               </div>
             </div>
             <div class="field">
               <div class="ui checkbox">
-                <input type="checkbox" name="is_standardized" onchange="reset_page()"{% if data.is_standardized %} checked="checked"{% endif %}>
+                <input class="search_type" type="checkbox" name="is_attested" onchange="change_search_type(this)"{% if data.is_standardized %} checked="checked"{% endif %}>
                 <label>Er stummoù testeniekaet hepken</label>
               </div>
             </div>
@@ -143,7 +146,7 @@
   {% if locations %}
       <div class="sixteen wide column">
         <div class="ui teal segment" id="termenadur">
-            <h4 class="ui header">Disoc’h : {{ locations.start_index }}-{{ locations.end_index }} - Page {{ page }}/{{ paginator.num_pages }} </h4>
+            <h4 class="ui header">{{ locations.count }} Disoc’h</h4>
             <table class="ui sortable selectable table">
               <thead>
                 <tr>
@@ -152,67 +155,58 @@
                     <th data-name="city__name_bre"{% if sorting_field == 'city__name_bre' %} class="sorted {{ sorting_label }}"{% endif %}>Kumun</th>
                     <th data-name="category__name_bre"{% if sorting_field == 'category__name_bre' %} class="sorted {{ sorting_label }}"{% endif %}>Rummad</th>
                     <th data-name="department__name_bre"{% if sorting_field == 'department__name_bre' %} class="sorted {{ sorting_label }}"{% endif %}>Departamant</th>
+                {% if data.display_normalized %}
+                    <th>Stumm skoueriekaet</th>
+                {% endif %}
+                {% if data.has_coordinated %}
+                    <th>Daveennoù douaroniel</th>
+                {% endif %}
+                {% if data.is_on_ign %}
+                    <th>Kaset d’an IGN</th>
+                {% endif %}
+                {% if data.is_official %}
+                    <th>Bet ofisialisaet</th>
+                {% endif %}
+                {% if data.is_public %}
+                    <th>Embannet</th>
+                {% endif %}
                 </tr>
               </thead>
               <tbody>
     {% for location in locations %}
-                <tr onclick="javascript:document.location.href = '{% url 'skridaozer:kerofis_etrefas' location.id %}'">
+                <tr onclick="window.open('{% url 'skridaozer:kerofis_etrefas' location.id %}', '_blank').focus();">
                     <td>{{ location.generic_name }}</td>
                     <td>{{ location.name }}</td>
                     <td>{{ location.city.name_bre }}</td>
                     <td>{{ location.category.name_bre }}</td>
                     <td>{{ location.department.name_bre }}</td>
+                {% if data.display_normalized %}
+                    <td>
+                    {% for standardized_form in location.standardized_forms.all %}
+                            <p>{{ standardized_form.standardized_form }}</p>
+                    {% endfor %}
+                    </td>
+                {% endif %}
+                {% if data.has_coordinated %}
+                    <td>{% if location.longitude or location.latitude %}Ya{% else %}N'eo ket{% endif %}</td>
+                {% endif %}
+                {% if data.is_on_ign %}
+                    <td>{% if location.on_ign %}Ya{% else %}N'eo ket{% endif %}</td>
+                {% endif %}
+                {% if data.is_official %}
+                    <td>{% if location.formalized_date %}Ya{% else %}N'eo ket{% endif %}</td>
+                {% endif %}
+                {% if data.is_public %}
+                    <td>{% if location.is_public %}Ya{% else %}N'eo ket{% endif %}</td>
+                {% endif %}
                 </tr>
     {% endfor %}
-                <tr>
-                  <td colspan="2">
-                    <div class="ui right floated pagination menu">
-    {% if locations.has_previous %}
-                      <a data-value="1" class="icon item paginator">
-                        <i class="angle double left icon"></i>
-                      </a>
-                      <a data-value="{{ locations.previous_page_number }}" class="icon item paginator">
-                        <i class="left chevron icon"></i>
-                      </a>
-                      <div class="ui floating dropdown icon button">
-                        <span class="text">...</span>
-                        <div class="menu">
-      {% for page_number in paginator.page_range %}
-        {% if page_number < locations.number %}
-                          <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
-        {% endif %}
-      {% endfor %}
-                        </div>
-                      </div>
-    {% endif %}
-                      <a data-value="{{ locations.number }}" class="item paginator active">{{ locations.number }}</a>
-    {% if locations.has_next %}
-                      <div class="ui floating dropdown icon button">
-                        <span class="text">...</span>
-                        <div class="menu">
-      {% for page_number in paginator.page_range %}
-        {% if page_number > locations.number %}
-                          <div data-value="{{ page_number }}" class="item paginator">{{ page_number }}</div>
-        {% endif %}
-      {% endfor %}
-                        </div>
-                      </div>
-                      <a data-value="{{ locations.next_page_number }}" class="icon item paginator">
-                        <i class="right chevron icon"></i>
-                      </a>
-                      <a data-value="{{ paginator.num_pages }}" class="icon item paginator">
-                        <i class="angle double right icon"></i>
-                      </a>
-    {% endif %}
-                    </div>
-                  </td>
-                </tr>
               </tbody>
             </table>
         </div>
       </div>
   {% else %}
-    {% if locations.end_index == 0 %}
+    {% if locations.count == 0 %}
     <div class="sixteen wide column">
         <div class="ui teal segment">
             <h3>La référence n'a pas été trouvé</h3>
@@ -244,6 +238,14 @@
     });
     function reset_page() {
         $('#page').val(1)
+    }
+    function change_search_type(selected) {
+        $('.search_type').each(function() {
+            if (this != selected) {
+                $(this).prop('checked', false);
+            }
+        });
+        reset_page();
     }
   </script>
 {% endblock content-js %}
